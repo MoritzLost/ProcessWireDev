@@ -1,0 +1,16 @@
+{
+    "name": "processwire-dev",
+    "version": "0.1.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "eleventy",
+        "start": "eleventy --serve",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "MoritzLost <info@herebedragons.world>",
+    "license": "UNLICENSED",
+    "dependencies": {
+        "@11ty/eleventy": "^0.9.0"
+    }
+}
