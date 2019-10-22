@@ -1,0 +1,5 @@
+<ol class="navigation">
+    {% for post in collections.all %}
+        <li class="navigation__item"><a href="{{ post.url }}" class="navigation__link">{{ post.data.title or post.url }}</a></li>
+    {% endfor %}
+</ol>

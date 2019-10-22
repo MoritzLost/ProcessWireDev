@@ -1,0 +1,5 @@
+@mixin stack ($margin: $stack-default-margin) {
+    > * + * {
+        margin-top: $margin;
+    }
+}

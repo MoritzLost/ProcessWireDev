@@ -1,0 +1,29 @@
+
+.main {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 2fr 1fr 4fr 3fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "navigation space-left main space-right";
+    justify-content: space-between;
+    align-content: stretch;
+    &__nav {
+        background: #333;
+        padding: 1rem;
+        grid-area: navigation;
+    }
+    &__article {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: #f1f1f1;
+        grid-area: main;
+    }
+}
+
+.navigation {
+    color: white;
+    &__link {
+        color: inherit;
+    }
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <title>{{ title }}</title>
+    <link rel="canonical " href="{{ site.url + page.url }}">
+</head>
+<body>
+    <main class="main">
+        <nav class="main__nav">
+            {% include "components/navigation.njk" %}
+        </nav>
+        <article class="main__article">
+            {{ content | safe }}
+        </article>
+    </main>
+</body>
+</html>
