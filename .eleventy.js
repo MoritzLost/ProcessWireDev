@@ -1,6 +1,11 @@
 const sass = require('node-sass');
 
 module.exports = eleventyConfig => {
+    eleventyConfig.addFilter('stripNumbering', slug => slug.replace(
+        new RegExp(/^\d{1,3}-/),
+        ''
+    ));
+
     return {
         templateFormats: ['html', 'md', 'njk'],
         pathPrefix: '/',
