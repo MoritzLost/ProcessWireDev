@@ -1,4 +1,5 @@
 ---
+tags: post
 layout: post
 title: Customizing the CMF
 ---

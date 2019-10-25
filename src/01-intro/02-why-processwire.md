@@ -1,4 +1,5 @@
 ---
+tags: post
 layout: post
 title: Why ProcessWire?
 ---

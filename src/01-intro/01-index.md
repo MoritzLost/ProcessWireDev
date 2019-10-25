@@ -1,4 +1,5 @@
 ---
+tags: post
 layout: homepage
 title: Intro
 ---
