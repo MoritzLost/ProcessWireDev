@@ -1,0 +1,22 @@
+// body & text defaults
+body {
+    background: $body-bg;
+    color: $body-color;
+    font-size: 1rem;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+    line-height: 1.8;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+}
+
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.125rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
