@@ -21,13 +21,55 @@
         margin-top: 5rem;
         margin-bottom: 5rem;
         padding: 4rem 3rem;
-        @include stack(1.25rem);
     }
 }
 
 .navigation {
     @include stack(2rem);
-    &__link {
-        color: inherit;
+    &__section {
+        @include stack(.5rem);
     }
+    &__headline {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-light;
+    }
+    &__list {
+        @include stack(.5rem);
+    }
+    &__link {
+        font-weight: $font-weight-medium;
+        color: inherit;
+        text-decoration: none;
+        &:hover, &:focus {
+            color: inherit;
+            text-decoration: underline;
+        }
+        &--active {
+            &::before {
+                content: "→" " ";
+            }
+        }
+    }
+    &__subnav {
+        background: $gray-700;
+        padding: .5rem 1rem;
+        margin-top: .5rem;
+        > ol {
+            list-style: none;
+            padding-left: 0;
+            font-size: $font-size-sm;
+            @include stack(.5rem);
+            > li {
+                > a {
+                    @extend .navigation__link;
+                    font-weight: $font-weight-normal;
+                }
+            }
+        }
+    }
+}
+
+.content {
+    @include stack(1.25rem);
+    @include stack-before-headlines(2.5rem);
 }

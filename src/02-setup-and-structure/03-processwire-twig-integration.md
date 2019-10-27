@@ -1,7 +1,7 @@
 ---
 tags: post
 layout: post
-title: Composer setup
+title: Twig Setup
 ---
 
 # How to setup Twig as a flexible view layer for ProcessWire

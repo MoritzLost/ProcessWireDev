@@ -35,6 +35,8 @@ ol[class] {
 // cleaner link underlines
 a {
     text-decoration-skip-ink: auto;
+    text-decoration-thickness: .09rem;
+    text-underline-offset: 3px;
 }
 
 // responsive images by default

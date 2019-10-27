@@ -3,3 +3,19 @@
         margin-top: $margin;
     }
 }
+
+@mixin stack-before-headlines ($margin: $stack-default-margin) {
+    > * {
+        + h1, + h2, + h3, + h4, + h5, + h6 {
+            margin-top: $margin;
+        }
+    }
+}
+
+@mixin stack-after-headlines ($margin: $stack-default-margin) {
+    > h1, > h2, > h3, > h4, > h5, > h6 {
+        + * {
+            margin-top: $margin;
+        }
+    }
+}

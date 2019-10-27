@@ -1,17 +1,24 @@
 <nav class="navigation">
     {% for section in collections.postTree %}
-        {% set section_id = 'section-' + section.name %}
-        {% if section.title %}
-            <h4 id="{{ section_id }}">{{ section.title }}</h4>
-        {% endif %}
-        <ul class="navigation__list" aria-labelledby="{{ section_id }}">
-            {% for post in section.posts %}
-                <li class="navigation__item">
-                    <a href="{{ post.url }}" class="navigation__link">
-                        {{- post.data.title or post.url -}}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
+        <section class="navigation__section">
+            {% set section_id = 'section-' + section.name %}
+            {% if section.title %}
+                <h4 class="navigation__headline" id="{{ section_id }}">
+                    {{- section.title -}}
+                </h4>
+            {% endif %}
+            <ol class="navigation__list" aria-labelledby="{{ section_id }}">
+                {% for post in section.posts %}
+                    <li class="navigation__item">
+                        <a href="{{ post.url }}" class="navigation__link{{ " navigation__link--active" if post.url === page.url }}">
+                            {{- post.data.title or post.url -}}
+                        </a>
+                        {% if post.url === page.url %}
+                            {{ content | toc('{"tags":["h2"],"wrapper":"div","wrapperClass":"navigation__subnav"}') | safe }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ol>
+        </section>
     {% endfor %}
 </nav>
