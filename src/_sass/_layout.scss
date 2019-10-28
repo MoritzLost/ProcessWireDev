@@ -17,7 +17,7 @@
         grid-area: main;
         background: $article-bg;
         color: $article-color;
-        font-size: $font-size-lg;
+        @include font-size($font-size-lg);
         margin-top: 5rem;
         margin-bottom: 5rem;
         padding: 4rem 3rem;
@@ -30,7 +30,7 @@
         @include stack(.5rem);
     }
     &__headline {
-        font-size: $font-size-sm;
+        @include font-size($font-size-sm);
         font-weight: $font-weight-light;
     }
     &__list {
@@ -57,7 +57,7 @@
         > ol {
             list-style: none;
             padding-left: 0;
-            font-size: $font-size-sm;
+            @include font-size($font-size-sm);
             @include stack(.5rem);
             > li {
                 > a {

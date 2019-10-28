@@ -1,26 +1,30 @@
 {
     "name": "processwire-dev",
     "version": "0.1.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "npm-run-all -p watch:*",
-        "build": "npm-run-all -s build:eleventy build:sass",
-        "watch:eleventy": "eleventy --serve",
-        "build:eleventy": "eleventy",
-        "watch:sass": "node-sass --watch --output-style=expanded --source-maps=true src/_sass --output=dist/css",
-        "build:sass": "node-sass --output-style=compressed --omit-source-map-url src/_sass --output=dist/css/"
-    },
-    "author": "MoritzLost <info@herebedragons.world>",
+    "description": "Source code for processwire.dev, a comprehensive guide to proficient ProcessWire development.",
+    "keywords": [
+        "eleventy",
+        "processwire"
+    ],
+    "homepage": "https://processwire.dev",
     "license": "UNLICENSED",
+    "author": "MoritzLost <info@herebedragons.world>",
+    "scripts": {
+        "build": "npm-run-all -s build:eleventy build:sass",
+        "build:eleventy": "eleventy",
+        "build:sass": "node-sass --output-style=compressed --omit-source-map-url src/_sass --output=dist/css/",
+        "start": "npm-run-all -p watch:*",
+        "watch:eleventy": "eleventy --serve",
+        "watch:sass": "node-sass --watch --output-style=expanded --source-maps=true src/_sass --output=dist/css"
+    },
     "dependencies": {
         "@11ty/eleventy": "^0.9.0",
-        "node-sass": "^4.12.0",
-        "npm-run-all": "^4.1.5"
-    },
-    "devDependencies": {
         "eleventy-plugin-toc": "^1.0.1",
         "markdown-it": "^10.0.0",
-        "markdown-it-anchor": "^5.2.5"
-    }
+        "markdown-it-anchor": "^5.2.5",
+        "node-sass": "^4.12.0",
+        "npm-run-all": "^4.1.5",
+        "rfs": "^9.0.2"
+    },
+    "devDependencies": {}
 }
