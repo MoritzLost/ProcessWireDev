@@ -10,12 +10,12 @@
 </head>
 <body>
     <main class="main">
-        <aside class="main__nav">
-            {% include "components/navigation.njk" %}
-        </aside>
         <article class="main__article content">
             {{ content | safe }}
         </article>
+        <aside class="main__nav">
+            {% include "components/navigation.njk" %}
+        </aside>
     </main>
 </body>
 </html>

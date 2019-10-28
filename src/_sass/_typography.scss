@@ -29,3 +29,9 @@ a {
         color: $link-hover-color;
     }
 }
+
+// main content area
+.content {
+    @include stack(1.25rem);
+    @include stack-before-headlines(2.5rem);
+}
