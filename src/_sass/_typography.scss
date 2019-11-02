@@ -6,7 +6,7 @@ body {
     font-weight: $font-weight-normal;
     font-size: 1rem;
     scroll-behavior: smooth;
-    text-rendering: optimizeSpeed;
+    text-rendering: auto;
     line-height: $line-height-base;
 }
 

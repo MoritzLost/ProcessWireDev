@@ -8,7 +8,6 @@
         @include font-size($font-size-lg);
     }
     &__nav {
-        padding: 1rem;
         background: $aside-bg;
         color: $aside-color;
     }
@@ -34,13 +33,6 @@
         }
         &__nav {
             grid-area: navigation;
-            padding: 1.5rem;
-            @supports (position: sticky) {
-                max-height: 100vh;
-                overflow-y: auto;
-                position: sticky;
-                top: 0;
-            }
         }
     }
 
@@ -51,13 +43,27 @@
             margin-bottom: 5rem;
             padding: 4rem 3rem;
         }
-        &__nav {
-            padding: 2rem;
-        }
     }
 }
 
 .navigation {
+    padding: 1rem;
+    @media (min-width: 65rem) {
+        padding: 1.5rem;
+    }
+    @media (min-width: 80rem) {
+        // don't use stack here so the last element has margin bottom as well
+        // this way, it has some padding to the bottom when the nav is scrolled down
+        padding: 2rem;
+    }
+    @supports (position: sticky) {
+        max-height: 100vh;
+        position: sticky;
+        top: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
     &__section {
         margin-bottom: 2rem;
         @include stack(.5rem);
