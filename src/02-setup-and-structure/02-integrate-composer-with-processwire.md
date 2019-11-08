@@ -6,94 +6,99 @@ title: Composer setup
 
 # How to setup and integrate Composer with ProcessWire
 
-Composer is the de-facto standard for package management in the PHP worl. Hoever, a ProcessWire site will happily work without every touching Composer, and the ProcessWire core isn't really build with Composer support in mind. That said, you get some major benefits by integrating Composer into your project:
+Composer is the de-facto standard for package management in the PHP world. However, a ProcessWire site will happily work without every touching Composer, and the ProcessWire core isn't really build with Composer support in mind. That said, you get some major benefits by integrating Composer into your project:
 
 - You can easily use pretty much any external library you want.
 - You can structure your own code into reusable classes and functions, and have Composer autoload them on demand with very little overhead and configuration.
 - By following a sensible folder structure (see below), you have increased security out of the box.
 - You can even utilize Composer scripts to automate your project setup and build your own ProcessWire project boilerplate.
 
+In this tutorial, I will walk through all the steps required to install Composer, add it's autoloader to ProcessWire, and use it to install external libraries and wire up your custom classes. This setup is pretty basic and includes some general information on using Composer, so you can follow along even if you haven't worked with ProcessWire before.
+
 ## Recommended directory structure
 
-I started out by using the default setup recommend [in this blogpost](https://processwire.com/blog/posts/composer-google-calendars-and-processwire/). However, one major problem I have with this approach is that all external dependencies live in the webroot (the directory the server points to), which is unfavourable from a security standpoint and, in my opinion, just feels a bit messy.
+ProcessWire has some built-in Composer support, which is outlined [in this blogpost](https://processwire.com/blog/posts/composer-google-calendars-and-processwire/). Hoever, this setup recommends (and requires!) that the `vendor` folder lives _inside the webroot_ (the directory that is used as the entry point by the server, e.g. the `DocumentRoot` in Apache). This is bad from a security standpoint, because all included libraries are directly accessible over the web. So if only one file in any library you're using contains a vulnerability, your entire site is vulnerable. In general, you want to have only the stuff that needs to be accessible over the web in the webroot, and anything else outside it.
 
-In this tutorial, I want to go through a quick setup of Composer and ProcessWire that keeps the dependencies, all custom-written code and other source material outside of the webroot, and makes full usage of the Composer autoloader. This setup is pretty basic, so this tutorial is probably more useful to beginners (this is why I'll also include some general information on Composer), but hopefully everyone can take something away from this for their personal workflow.
+This is the directory structure we will create:
 
-## Site structure after setup
+    .
+    ├── composer.json
+    ├── composer.lock
+    ├── node_modules
+    ├── packacke-lock.json
+    ├── package.json
+    ├── public
+    │   ├── index.php
+    │   ├── site
+    │   ├── wire
+    │   └── ...
+    ├── src
+    │   ├── sass
+    │   ├── php
+    │   ├── js
+    │   └── ...
+    └── vendor
 
-This is what the directory structure can look like after the setup:
+I'll refer to the main directory above as the _project root_. The `public` directory acts as the webroot, while all other files and directories in the project root aren't accessible over the web. This includes Composer's vendor folder, your node_modules (if you are using NPM), as well JavaScript source files if you are compiling your JavaScript with webpack or something similar, and your CSS preprocessor files if you are using SASS or LESS (See the next to tutorials for my recommend).
 
-	.
-	├── composer.json
-	├── composer.lock
-	├── node_modules
-	│   └── ...
-	├── public
-	│   ├── index.php
-	│   ├── site
-	│   ├── wire
-	│   └── ...
-	├── packacke-lock.json
-	├── package.json
-	├── sass
-	│   ├── main.scss
-	│   ├── _variables.scss
-	│   └── ...
-	├── src
-	│   ├── ContentBag.php
-	│   └── ...
-	└── vendor
-	    ├── autoload.php
-	    ├── composer
-	    ├── league
-	    ├── symfony
-	    └── ...
+One caveat of this setup is that it's not possible to install ProcessWire modules through Composer using the PW Module Installer (see the blogpost above), but that's just a minor inconvenience in my experience.
 
-As mentioned, the main point of this setup is to keep all external libraries, all other custom source code and resources out of the webroot. That includes Composer's vendor folder, your node_modules and JavaScript source folder if you are compiling JavaScript with webpack or something similar and including external scripts via NPM, or your CSS preprocessor files if you are using SASS or LESS. In this setup, the `public` directory acts as the webroot (the directory that is used as the entry point by the server, `DocumentRoot` in the Apache configuration). So all other files and directories in the `mysite` folder aren't accessible over the web, even if something goes wrong.
+## Initializing a Composer project
 
-One caveat of this setup is that it's not possible to install ProcessWire modules through Composer using the PW Module Installer (see Blogpost above), but that's just a minor inconvenience in my experience.
+You'll need to have Composer installed on your system for this. Installation guides can be found on [getcomposer.org](https://getcomposer.org/doc/00-intro.md).
 
-## Installation
+If you are starting a new project, you can just run the following commands in a new directory. If you want to add Composer to an existing ProcessWire site, make sure to initilize the Composer project **one directory above the webroot**. This directory will become your project root. I'll assume a new project for the following instructions.
 
-You'll need to have composer installed on your system for this. Installation guides can be found on [getcomposer.org](https://getcomposer.org/doc/00-intro.md).
+```shell-session
+$ mkdir ~/path/to/project/
+$ cd ~/path/to/project/
+```
 
-First, open up your shell and navigate to the mysite folder.
+First, we'll initialize a new Composer project:
 
-    $ cd /path/to/mysite/
+```shell-session
+$ composer init
+```
 
-Now, we'll initialize a new Composer project:
+The CLI will ask some questions about your projects. Some tips in case you are unsure how to answer the prompts:
 
-    $ composer init
-
-The CLI will ask some questions about your projects. Some hints if you are unsure how to answer the prompts:
-
-- Package names are in the format `<vendor>/<project>`, where `vendor` is your developer handle. I use my Github account, so I'll put `moritzlost/mysite` (all lowercase).
-- Project type is `project` if you are creating a website.
+- Package names are in the format `<vendor>/<project>`, where `<vendor>` can be your developer handle. I use my Github account as the handle, so I can enter something like `moritzlost/mysite` (all lowercase).
+- Project type is probably `project` if you are creating a website.
 - Author should be in the format `Name <email>`.
 - Minimum Stability: I prefer `stable`, this way you only get stable versions of dependencies.
 - License will be `proprietary` unless you plan on sharing your code under a FOSS license.
-- Answer no to the interactive dependencies prompts.
+- Answer no to the interactive dependencies prompts for now.
 
-This creates the `composer.json` file, which will be used to keep track of your dependencies. For now, you only need to run the composer install command to initialize the vendor directory and the autoloader:
+This creates the `composer.json` file, which will be used to keep track of your dependencies. For now, you only need to run the Composer install command to initialize the vendor directory and the autoloader:
 
-    $ composer install
+```shell-session
+$ composer install
+```
 
-Now it's time to download and install ProcessWire into the public directory:
+## Installing ProcessWire in the webroot
 
-    $ git clone https://github.com/processwire/processwire public
+<!-- @TODO: Expand explanation & caveat: still core in public directory -->
+Now it's time to download and install ProcessWire into the public directory.
+
+```shell-session
+$ mkdir public
+$ git clone https://github.com/processwire/processwire public
+```
 
 If you don't use git, you can also download ProcessWire manually. I like to clean up the directory after that:
 
-    $ cd public
-	$ rm -r .git .gitattributes .gitignore CONTRIBUTING.md LICENSE.TXT README.md
+```shell-session
+$ cd public
+$ rm -r .git .gitattributes .gitignore CONTRIBUTING.md LICENSE.TXT README.md
+```
 
-Now, setup your development server to point to the `/path/to/mysite/public/` directory (mind the `public/` at the end!) and install ProcessWire normally.
+Now, setup your development server to point to the `/path/to/project/public/` directory (mind the `public/` at the end!) and install ProcessWire normally.
 
 ## Including & using the autoloader
 
-With ProcessWire installed, we need to include the composer autoloader. If you check [ProcessWire's index.php file](https://github.com/processwire/processwire/blob/341342dc5b1c58012ae7cb26cffe2c57cd915552/index.php#L30), you'll see that it tries to include the autoloader if present. However, this assumes the vendor folder is inside the webroot, so it won't work in our case.
+With ProcessWire installed, we need to include the Composer autoloader. If you check [ProcessWire's index.php file](https://github.com/processwire/processwire/blob/341342dc5b1c58012ae7cb26cffe2c57cd915552/index.php#L30), you'll see that it tries to include the autoloader if present. However, this assumes the vendor folder is inside the webroot, so it won't work in our case.
 
-One good place to include the autoloader is using a [site hook file](https://processwire.com/blog/posts/processwire-2.6.7-core-updates-and-more/#new-core-files-for-site-hooks). We need the autoloader as early as possible, so we'll use `init.php`:
+One good place to include the autoloader is a [site hook file](https://processwire.com/blog/posts/processwire-2.6.7-core-updates-and-more/#new-core-files-for-site-hooks). We need the autoloader as early as possible, so we'll use `init.php`:
 
     // public/site/init.php
 	<?php
@@ -111,7 +116,7 @@ First, install the dependency (from the project root, the folder your `composer.
 
 This will download the package into your vendor directory and refresh the autoloader.
 
-Now you can just use the package in your own code, and composer will autoload the required class files:
+Now you can just use the package in your own code, and Composer will autoload the required class files:
 
 	// public/site/templates/basic-page.php
 	<?php
@@ -153,7 +158,7 @@ To do this, you need to edit your `composer.json` file:
 
 Most of this stuff was added during initialization, for now take note of the `autoload` information. The syntax is a bit tricky, since you have to escape the namespace seperator (backslash) with another backslash (see the [documentation](https://getcomposer.org/doc/04-schema.md#autoload) for more information). Also note the [PSR-4](https://www.php-fig.org/psr/psr-4/) key, since that's the standard I use to namespace my classes.
 
-The line `"MoritzLost\\MySite\\": "src/"` tells Composer to look for classes under the namespace `\MoritzLost\MySite\` in the `src/` directory in my project root. After adding the autoload information, you have to tell composer to refresh the autoloader information:
+The line `"MoritzLost\\MySite\\": "src/"` tells Composer to look for classes under the namespace `\MoritzLost\MySite\` in the `src/` directory in my project root. After adding the autoload information, you have to tell Composer to refresh the autoloader information:
 
 	$ composer dump-autoload
 
