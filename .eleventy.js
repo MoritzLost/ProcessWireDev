@@ -57,8 +57,33 @@ module.exports = eleventyConfig => {
         }, []);
     });
 
+    eleventyConfig.addFilter('postTreePrevious', (page, collection) => {
+        const posts = collection.map(c => c.posts).flat(1);
+        const pageIndex = posts.findIndex(p => p.url === page.url);
+        if (pageIndex === -1) return null;
+        const nextIndex = pageIndex - 1;
+        return nextIndex < 0 ? null : posts[nextIndex];
+    });
+    eleventyConfig.addFilter('postTreeNext', (page, collection) => {
+        const posts = collection.map(c => c.posts).flat(1);
+        const pageIndex = posts.findIndex(p => p.url === page.url);
+        if (pageIndex === -1) return null;
+        const nextIndex = pageIndex + 1;
+        return nextIndex >= posts.length ? null : posts[nextIndex];
+    });
+    eleventyConfig.addFilter('postTreePreviousInSection', (page, collection) => {
+        const currentSection = collection.find(section => section.posts.some(current => current.url === page.url));
+        const pageIndex = currentSection.posts.findIndex(current => current.url === page.url);
+        return pageIndex === 0 ? null : currentSection.posts[pageIndex - 1];
+    });
+    eleventyConfig.addFilter('postTreeNextInSection', (page, collection) => {
+        const currentSection = collection.find(section => section.posts.some(current => current.url === page.url));
+        const pageIndex = currentSection.posts.findIndex(current => current.url === page.url);
+        return pageIndex + 1 >= currentSection.length ? null : currentSection.posts[pageIndex + 1];
+    });
+
     return {
-        templateFormats: ['html', 'md', 'njk'],
+        templateFormats: ['html', 'md', 'njk', '11ty.js'],
         pathPrefix: '/',
         dir: {
             input: "src",

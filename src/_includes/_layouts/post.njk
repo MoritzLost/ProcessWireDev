@@ -3,3 +3,5 @@ layout: html
 permalink: "{{ page.fileSlug | stripVersionPrefix }}/index.html"
 ---
 {{ content | safe }}
+
+{% include "components/post-footer.njk" %}

@@ -1,0 +1,31 @@
+.post-footer {
+    margin-top: 5rem;
+    border-top: 1px solid $gray-300;
+    padding-top: 1rem;
+}
+
+.continue-reading {
+    @include font-size($font-size-sm);
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    &__part {
+        flex: 1 1 auto;
+    }
+    &__prev {
+        text-align: left;
+        margin-right: auto;
+        padding-right: 1rem;
+    }
+    &__next {
+        margin-left: auto;
+        text-align: right;
+    }
+    &__label {
+        font-weight: $font-weight-medium;
+        display: block;
+    }
+    &__link {
+    }
+}

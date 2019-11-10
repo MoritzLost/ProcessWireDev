@@ -1,0 +1,22 @@
+<aside class="post-footer">
+    <nav class="continue-reading">
+        {% set prevPost = page | postTreePrevious(collections.postTree) %}
+        {% set nextPost = page | postTreeNext(collections.postTree) %}
+        {% if prevPost %}
+            <p class="continue-reading__part continue-reading__prev">
+                <span class="continue-reading__label">Back to previous article:</span>
+                <a href="{{ prevPost.url }}" class="continue-reading__link">
+                    {{ prevPost.data.title }}
+                </a>
+            </p>
+        {% endif %}
+        {% if nextPost %}
+            <p class="continue-reading__part continue-reading__next">
+                <span class="continue-reading__label">Continue to next article:</span>
+                <a href="{{ nextPost.url }}" class="continue-reading__link">
+                    {{ nextPost.data.title }}
+                </a>
+            </p>
+        {% endif %}
+    </nav>
+</aside>
