@@ -41,24 +41,21 @@ This is the directory structure we will create:
 └── vendor
 ```
 
-I'll refer to the main directory above as the _project root_. The `public` directory acts as the webroot, while all other files and directories in the project root aren't accessible over the web. This includes Composer's vendor folder, your node_modules (if you are using NPM), as well JavaScript source files if you are compiling your JavaScript with webpack or something similar, and your CSS preprocessor files if you are using SASS or LESS (See the next to tutorials for my recommend).
+I'll refer to the main directory above as the _project root_. The `public` directory acts as the webroot, while all other files and directories in the project root aren't accessible over the web. This includes Composer's `vendor` folder, your `node_modules` (if you are using NPM), as well JavaScript source files if you are compiling your JavaScript with webpack or something similar, and your CSS preprocessor files if you are using SASS or LESS.
 
-One caveat of this setup is that it's not possible to install ProcessWire modules through Composer using the PW Module Installer (see the blogpost above), but that's just a minor inconvenience in my experience.
+One caveat of this setup is that it's not possible to install ProcessWire modules through Composer using the _ProcessWire Module Installer_ (see the blogpost above), but that's just a minor inconvenience in my experience.
 
 ## Initializing a Composer project
 
-You'll need to have Composer installed on your system for this. Installation guides can be found on [getcomposer.org](https://getcomposer.org/doc/00-intro.md).
+You'll need to have Composer installed on your system for this. Installation guides can be found on [getcomposer.org/download](https://getcomposer.org/download/).
 
-If you are starting a new project, you can just run the following commands in a new directory. If you want to add Composer to an existing ProcessWire site, make sure to initilize the Composer project **one directory above the webroot**. This directory will become your project root. I'll assume a new project for the following instructions.
+If you are starting a new project, you can just run the following commands in an empty directory. If you want to add Composer to an existing ProcessWire site, make sure to initilize the Composer project **one directory above the webroot**. This directory will become your project root. I'll assume a new project for the following instructions.
+
+First, create the new project directory and enter it. Then, initialize a new Composer project:
 
 ```bash
 mkdir ~/path/to/project/
 cd ~/path/to/project/
-```
-
-First, we'll initialize a new Composer project:
-
-```bash
 composer init
 ```
 
@@ -71,7 +68,7 @@ The CLI will ask some questions about your projects. Some tips in case you are u
 - License will be `proprietary` unless you plan on sharing your code under a FOSS license.
 - Answer no to the interactive dependencies prompts for now.
 
-This creates the `composer.json` file, which will be used to keep track of your dependencies. For now, you only need to run the Composer install command to initialize the vendor directory and the autoloader:
+This creates the `composer.json` file, which will keep track of your dependencies. For now, you only need to run the `install` command to initialize the vendor directory and the autoloader:
 
 ```bash
 composer install
@@ -79,40 +76,41 @@ composer install
 
 ## Installing ProcessWire in the webroot
 
-<!-- @TODO: Expand explanation & caveat: still core in public directory -->
-Now it's time to download and install ProcessWire into the public directory.
+Now it's time to download and install ProcessWire into the public directory. You can do that manually or use git since you're already on the command line. Make sure to install ProcessWire into the `public` directory, i.e. the webroot.
+
+_Sidenote:_ Of course it would be best if the ProcessWire lived outside the webroot alongside our other dependecies. However, ProcessWire doesn't really support that, and it does contain some configuration inside it's included `.htaccess` file to safeguard security-located locations inside the CMS, so it's not a big problem.
 
 ```bash
 mkdir public
 git clone https://github.com/processwire/processwire public
 ```
 
-If you don't use git, you can also download ProcessWire manually. I like to clean up the directory after that:
+I like to clean up the directory, since we don't need most of the scaffolding files:
 
 ```bash
 cd public
 rm -r .git .gitattributes .gitignore CONTRIBUTING.md LICENSE.TXT README.md
 ```
 
-Now, setup your development server to point to the `/path/to/project/public/` directory (mind the `public/` at the end!) and install ProcessWire normally.
+Now setup your development server to point to the `/path/to/project/public/` directory and install ProcessWire normally.
 
 ## Including & using the autoloader
 
-With ProcessWire installed, we need to include the Composer autoloader. If you check [ProcessWire's index.php file](https://github.com/processwire/processwire/blob/341342dc5b1c58012ae7cb26cffe2c57cd915552/index.php#L30), you'll see that it tries to include the autoloader if present. However, this assumes the vendor folder is inside the webroot, so it won't work in our case.
+Having installed ProcessWire, we still need to include the Composer autoloader. If you check [ProcessWire's index.php file](https://github.com/processwire/processwire/blob/master/index.php#L30), you'll see that it tries to include the autoloader if present. However, this assumes the vendor folder is inside the webroot, so it won't work in our case.
 
-One good place to include the autoloader is a [site hook file](https://processwire.com/blog/posts/processwire-2.6.7-core-updates-and-more/#new-core-files-for-site-hooks). We need the autoloader as early as possible, so we'll use `init.php`:
+One way to do this is to just edit the `index.php` and adjust the path to the autoloader, but any change in there may be overwritten whenever ProcessWire is updated. Instead, one good place to include the autoloader is in a [site hook file](https://processwire.com/blog/posts/processwire-2.6.7-core-updates-and-more/#new-core-files-for-site-hooks). We need the autoloader as early as possible, so we'll use `init.php`:
 
 ```php
 // public/site/init.php
 <?php
 namespace Processwire;
 
-require '../../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 ```
 
-This has one caveat: Since this file is executed by ProcessWire **after** all modules had their `init` methods called, the autoloader will not be available in those. I haven't come across a case where I needed it this early so far; however, if you really need to include the autoloader earlier than that, you could just edit the lines in the `index.php` file linked above to include the correct autoloader path. In this case, make sure not to overwrite this when you update the core!
+This has one caveat: Since this file is executed by ProcessWire **after** all modules had their `init` methods called, the autoloader will not be available in those. I haven't come across a case where I needed it this early so far. If you really need to include the autoloader earlier than that, you could also include the autoloader in your site's `config.php` file, this way it gets loaded before any module. I try to avoid this method, because I don't want my configuration file to have side effects.
 
-Now we can finally include external libraries and use them in our code without hassle! I'll give you an example. For one project, I needed to parse URLs and check some properties of the path, host et c. I could use [parse_url](https://secure.php.net/manual/en/function.parse-url.php), however that has a couple of downsides (specifically, it doesn't throw exceptions, but just fails silently). Since I didn't want to write a huge error-prone regex myself, I looked for a package that would help me out. I decided to use [this URI parser](http://uri.thephpleague.com/parser/1.0/), since it's included in the [PHP League directory](http://thephpleague.com/), which generally stands for high quality.
+Now we can finally include external libraries and use them in our code without hassle! For example, let's say you want to parse URLs and extract individual parts from it. You could use [parse_url](https://secure.php.net/manual/en/function.parse-url.php), however that has a couple of downsides (specifically, it doesn't throw exceptions on invalid input, but just fails silently). A good alternative is the [this URI parser](http://uri.thephpleague.com/parser/1.0/), 
 
 First, install the dependency (from the project root, the folder your `composer.json` file lives in):
 
