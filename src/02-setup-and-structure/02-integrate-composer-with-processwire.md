@@ -21,23 +21,25 @@ ProcessWire has some built-in Composer support, which is outlined [in this blogp
 
 This is the directory structure we will create:
 
-    .
-    ├── composer.json
-    ├── composer.lock
-    ├── node_modules
-    ├── packacke-lock.json
-    ├── package.json
-    ├── public
-    │   ├── index.php
-    │   ├── site
-    │   ├── wire
-    │   └── ...
-    ├── src
-    │   ├── sass
-    │   ├── php
-    │   ├── js
-    │   └── ...
-    └── vendor
+```text
+.
+├── composer.json
+├── composer.lock
+├── node_modules
+├── packacke-lock.json
+├── package.json
+├── public
+│   ├── index.php
+│   ├── site
+│   ├── wire
+│   └── ...
+├── src
+│   ├── sass
+│   ├── php
+│   ├── js
+│   └── ...
+└── vendor
+```
 
 I'll refer to the main directory above as the _project root_. The `public` directory acts as the webroot, while all other files and directories in the project root aren't accessible over the web. This includes Composer's vendor folder, your node_modules (if you are using NPM), as well JavaScript source files if you are compiling your JavaScript with webpack or something similar, and your CSS preprocessor files if you are using SASS or LESS (See the next to tutorials for my recommend).
 
@@ -49,15 +51,15 @@ You'll need to have Composer installed on your system for this. Installation gui
 
 If you are starting a new project, you can just run the following commands in a new directory. If you want to add Composer to an existing ProcessWire site, make sure to initilize the Composer project **one directory above the webroot**. This directory will become your project root. I'll assume a new project for the following instructions.
 
-```shell-session
-$ mkdir ~/path/to/project/
-$ cd ~/path/to/project/
+```bash
+mkdir ~/path/to/project/
+cd ~/path/to/project/
 ```
 
 First, we'll initialize a new Composer project:
 
-```shell-session
-$ composer init
+```bash
+composer init
 ```
 
 The CLI will ask some questions about your projects. Some tips in case you are unsure how to answer the prompts:
@@ -71,8 +73,8 @@ The CLI will ask some questions about your projects. Some tips in case you are u
 
 This creates the `composer.json` file, which will be used to keep track of your dependencies. For now, you only need to run the Composer install command to initialize the vendor directory and the autoloader:
 
-```shell-session
-$ composer install
+```bash
+composer install
 ```
 
 ## Installing ProcessWire in the webroot
@@ -80,16 +82,16 @@ $ composer install
 <!-- @TODO: Expand explanation & caveat: still core in public directory -->
 Now it's time to download and install ProcessWire into the public directory.
 
-```shell-session
-$ mkdir public
-$ git clone https://github.com/processwire/processwire public
+```bash
+mkdir public
+git clone https://github.com/processwire/processwire public
 ```
 
 If you don't use git, you can also download ProcessWire manually. I like to clean up the directory after that:
 
-```shell-session
-$ cd public
-$ rm -r .git .gitattributes .gitignore CONTRIBUTING.md LICENSE.TXT README.md
+```bash
+cd public
+rm -r .git .gitattributes .gitignore CONTRIBUTING.md LICENSE.TXT README.md
 ```
 
 Now, setup your development server to point to the `/path/to/project/public/` directory (mind the `public/` at the end!) and install ProcessWire normally.
@@ -100,11 +102,13 @@ With ProcessWire installed, we need to include the Composer autoloader. If you c
 
 One good place to include the autoloader is a [site hook file](https://processwire.com/blog/posts/processwire-2.6.7-core-updates-and-more/#new-core-files-for-site-hooks). We need the autoloader as early as possible, so we'll use `init.php`:
 
-    // public/site/init.php
-	<?php
-	namespace Processwire;
+```php
+// public/site/init.php
+<?php
+namespace Processwire;
 
-	require '../../vendor/autoload.php';
+require '../../vendor/autoload.php';
+```
 
 This has one caveat: Since this file is executed by ProcessWire **after** all modules had their `init` methods called, the autoloader will not be available in those. I haven't come across a case where I needed it this early so far; however, if you really need to include the autoloader earlier than that, you could just edit the lines in the `index.php` file linked above to include the correct autoloader path. In this case, make sure not to overwrite this when you update the core!
 
@@ -112,24 +116,28 @@ Now we can finally include external libraries and use them in our code without h
 
 First, install the dependency (from the project root, the folder your `composer.json` file lives in):
 
-    $ composer require league/uri-parser
+```bash
+composer require league/uri-parser
+```
 
 This will download the package into your vendor directory and refresh the autoloader.
 
 Now you can just use the package in your own code, and Composer will autoload the required class files:
 
-	// public/site/templates/basic-page.php
-	<?php
-	namespace Processwire;
-	
-	use \League\Uri\Parser;
-	
-	// ...
-	if ($url = $page->get('url')) {
-		$parser = new Parser();
-		$parsed_url = $parser->parse($url);
-		// do stuff with $parsed_url ...
-	}
+```php
+// public/site/templates/basic-page.php
+<?php
+namespace Processwire;
+
+use \League\Uri\Parser;
+
+// ...
+if ($url = $page->get('url')) {
+    $parser = new Parser();
+    $parsed_url = $parser->parse($url);
+    // do stuff with $parsed_url ...
+}
+```
 
 ## Wiring up custom classes and code
 
@@ -137,51 +145,59 @@ Another topic that I find really useful but often gets overlooked in Composer tu
 
 To do this, you need to edit your `composer.json` file:
 
-	{
-	    "name": "moritzlost/mysite",
-	    "type": "project",
-	    "license": "proprietary",
-	    "authors": [
-	        {
-	            "name": "Moritz L'Hoest",
-	            "email": "info@herebedragons.world"
-	        }
-	    ],
-	    "minimum-stability": "stable",
-	    "require": {},
-		"autoload": {
-			"psr-4": {
-				"MoritzLost\\MySite\\": "src/"
-			}
-		}
-	}
+```json
+{
+    "name": "moritzlost/mysite",
+    "type": "project",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Moritz L'Hoest",
+            "email": "info@herebedragons.world"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MoritzLost\\MySite\\": "src/"
+        }
+    }
+}
+```
 
 Most of this stuff was added during initialization, for now take note of the `autoload` information. The syntax is a bit tricky, since you have to escape the namespace seperator (backslash) with another backslash (see the [documentation](https://getcomposer.org/doc/04-schema.md#autoload) for more information). Also note the [PSR-4](https://www.php-fig.org/psr/psr-4/) key, since that's the standard I use to namespace my classes.
 
 The line `"MoritzLost\\MySite\\": "src/"` tells Composer to look for classes under the namespace `\MoritzLost\MySite\` in the `src/` directory in my project root. After adding the autoload information, you have to tell Composer to refresh the autoloader information:
 
-	$ composer dump-autoload
+```bash
+composer dump-autoload
+```
 
 Now I'm ready to use my classes in my templates. So, if I have this file: 
 
-	// src/ContentBag.php
-	<?php
-	namespace MoritzLost\MySite;
+```php
+// src/ContentBag.php
+<?php
+namespace MoritzLost\MySite;
 
-	class ContentBag {
-		// class stuff
-	}
+class ContentBag {
+    // class stuff
+}
+```
 
 I can now use the `ContentBag` class freely in my templates without having to include those files manually:
 
-	// public/site/templates/home.php
-	<?php
-	namespace Processwire;
+```php
+// public/site/templates/home.php
+<?php
+namespace Processwire;
 
-	use MoritzLost\MySite\ContentBag;
+use MoritzLost\MySite\ContentBag;
 
-	$contentbag = new ContentBag();
-	// do stuff with contentbag ...
+$contentbag = new ContentBag();
+// do stuff with contentbag ...
+```
 
 Awesome!
 

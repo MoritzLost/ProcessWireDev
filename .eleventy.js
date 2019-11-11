@@ -22,12 +22,19 @@ module.exports = eleventyConfig => {
     // table of contents filter
     eleventyConfig.addPlugin(pluginTOC);
 
+    // additional filters
     eleventyConfig.addFilter('stripVersionPrefix', stripVersionPrefix);
     eleventyConfig.addFilter('hasH2', content => content.includes('<h2'));
 
+    // syntax highlighting
+    const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
+    eleventyConfig.addPlugin(syntaxHighlight, {
+        templateFormats: ["md"],
+        init: ({Prism}) => {},
+    });
+
     // copy js uncompiled
     eleventyConfig.addPassthroughCopy({'src/_js': 'js'});
-
 
     // build a tree of post sections (folders) and posts inside them
     // this assumes that each section number exists only once, same for post
@@ -59,6 +66,7 @@ module.exports = eleventyConfig => {
         }, []);
     });
 
+    // get previous / next post from the above post tree
     eleventyConfig.addFilter('postTreePrevious', (page, collection) => {
         const posts = collection.map(c => c.posts).flat(1);
         const pageIndex = posts.findIndex(p => p.url === page.url);
