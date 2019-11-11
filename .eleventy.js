@@ -23,9 +23,11 @@ module.exports = eleventyConfig => {
     eleventyConfig.addPlugin(pluginTOC);
 
     eleventyConfig.addFilter('stripVersionPrefix', stripVersionPrefix);
+    eleventyConfig.addFilter('hasH2', content => content.includes('<h2'));
 
     // copy js uncompiled
     eleventyConfig.addPassthroughCopy({'src/_js': 'js'});
+
 
     // build a tree of post sections (folders) and posts inside them
     // this assumes that each section number exists only once, same for post

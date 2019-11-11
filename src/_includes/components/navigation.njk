@@ -20,10 +20,11 @@
             <ol class="navigation__list" aria-labelledby="{{ section_id }}">
                 {% for post in section.posts %}
                     <li class="navigation__item">
-                        <a href="{{ post.url }}" class="navigation__link{{ " navigation__link--active" if post.url === page.url }}">
+                        <a href="{{ post.url }}" class="navigation__link"
+                            {{ "aria-current" if post.url === page.url }}>
                             {{- post.data.title or post.url -}}
                         </a>
-                        {% if post.url === page.url %}
+                        {% if post.url === page.url and content | hasH2 %}
                             {{ content | toc('{"tags":["h2"],"wrapper":"div","wrapperClass":"navigation__subnav"}') | safe }}
                         {% endif %}
                     </li>

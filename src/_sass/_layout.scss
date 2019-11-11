@@ -110,7 +110,7 @@
             color: inherit;
             text-decoration: underline;
         }
-        &--active {
+        &[aria-current] {
             &::before {
                 content: "→"" ";
             }
