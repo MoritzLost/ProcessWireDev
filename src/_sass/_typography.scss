@@ -30,6 +30,17 @@ a {
     }
 }
 
+// code
+code, pre, kbd, samp {
+    font-family: $font-family-mono;
+}
+code {
+    color: $code-color;
+}
+pre > code {
+    color: inherit;
+}
+
 // main content area
 .content {
     @include stack(1.25rem);

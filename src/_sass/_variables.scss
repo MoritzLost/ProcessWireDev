@@ -31,6 +31,17 @@ $font-family-sans-serif:
     "Apple Color Emoji",
     "Segoe UI Emoji",
     "Segoe UI Symbol";
+$font-family-mono:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    Monaco,
+    "Lucida Console",
+    "Ubuntu Mono",
+    Menlo,
+    Courier,
+    "Courier New",
+    monospace;
 
 $font-size-base: 1rem;
 $font-size-xs: 0.75rem;
@@ -50,6 +61,10 @@ $line-height-headlines: 1.25;
 
 $link-color: inherit;
 $link-hover-color: $gray-700;
+
+// $code-color: #322391;
+$code-color: #B3271F;
+// $code-color: #5B6E09;
 
 $rfs-base-value: 1rem;
 

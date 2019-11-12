@@ -7,6 +7,10 @@
 
 // the articles use the prism language "bash" for shell sessions, so we include the $ sign before each line
 // i'm not using the "shell-session" language, because i want to be able to copy lines without the $
+code[class*="language-"],
+pre[class*="language-"] {
+    font-family: $font-family-mono;
+}
 code.language-bash, pre.language-bash {
     .highlight-line {
         &::before {
