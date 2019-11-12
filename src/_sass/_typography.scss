@@ -34,11 +34,12 @@ a {
 code, pre, kbd, samp {
     font-family: $font-family-mono;
 }
-code {
+// inline code (code blocks will be wrapped in pre tags)
+:not(pre) > code {
     color: $code-color;
-}
-pre > code {
-    color: inherit;
+    background-color: rgba($code-color, .15);
+    padding: .15rem .25rem;
+    border-radius: .25rem;
 }
 
 // main content area
