@@ -29,3 +29,15 @@
     &__link {
     }
 }
+
+.section-anchor {
+    h2 > & {
+        display: none;
+    }
+    h2:hover > &, h2:focus > & {
+        display: initial;
+    }
+    &, &:hover, &:focus {
+        text-decoration: none;
+    }
+}

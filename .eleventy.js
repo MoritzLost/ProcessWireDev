@@ -11,12 +11,15 @@ const stripVersionPrefix = slug => slug.replace(new RegExp(/^\d{1,3}-/), '')
 
 module.exports = eleventyConfig => {
     // custom markdown library with automatic anchors for h2 headings
-    const markdownItAnchor = require('markdown-it-anchor', {
-        level: [2],
-    });
     const markdownLib = markdownIt({
         html: true,
-    }).use(markdownItAnchor);
+    }).use(require('markdown-it-anchor'), {
+        level: [2],
+        permalink: true,
+        permalinkClass: 'section-anchor',
+        // permalinkSymbol: '→',
+        permalinkSymbol: '👈',
+    });
     eleventyConfig.setLibrary('md', markdownLib);
 
     // table of contents filter
