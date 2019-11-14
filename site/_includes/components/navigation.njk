@@ -21,11 +21,18 @@
                 {% for post in section.posts %}
                     <li class="navigation__item">
                         <a href="{{ post.url }}" class="navigation__link"
-                            {{ "aria-current" if post.url === page.url }}>
+                            {{ 'aria-current="page"' if post.url === page.url }}>
                             {{- post.data.title or post.url -}}
                         </a>
-                        {% if post.url === page.url and content | hasH2 %}
-                            {{ content | toc('{"tags":["h2"],"wrapper":"div","wrapperClass":"navigation__subnav"}') | safe }}
+                        {% if post.url === page.url %}
+                            {% set pageSections = content | findSections %}
+                            {% if pageSections.length %}
+                                <div class="navigation__subnav"><ol>
+                                    {% for subsection in pageSections %}
+                                        <li><a href="#{{ subsection.id }}">{{ subsection.textOnly }}</a></li>
+                                    {% endfor %}
+                                </ol></div>
+                            {% endif %}
                         {% endif %}
                     </li>
                 {% endfor %}

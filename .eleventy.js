@@ -1,6 +1,5 @@
-const sass = require('node-sass');
-const pluginTOC = require('eleventy-plugin-toc');
 const markdownIt = require('markdown-it');
+const utils = require('./src/utils');
 
 const extractVersionPrefix = slug => {
     const prefixMatch = slug.match(new RegExp(/^\d{1,3}(?=-)/));
@@ -22,12 +21,9 @@ module.exports = eleventyConfig => {
     });
     eleventyConfig.setLibrary('md', markdownLib);
 
-    // table of contents filter
-    eleventyConfig.addPlugin(pluginTOC);
-
     // additional filters
     eleventyConfig.addFilter('stripVersionPrefix', stripVersionPrefix);
-    eleventyConfig.addFilter('hasH2', content => content.includes('<h2'));
+    eleventyConfig.addFilter('findSections', utils.findSections);
 
     // syntax highlighting
     const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
@@ -37,7 +33,7 @@ module.exports = eleventyConfig => {
     });
 
     // copy js uncompiled
-    eleventyConfig.addPassthroughCopy({'src/_js': 'js'});
+    eleventyConfig.addPassthroughCopy({'site/_js': 'js'});
 
     // build a tree of post sections (folders) and posts inside them
     // this assumes that each section number exists only once, same for post
@@ -99,7 +95,7 @@ module.exports = eleventyConfig => {
         templateFormats: ['html', 'md', 'njk', '11ty.js'],
         pathPrefix: '/',
         dir: {
-            input: "src",
+            input: "site",
             output: "dist",
             includes: "_includes",
             layouts: "_includes/_layouts",
