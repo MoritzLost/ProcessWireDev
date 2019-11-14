@@ -34,7 +34,7 @@
     h2 > & {
         display: none;
     }
-    h2:hover > &, h2:focus > & {
+    h2:hover > & {
         display: initial;
     }
     &, &:hover, &:focus {

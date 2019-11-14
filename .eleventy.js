@@ -17,7 +17,8 @@ module.exports = eleventyConfig => {
         permalink: true,
         permalinkClass: 'section-anchor',
         // permalinkSymbol: '→',
-        permalinkSymbol: '👈',
+        // permalinkSymbol: '👈',
+        permalinkSymbol: '#',
     });
     eleventyConfig.setLibrary('md', markdownLib);
 
