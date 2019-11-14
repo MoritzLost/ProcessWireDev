@@ -99,6 +99,8 @@
         font-weight: $font-weight-light;
     }
     &__list {
+        list-style: none;
+        padding-left: 0;
         @include stack(.5rem);
     }
     &__link {
@@ -120,18 +122,13 @@
         background: $gray-700;
         padding: .5rem 1rem;
         margin-top: .5rem;
-        > ol {
-            list-style: none;
-            padding-left: 0;
-            @include font-size($font-size-sm);
-            @include stack(.5rem);
-            > li {
-                > a {
-                    @extend .navigation__link;
-                    font-weight: $font-weight-normal;
-                }
-            }
-        }
+        list-style: none;
+        @include font-size($font-size-sm);
+        @include stack(.5rem);
+    }
+    &__subnav-link {
+        @extend .navigation__link;
+        font-weight: $font-weight-normal;
     }
 }
 

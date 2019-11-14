@@ -27,11 +27,15 @@
                         {% if post.url === page.url %}
                             {% set pageSections = content | findSections %}
                             {% if pageSections.length %}
-                                <div class="navigation__subnav"><ol>
+                                <ol class="navigation__subnav">
                                     {% for subsection in pageSections %}
-                                        <li><a href="#{{ subsection.id }}">{{ subsection.textOnly }}</a></li>
+                                        <li class="navigation__subnav-item">
+                                            <a class="navigation__subnav-link" href="#{{ subsection.id }}">
+                                                {{- subsection.textOnly -}}
+                                            </a>
+                                        </li>
                                     {% endfor %}
-                                </ol></div>
+                                </ol>
                             {% endif %}
                         {% endif %}
                     </li>

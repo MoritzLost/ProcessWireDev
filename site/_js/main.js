@@ -17,7 +17,7 @@ const closeNavigation = () => {
 
 const handleKeyboardNavigation = e => {
     // all focusable links in the navigation
-    const items = Array.from(navigation.querySelectorAll('.navigation__link, .navigation__subnav a'));
+    const items = Array.from(navigation.querySelectorAll('.navigation__link, .navigation__subnav-link'));
     // the index of the currently focused link, if any
     const current = items.findIndex(link => link == document.activeElement);
     // this will hold the index of the next item to receive focus

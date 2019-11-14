@@ -29,13 +29,6 @@ time, mark, audio, video {
     vertical-align: baseline;
 }
 
-// better defaults for custom lists
-ul[class],
-ol[class] {
-    padding: 0;
-    list-style: none;
-}
-
 // cleaner link underlines
 a {
     text-decoration-skip-ink: auto;
