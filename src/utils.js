@@ -14,6 +14,15 @@ const findSections = (html, headlineLevel = 2) => {
     });
 }
 
+const readableSlug = title => encodeURIComponent(title.toString().toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/&/g, 'and')
+    .replace(/[^\w-]+/g, '-')
+    .replace(/--+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, ''));
+
 module.exports = {
-    findSections
+    findSections,
+    readableSlug,
 }

@@ -15,6 +15,7 @@ module.exports = eleventyConfig => {
         typographer: true,
     }).use(require('markdown-it-anchor'), {
         level: [2],
+        slugify: utils.readableSlug,
         permalink: true,
         permalinkClass: 'section-anchor',
         // permalinkSymbol: '→',
