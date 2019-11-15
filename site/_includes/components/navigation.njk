@@ -9,6 +9,7 @@
 </div>
 
 <nav class="navigation" id="navigation-menu" tabindex="-1" aria-label="Site navigation menu">
+    <a href="#content" class="skip-to-content sr-only-focusable">Skip to main content</a>
     {% for section in collections.postTree %}
         <section class="navigation__section">
             {% set section_id = 'section-' + section.name %}

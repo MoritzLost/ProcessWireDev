@@ -1,3 +1,12 @@
+.skip-to-content {
+    color: inherit;
+    &:hover, &:focus {
+        color: inherit;
+        display: block;
+        margin-bottom: 1.5rem;
+    }
+}
+
 .post-footer {
     margin-top: 5rem;
     border-top: 1px solid $gray-300;
