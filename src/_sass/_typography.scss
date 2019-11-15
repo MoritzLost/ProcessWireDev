@@ -46,4 +46,8 @@ code, pre, kbd, samp {
 .content {
     @include stack(1.25rem);
     @include stack-before-headlines(2.5rem);
+
+    // > p:first-of-type::first-line {
+    //     font-variant: small-caps;
+    // }
 }

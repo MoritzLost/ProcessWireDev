@@ -12,6 +12,7 @@ module.exports = eleventyConfig => {
     // custom markdown library with automatic anchors for h2 headings
     const markdownLib = markdownIt({
         html: true,
+        typographer: true,
     }).use(require('markdown-it-anchor'), {
         level: [2],
         permalink: true,
