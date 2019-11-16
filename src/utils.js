@@ -1,5 +1,7 @@
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
+const fs = require('fs');
+const path = require('path');
 
 const findSections = (html, headlineLevel = 2) => {
     const dom = new JSDOM(html);
@@ -22,7 +24,17 @@ const readableSlug = title => encodeURIComponent(title.toString().toLowerCase()
     .replace(/^-+/, '')
     .replace(/-+$/, ''));
 
+const fontawesome = (icon, style = 'regular', classes = ['fontawesome'], alt = '') => {
+    const attributes = `class="${classes.join(' ')}" alt="${alt}"`;
+    const svg = fs.readFileSync(
+        path.join(__dirname, '../node_modules/@fortawesome/fontawesome-free/svgs', style, `${icon}.svg`),
+        'utf8'
+    );
+    return svg.replace(/^\<svg/, `<svg ${attributes}`);
+}
+
 module.exports = {
     findSections,
     readableSlug,
+    fontawesome,
 }

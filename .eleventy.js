@@ -24,9 +24,10 @@ module.exports = eleventyConfig => {
     });
     eleventyConfig.setLibrary('md', markdownLib);
 
-    // additional filters
+    // additional filters & shortcodes
     eleventyConfig.addFilter('stripVersionPrefix', stripVersionPrefix);
     eleventyConfig.addFilter('findSections', utils.findSections);
+    eleventyConfig.addShortcode('fontawesome', utils.fontawesome);
 
     // syntax highlighting
     const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
