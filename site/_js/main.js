@@ -77,3 +77,26 @@ burger.addEventListener('click', e => {
 // navigation listeners for keyboard events
 navigation.addEventListener('keydown', handleKeyboardNavigation);
 burger.addEventListener('keydown', handleKeyboardNavigation);
+
+
+
+// highlight current h2
+const documentSections = document.querySelectorAll('#content h2');
+const observerOptions = {
+    // rootMargin: "0% 0% 30% 0%",
+    threshold: [0, 1],
+};
+const sectionObserver = new IntersectionObserver((entries, observer) => {
+    console.log(observer);
+    const visibleHeadlineIds = entries
+        .filter(entry => entry.intersectionRatio >= 1.0)
+        .map(entry => entry.target.id);
+    console.log(visibleHeadlineIds);
+    if (visibleHeadlineIds.length > 0) {
+        const visibleHeadlinesSelector = visibleHeadlineIds.map(id => `#${id}`).join(', ');
+        const firstVisibleHeadline = document.querySelector(visibleHeadlinesSelector);
+        console.log(firstVisibleHeadline);
+    }
+}, observerOptions);
+
+Array.from(documentSections).forEach(s => sectionObserver.observe(s));
