@@ -7,6 +7,11 @@
         "processwire"
     ],
     "homepage": "https://processwire.dev",
+    "bugs": "https://github.com/MoritzLost/ProcessWireDev/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MoritzLost/ProcessWireDev.git"
+    },
     "license": "UNLICENSED",
     "author": "MoritzLost <info@herebedragons.world>",
     "scripts": {
