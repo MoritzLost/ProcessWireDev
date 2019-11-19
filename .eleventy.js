@@ -24,9 +24,10 @@ module.exports = eleventyConfig => {
     });
     eleventyConfig.setLibrary('md', markdownLib);
 
-    // additional filters
+    // additional filters & shortcodes
     eleventyConfig.addFilter('stripVersionPrefix', stripVersionPrefix);
     eleventyConfig.addFilter('findSections', utils.findSections);
+    eleventyConfig.addShortcode('fontawesome', utils.fontawesome);
 
     // syntax highlighting
     const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
@@ -37,6 +38,9 @@ module.exports = eleventyConfig => {
 
     // copy js uncompiled
     eleventyConfig.addPassthroughCopy({'site/_js': 'js'});
+
+    // headers (for caching)
+    eleventyConfig.addPassthroughCopy('site/_headers');
 
     // build a tree of post sections (folders) and posts inside them
     // this assumes that each section number exists only once, same for post

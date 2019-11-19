@@ -7,6 +7,11 @@
         "processwire"
     ],
     "homepage": "https://processwire.dev",
+    "bugs": "https://github.com/MoritzLost/ProcessWireDev/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MoritzLost/ProcessWireDev.git"
+    },
     "license": "UNLICENSED",
     "author": "MoritzLost <info@herebedragons.world>",
     "scripts": {
@@ -20,6 +25,7 @@
     "dependencies": {
         "@11ty/eleventy": "^0.9.0",
         "@11ty/eleventy-plugin-syntaxhighlight": "^2.0.3",
+        "@fortawesome/fontawesome-free": "^5.11.2",
         "hamburgers": "^1.1.3",
         "jsdom": "^15.2.1",
         "markdown-it": "^10.0.0",
