@@ -31,9 +31,7 @@ This is the directory structure we will create:
 │   ├── wire
 │   └── ...
 ├── src
-│   ├── js
 │   ├── php
-│   ├── sass
 │   └── ...
 └── vendor
 ```
