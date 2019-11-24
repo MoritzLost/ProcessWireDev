@@ -12,6 +12,22 @@ $gray-800: #333333;
 $gray-900: #212529;
 $black: #000000;
 
+$colors-nature: (
+    "blue": #7EC6F2,
+    "green": #83A603,
+    "yellow": #F2E205,
+    "orange": #F2B705,
+    "red": #BF4904,
+);
+$colors-pastell: (
+    "blue": #A2F2DC,
+    "green": #C7F2B3,
+    "yellow": #E6E1AC,
+    "orange": #E6D5AC,
+    "red": #FFBFBF,
+);
+$theme-colors: $colors-nature;
+
 // typography
 
 $font-family-sans-serif:
@@ -87,3 +103,10 @@ $navigation-color: $white;
 // navigation & header
 
 $mobile-header-height: 4rem;
+
+
+// sidenotes
+$sidenote-colors: (
+    "info": map-get($theme-colors, "blue"),
+);
+$sidenote-bg-alpha: .4;

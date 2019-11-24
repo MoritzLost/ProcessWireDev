@@ -68,3 +68,18 @@
         text-decoration: none;
     }
 }
+
+
+.sidenote {
+    display: block;
+    padding: .5rem 1rem;
+    border-left-width: .5rem;
+    border-left-style: solid;
+    @include font-size($font-size-base);
+    @each $name, $color in $sidenote-colors {
+        &--#{$name} {
+            border-left-color: $color;
+            background: rgba($color, $sidenote-bg-alpha);
+        }
+    }
+}
