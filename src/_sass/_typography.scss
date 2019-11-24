@@ -30,6 +30,13 @@ a {
     }
 }
 
+// horizontal lines
+hr {
+    color: inherit;
+    border-top: 1px solid currentColor;
+    opacity: .5;
+}
+
 // code
 code, pre, kbd, samp {
     font-family: $font-family-mono;
