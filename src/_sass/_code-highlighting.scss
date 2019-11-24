@@ -11,6 +11,21 @@ code[class*="language-"],
 pre[class*="language-"] {
     font-family: $font-family-mono;
     display: block;
+    counter-reset: line-number;
+
+    // unused: line numbering
+    // .highlight-line {
+    //     counter-increment: line-number;
+    //     &::before {
+    //         content: counter(line-number, decimal-leading-zero) " ";
+    //     }
+    // }
+    // .highlight-line-active {
+    //     &::before {
+    //         color: map-get($theme-colors, "blue");
+    //         left: -.5rem;
+    // }
+
     .highlight-line-active, .highlight-line-add, .highlight-line-remove {
         display: inline-block;
         width: 100%;
@@ -20,11 +35,11 @@ pre[class*="language-"] {
         position: relative;
         &::before {
             content: "";
-            left: -.5rem;
-            background-color: map-get($theme-colors, "blue");
-            width: .5rem;
-            height: 100%;
             position: absolute;
+            left: -.125rem;
+            width: .125rem;
+            height: 100%;
+            background-color: map-get($theme-colors, "blue");
         }
     }
     .highlight-line-add {
