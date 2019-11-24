@@ -100,6 +100,7 @@ module.exports = eleventyConfig => {
 
     return {
         templateFormats: ['html', 'md', 'njk', '11ty.js'],
+        markdownTemplateEngine: 'njk',
         pathPrefix: '/',
         dir: {
             input: "site",
