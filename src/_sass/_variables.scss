@@ -108,5 +108,7 @@ $mobile-header-height: 4rem;
 // sidenotes
 $sidenote-colors: (
     "info": map-get($theme-colors, "blue"),
+    "success": map-get($theme-colors, "green"),
+    "warning": map-get($theme-colors, "red"),
 );
 $sidenote-bg-alpha: .4;
