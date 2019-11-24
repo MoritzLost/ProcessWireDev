@@ -10,6 +10,30 @@
 code[class*="language-"],
 pre[class*="language-"] {
     font-family: $font-family-mono;
+    display: block;
+    .highlight-line-active, .highlight-line-add, .highlight-line-remove {
+        display: inline-block;
+        width: 100%;
+    }
+    .highlight-line-active {
+        background-color: rgba(map-get($theme-colors, "blue"), .1);
+        position: relative;
+        &::before {
+            content: "";
+            left: -.5rem;
+            background-color: map-get($theme-colors, "blue");
+            width: .5rem;
+            height: 100%;
+            position: absolute;
+        }
+    }
+    .highlight-line-add {
+        background-color: rgba(map-get($theme-colors, "green"), .4);
+        text-decoration: none;
+    }
+    .highlight-line-remove {
+        background-color: rgba(map-get($theme-colors, "red"), .4);
+    }
 }
 code.language-bash, pre.language-bash {
     .highlight-line {
