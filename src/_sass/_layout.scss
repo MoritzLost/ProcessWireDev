@@ -19,8 +19,8 @@
 
     @media (min-width: 50rem) {
         &__article {
-            padding: 2rem;
             margin: 3rem auto;
+            padding: 2rem;
         }
     }
 
@@ -35,7 +35,6 @@
             grid-area: main;
             margin-top: 3rem;
             margin-bottom: 3rem;
-            padding: 2rem 1.5rem;
         }
         &__nav {
             grid-area: navigation;
