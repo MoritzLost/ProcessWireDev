@@ -12,6 +12,10 @@ pre[class*="language-"] {
     font-family: $font-family-mono;
     display: block;
     counter-reset: line-number;
+    @include font-size($font-size-sm);
+    @media (min-width: 50rem) {
+        @include font-size($font-size-base);
+    }
 
     // unused: line numbering
     // .highlight-line {
