@@ -7,6 +7,9 @@
 
 html {
     scroll-behavior: smooth;
+    @include prefers-reduced-motion {
+        scroll-behavior: auto;
+    }
 }
 
 // remove margins
