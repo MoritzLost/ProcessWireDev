@@ -4,29 +4,19 @@ layout: post
 title: Extend Twig with custom functionality
 ---
 
-## Part 2: Custom functionality and integrations
+# How to extend Twig with custom functionality and connect with the ProcessWire API
 
-This is part two of my tutorial on integrating Twig in ProcessWire sites. As a reminder, here's the table of contents: 
+<small class="sidenote sidenote--warning">
 
-1. Part 1: Extendible template structures
-    - How to initialize a custom twig environment and integrate it into ProcessWire
-    - How to build an extendible base template for pages, and overwrite it for different ProcessWire templates with custom layouts and logic
-    - How to build custom section templates based on layout regions and Repeater Matrix content sections
-2. Part 2: Custom functionality and integrations
-    - How to customize and add functionality to the twig environment
-    - How to bundle your custom functionality into a reusable library
-    - Thoughts on handling translations
-    - A drop-in template & functions for responsive images as a bonus
+Sidenote: This tutorial builds on the basic Twig integration for ProcessWire [detailled in the previous post](/twig-processwire-setup).
 
-Make sure to check out part one if you haven't already! This part will be less talk, more examples, so I hope you like reading some code :)
+</small>
 
-### Adding functionality
+When you start writing all your templates in Twig, you may miss certain functions or language features that you can utilize in native PHP. What's awesome about Twig is that you can add functions, filters and tags with very little effort. This tutorial will demonstrate how to add functionality to Twig and build your own helper functions using the ProcessWire API (or just plain old PHP).
 
-This is more generic Twig stuff, so I'll keep it short, just to show why Twig is awesome and you should use it! Twig makes it super easy too add functions, filters, tags et c. and customize what the language can do in this way. I'll show a couple of quick examples I built for my projects.
+This article will mostly be a collection of examples meant to show how easy it is to extend Twig and inspire you to write your own extensions and reusable blocks.
 
-As a side note, I had some trouble with functions defined inside a namespace that I couldn't figure out yet. For the moment, it sufficed to define the functions I wanted to use in twig inside a separate file in the root namespace (or, as shown further below, put all of it in a Twig Extension). If you want a more extensible, systematic approach, check out the next section (going further).
-
-#### Link template with external target detection
+## A generic link block with external target detection
 
 This is a simple template that builds an anchor-tag (`<a>`) and adds the necessary parameters. What's special about this is that it will automatically check the target URL and include a `target="_blank"` attribute if it's external. The external URL check is contained in a function:
 
@@ -218,7 +208,7 @@ class MoritzFuncsTwigExtension extends AbstractExtension
             new TwigFunction('url_is_external', [$this, 'urlIsExternal']),
         ];
     }
-    
+
     public function getFilters()
     {
         return [
