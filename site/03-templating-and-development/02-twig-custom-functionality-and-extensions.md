@@ -12,76 +12,27 @@ Sidenote: This tutorial builds on the basic Twig integration for ProcessWire [de
 
 </small>
 
-When you start writing all your templates in Twig, you may miss certain functions or language features that you can utilize in native PHP. What's awesome about Twig is that you can add functions, filters and tags with very little effort. This tutorial will demonstrate how to add functionality to Twig and build your own helper functions using the ProcessWire API (or just plain old PHP).
+When you start writing all your templates in Twig, you may miss certain functions or language features that you can utilize in native PHP. What's awesome about Twig is that you can add functions, filters and tags with very little effort. This tutorial will demonstrate how to add functionality to Twig and build your own helper functions utilizing the ProcessWire API (or just plain old PHP).
 
 This article will mostly be a collection of examples meant to show how easy it is to extend Twig and inspire you to write your own extensions and reusable blocks.
 
-## A generic link block with external target detection
+#### Utility functions for string manipulation
 
-This is a simple template that builds an anchor-tag (`<a>`) and adds the necessary parameters. What's special about this is that it will automatically check the target URL and include a `target="_blank"` attribute if it's external. The external URL check is contained in a function:
-
-```php
-// _functions.php
-
-/**
-    * Finds out whether a url leads to an external domain.
-    *
-    * @param string $url
-    * @return bool
-    */
-function urlIsExternal(string $url): bool {
-    $parser = new \League\Uri\Parser();
-    [ 'host' => $host ] = $parser->parse($url);
-    return $host !== null && $host !== $_SERVER['HTTP_HOST'];
-}
-
-// _init.php
-
-require_once($config->paths->templates . '_functions.php');
-
-// don't forget to  add the function to the twig environment
-$twig_env->addFunction(new \Twig\TwigFunction('url_is_external', 'urlIsExternal'));
-```
-
-This function uses the excellent [League URI](https://uri.thephpleague.com/) parser, by the way. Now that the function is available to the Twig environment, the link template is straightforward:
-
-{% raw %}
-```twig
-{#
-    # Renders a single anchor (link) tag. Link will automatically
-    # have target="_blank" if the link leads to an external domain.
-    #
-    # @var string url The target (href).
-    # @var string text The link text. Will default to display the URL.
-    # @var array classes Optional classes for the anchor.
-    #}
-
-{%- set link_text = text is not empty ? text : url -%}
-<a href="{{ url }}"
-    {%- if classes is not empty %} class="{{ classes|join(' ') }}"{% endif %}
-    {%- if url_is_external(url) %} target="_blank"{% endif %}>
-    {{- link_text -}}
-</a>
-```
-{% endraw %}
-
-#### String manipulation
-
-A couple of functions I wrote to generate clean meta tags for SEO, as well as valid, readable IDs based on the headline field for my sections. 
+We all need some string manipulation from time to time. While Twig already has some built-in methods like [trim](https://twig.symfony.com/doc/3.x/filters/trim.html), writing your own helper functions gives you the opportunity to bundle related functionality into easy-to-use snippets with defaults that make sense for you. For example, when generating a meta description based on an HTML text field, you usually want to strip tags, truncate it to a certain length, replace newlines and consecutive spaces and possibly include an ellipsis marker (...) at the end. Here are two functions that will do exactly that:
 
 ```php
 /**
-    * Truncate a string if it is longer than the specified limit. Will append the 
-    * $ellipsis string if the input is longer than the limit. Pass true as $strip_tags
-    * to strip all markup before measuring the length.
-    *
-    * @param string $text The text to truncate.
-    * @param integer $limit The maximum length.
-    * @param string|null $ellipsis A string to append if the text is truncated. Pass an empty string to disable.
-    * @param boolean $strip_tags Strip markup from the text?
-    * @return string
-    */
-function str_truncate(
+ * Truncate a string if it is longer than the specified limit. Will append the
+ * $ellipsis string if the input is longer than the limit. Pass true as $strip_tags
+ * to strip all markup before measuring the length.
+ *
+ * @param string $text The text to truncate.
+ * @param integer $limit The maximum length.
+ * @param string|null $ellipsis A string to append if the text is truncated. Pass null to disable.
+ * @param boolean $strip_tags Strip markup from the text?
+ * @return string
+ */
+function truncate(
     string $text,
     int $limit,
     ?string $ellipsis = ' …',
@@ -99,13 +50,13 @@ function str_truncate(
 }
 
 /**
-    * Convert all consecutive newlines into a single space character.
-    *
-    * @param string $text The text to convert.
-    */
-function str_nl2singlespace(
-    string $text
-): string {
+ * Convert all consecutive newlines into a single space character.
+ *
+ * @param string $text
+ * @return string
+ */
+function newlinesToSpace(string $text): string
+{
     return preg_replace(
         '/[\r\n]+/',
         ' ',
@@ -113,52 +64,79 @@ function str_nl2singlespace(
     );
 }
 
-/**
-    * Build a valid html ID based on the passed text.
-    *
-    * @param string $title
-    * @return string
-    */
-function textToId(string $title): string
-{
-    return strtolower(preg_replace(
-        [
-            '/[Ää]/u',
-            '/[Öö]/u',
-            '/[Üü]/u',
-            '/ß/u',
-            '/[\s._-]+/',
-            '/[^\w\d-]/',
-        ],
-        [
-            'ae',
-            'oe',
-            'ue',
-            'ss',
-            '-',
-            '-',
-        ],
-        $title
-    ));
-}
-
-// again, add those functions to the twig environment
-$twig_env->addFilter(new \Twig\TwigFilter('truncate', 'str_truncate'));
-$twig_env->addFilter(new \Twig\TwigFilter('nl2ss', 'str_nl2singlespace'));
-$twig_env->addFilter(new \Twig\TwigFilter('text_to_id', 'textToId'));
 ```
 
-Example usage for SEO meta tags:
+With the functions defined like this, you can add them to the Twig environment (note that if your functions are namespaced, you will have to use their fully qualified name).
+
+```twig
+// public/site/templates/_init.php
+
+$twigEnvironment->addFilter(new \Twig\TwigFilter('truncate', 'truncate'));
+$twigEnvironment->addFilter(new \Twig\TwigFilter('newlinesToSpace', 'newlinesToSpace'));
+```
+
+Now those are available in Twig and can be used like this:
 
 {% raw %}
 ```twig
-{% if seo.description %}
-    {% set description = seo.description|truncate(150, ' …', true)|nl2ss %}
+{% if page.body %}
+    {% set description = seo.description|newlinesToSpace|truncate(150, ' …', true) %}
     <meta name="description" content="{{ description }}">
     <meta property="og:description" content="{{ description }}">
 {% endif %}
 ```
 {% endraw %}
+
+While this is something you probably *could* have done in Twig with a lot of if statements and nested rules, this is definitely easier and, most importantly, completely reusable.
+
+How about something you definitely can't do in Twig? The following function will highlight all occurrences of a search term inside a string (by wrapping it in `<mark>` tags). Super useful for search result pages. Again, the function takes multiple parameters with sensible defaults so you can reuse it in different contexts.
+
+
+```php
+function highlightTermInText(
+    string $text,
+    string $term,
+    string $highlightElement = 'mark',
+    array $highlightElementClasses = [],
+    bool $caseSensitive = false
+): string {
+    // start and end tag to wrap around the highlighted terms
+    $classString = implode(" ", $highlightElementClasses);
+    $startTag = "<{$highlightElement} class=\"{$classes}\">";
+    $endTag = "</{$highlightElement}>;
+    return preg_replace_callback(
+        '/' . preg_quote($term, '/') . '/' . ($caseSensitive ? '' : 'i'),
+        function ($matches) use ($startTag, $endTag) {
+            return "{$startTag}{$matches[0]}{$endTag}";
+        },
+        $text
+    );
+}
+```
+
+Again, add the function to the Twig environment as a filter:
+
+```twig
+$twigEnvironment->addFilter(new \Twig\TwigFilter('highlightTermInText', 'highlightTermInText'));
+```
+
+Then you can use it to enhance your search results page (assuming `search_results` is a list of results and `search_term` the term from the search form):
+
+```
+// pages/page--search.twig
+
+<ul class="search-results">
+    {% for result in search_results %}
+    	<li class="search-results__item">
+            {{- result.title|highlightTermInText(
+                search_term,
+                'mark',
+                ['search-results__highlight']
+            ) -}}
+        </li>
+    {% endfor %}
+</ul>
+```
 
 #### instanceof for Twig
 
