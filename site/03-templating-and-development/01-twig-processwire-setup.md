@@ -14,7 +14,7 @@ However, I will not include a general introduction to the Twig language. If you 
 
 ## Installation, file and request structure
 
-First, install Twig with Composer (see [How to setup and integrate Composer with ProcessWire](/integrate-composer-with-processwire)):
+First, install Twig with Composer (see [How to set up and integrate Composer with ProcessWire](/integrate-composer-with-processwire)):
 
 ```bash
 composer require "twig/twig:^2.0"

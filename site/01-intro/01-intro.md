@@ -10,7 +10,7 @@ Welcome to this guide - I'm glad you could make it. As the title says, this is a
 
 ## This guide is not a starter tutorial
 
-I do not want to write the millionth `hello world` tutorial that will teach you how to install the CMS and setup your first field. If you're looking for a ProcessWire starter tutorial, take a look at [ProcessWire CMS - A Beginner's Guide by Smashing Magazine](https://www.smashingmagazine.com/2016/07/the-aesthetic-of-non-opinionated-content-management-a-beginners-guide-to-processwire/). Instead, This guide assumes some level of familiarity with ProcessWire and PHP, as well as a solid grasp on current web technologies (HTML5, CSS, JavaScript / ES6 and above). The reason for that is because I want to talk about high-level concepts without reiterating the basics in every step.
+I do not want to write the millionth `hello world` tutorial that will teach you how to install the CMS and set up your first field. If you're looking for a ProcessWire starter tutorial, take a look at [ProcessWire CMS - A Beginner's Guide by Smashing Magazine](https://www.smashingmagazine.com/2016/07/the-aesthetic-of-non-opinionated-content-management-a-beginners-guide-to-processwire/). Instead, This guide assumes some level of familiarity with ProcessWire and PHP, as well as a solid grasp on current web technologies (HTML5, CSS, JavaScript / ES6 and above). The reason for that is because I want to talk about high-level concepts without reiterating the basics in every step.
 
 That said, I want this resource to be as inclusive as possible, so I'll try to write as inclusively as possible and avoid overcomplicating things unnecessarily.
 

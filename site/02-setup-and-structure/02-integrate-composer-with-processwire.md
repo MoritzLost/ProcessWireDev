@@ -4,7 +4,7 @@ layout: post
 title: Composer setup
 ---
 
-# How to setup and integrate Composer with ProcessWire
+# How to set up and integrate Composer with ProcessWire
 
 Composer is the de-facto standard for package management in the PHP world. However, a ProcessWire site will happily work without ever touching Composer, and the ProcessWire core isn't really build with Composer support in mind. That said, you get some major benefits by integrating Composer into your project:
 
@@ -91,7 +91,7 @@ cd public
 rm -r .git .gitattributes .gitignore CONTRIBUTING.md LICENSE.TXT README.md
 ```
 
-Now setup your development server to point to the `/path/to/project/public/` directory and install ProcessWire normally.
+Now set up your development server to point to the `/path/to/project/public/` directory and install ProcessWire normally.
 
 ## Including and using the Composer autoloader
 
