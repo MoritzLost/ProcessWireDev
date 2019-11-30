@@ -153,6 +153,7 @@ $hamburger-padding-y: 1rem;
     background: $navigation-bg;
     color: $white;
     &__burger {
+        line-height: 1;
         // &.is-active:focus {
         //     outline: none;
         //     border: none;
