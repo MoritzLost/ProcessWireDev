@@ -8,13 +8,11 @@ title: Extend Twig with custom functionality
 
 <small class="sidenote sidenote--warning">
 
-Sidenote: This tutorial builds on the basic Twig integration for ProcessWire [detailled in the previous post](/twig-processwire-setup).
+Sidenote: This tutorial builds on the basic Twig integration for ProcessWire [detailed in the previous post](/twig-processwire-setup).
 
 </small>
 
-When you start writing all your templates in Twig, you may miss certain functions or language features that you can utilize in native PHP. What's awesome about Twig is that you can add functions, filters and tags with very little effort. This tutorial will demonstrate how to add functionality to Twig and build your own helper functions utilizing the ProcessWire API (or just plain old PHP).
-
-This article will mostly be a collection of examples meant to show how easy it is to extend Twig and inspire you to write your own extensions and reusable blocks.
+When you start writing all your templates in Twig, you may miss certain functions or language features that you can utilize in native PHP. What's awesome about Twig is that you can add functions, filters and tags with very little effort. This tutorial will demonstrate how to add functionality to Twig and build your own helper functions utilizing the ProcessWire API (or just plain old PHP). The following will mostly consist of some examples meant to show how easy it is to extend Twig and inspire you to write your own extensions and reusable blocks.
 
 ## Utility functions for string manipulation
 
@@ -68,22 +66,24 @@ function newlinesToSpace(string $text): string
 
 With the functions defined like this, you can add them to the Twig environment (note that if your functions are namespaced, you will have to use their fully qualified name).
 
-```twig
+```php
 // public/site/templates/_init.php
 
-$twigEnvironment->addFilter(new \Twig\TwigFilter('truncate', 'truncate'));
-$twigEnvironment->addFilter(new \Twig\TwigFilter('newlinesToSpace', 'newlinesToSpace'));
+$twigEnvironment->addFilter(
+    new \Twig\TwigFilter('truncate', 'truncate')
+);
+$twigEnvironment->addFilter(
+    new \Twig\TwigFilter('newlinesToSpace', 'newlinesToSpace')
+);
 ```
 
 Now those are available in Twig and can be used like this:
 
 {% raw %}
 ```twig
-{% if page.body %}
-    {% set description = seo.description|newlinesToSpace|truncate(150, ' …', true) %}
-    <meta name="description" content="{{ description }}">
-    <meta property="og:description" content="{{ description }}">
-{% endif %}
+{% set description = page.body|newlinesToSpace|truncate(150, ' …', true) %}
+<meta name="description" content="{{ description }}">
+<meta property="og:description" content="{{ description }}">
 ```
 {% endraw %}
 
@@ -101,7 +101,7 @@ function highlightTermInText(
 ): string {
     // start and end tag to wrap around the highlighted terms
     $classString = implode(" ", $highlightElementClasses);
-    $startTag = "<{$highlightElement} class=\"{$classes}\">";
+    $startTag = "<{$highlightElement} class=\"{$classString}\">";
     $endTag = "</{$highlightElement}>";
     return preg_replace_callback(
         '/' . preg_quote($term, '/') . '/' . ($caseSensitive ? '' : 'i'),
@@ -115,27 +115,34 @@ function highlightTermInText(
 
 Again, add the function to the Twig environment as a filter:
 
-```twig
-$twigEnvironment->addFilter(new \Twig\TwigFilter('highlightTermInText', 'highlightTermInText'));
+```php
+$twigEnvironment->addFilter(
+    new \Twig\TwigFilter('highlightTermInText', 'highlightTermInText')
+);
 ```
 
 Then you can use it to enhance your search results page (assuming `search_results` is a list of results and `search_term` the term from the search form):
 
+{% raw %}
 ```twig
 // pages/page--search.twig
 
 <ul class="search-results">
     {% for result in search_results %}
         <li class="search-results__item">
-            {{- result.title|highlightTermInText(
-                search_term,
-                'mark',
-                ['search-results__highlight']
-            ) -}}
+            <a href="{{ result.url }}" class="search-results__link">
+                {{- result.title|highlightTermInText(
+                    search_term,
+                    'mark',
+                    ['search-results__highlight']
+                ) -}}
+            </a>
         </li>
     {% endfor %}
 </ul>
 ```
+{% endraw %}
+
 
 ## Checking instanceof in Twig
 
@@ -144,9 +151,14 @@ By default, Twig doesn't have an equivalent of [PHP's instanceof](https://www.ph
 ```php
 // instanceof test for twig
 // class must be passed as a FQCN with escaped backslashed
-$twigEnvironment->addTest(new \Twig\TwigTest('instanceof', function ($variable, string $className) {
-    return $variable instanceof $className;
-}));
+$twigEnvironment->addTest(
+    new \Twig\TwigTest(
+        'instanceof',
+        function ($variable, string $className) {
+            return $variable instanceof $className;
+        }
+    )
+);
 ```
 
 Note that you have to escape the backslashes in the fully qualified class name:
@@ -161,9 +173,9 @@ Note that you have to escape the backslashes in the fully qualified class name:
 ```
 {% endraw %}
 
-### Encapsulate custom functionality in a portable Twig extension
+## Encapsulate custom functionality in a portable Twig extension
 
-The examples above are very general, so you'll want to have them available in every project you start. The logical next step is to put your utility function into a separate library that you can simply pull into your projects with git or Composer. It's really easy to wrap functions like those demonstrated above in a custom Twig extension. I like to group related functionality into wrapper classes with static public methods, because their easier to autoload. For example, the string utility functions above can be grouped in a `StringUtility` class:
+The examples above are very general, so you'll want to have them available in every project you start. The logical next step is to put your utility function into a separate library that you can simply pull into your projects with git or Composer. It's really easy to wrap functions like those demonstrated above in a custom Twig extension. I like to group related functionality into wrapper classes with static public methods, because classes are easier to autoload than functions. For example, the string utility function above can be grouped in a `StringUtilities` class:
 
 ```php
 // src/php/StringUtilities.php
@@ -181,6 +193,7 @@ class StringUtilities
     ): string {
         // see above for full function code
     }
+
     public static function highlightTermInText(
         string $text,
         string $term,
@@ -210,44 +223,68 @@ class TwigUtilities extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('truncate', 'MoritzLost\StringUtilities::truncate'),
-            new TwigFilter('highlightTermInText', 'MoritzLost\StringUtilities::highlightTermInText'),
+            new TwigFilter(
+                'truncate',
+                'MoritzLost\StringUtilities::truncate'
+            ),
+            new TwigFilter(
+                'highlightTermInText',
+                'MoritzLost\StringUtilities::highlightTermInText'
+            ),
         ];
     }
 
     public function getTests()
     {
         return [
-            new TwigTest('instanceof', function ($variable, string $className) {
-                return $variable instanceof $className;
-            }),
+            new TwigTest(
+                'instanceof',
+                function ($variable, string $className) {
+                    return $variable instanceof $className;
+                }
+            ),
         ];
     }
 }
 ```
 
-
-
-
-
-
-
-
-
-Here I'm building my own class that extends the AbstractExtension class from Twig. This way, I can keep boilerplate code to a minimum. All I need are public methods that return an array of all functions, filters, tests et c. that I want to add with this extension. As is my custom, I've further split the larger functions into their own wrapper file. In this case, I'm using a trait to group the link-related functions (it's easier this way, since classes can only extend one other class, but use as many traits as they want to).
-
-Now all that's left is to add an instance of the extension to our Twig environment:
+This custom Twig extension extends the `AbstractExtension` class from Twig. This way, all you need are public methods that return an array of all functions, filters, tests et c. that you want to add with this extension. By having this class only act as an adapter between the PHP utility classes and Twig, the utility functions can still be used outside of Twig. Now all that's left is to add an instance of the extension to our Twig environment, then you can access the methods through Twig as demonstrated above.
 
 ```php
 // custom extension to add functionality
-$twig_env->addExtension(new TwigUtilities());
+$twigEnvironment->addExtension(
+    new \MoritzLost\Twig\TwigUtilities()
+);
 ```
 
-Just like that we have a separate folder that can be easily put under version control and released as a micro-package that can then be installed and extended in other projects.
+Now you have a separate folder with all our Twig utility functions and Twig extensions that can be easily put under version control and released as a micro-package that can then be installed and extended in other projects.
+
+One caveat of the method above is that all the utility functions are added to the global scope in Twig (because you're no longer refering to the namespace of the PHP class, but only the individual method names in the Twig templates). If you plan on having lots of extensions and utility functions, one way to keep your Twig scope clean is to instantiate your utility classes and adding the instances as globals instead of adding individual methods:
+
+```php
+// ...
+class TwigUtilities extends AbstractExtension
+{
+    public function getGlobals()
+    {
+        return [
+            'StringUtilites' => new \MoritzLost\StringUtilities(),
+        ];
+    }
+}
+```
+
+Now you can access the individual methods of `StringUtilities` through the global instance available to Twig:
+
+{% raw %}
+```twig
+{% set description = page.body|StringUtilies.newlinesToSpace %}
+```
+{% endraw %}
 
 ## Type casting for twig
 
-Suprisingly, there are only few options for converting variables from one type to another built into twig. Not to worry though, because adding filters to convert a variable to different types is trivial:
+Suprisingly, there are only few options for converting variables from one type to another built into twig. Not to worry though, because adding filters to convert a variable to different types is trivial.
 
 ```php
 // src/php/Twig/TypeCastingExtension.php
@@ -272,86 +309,74 @@ class TypeCastingExtension extends AbstractExtension
 }
 ```
 
-This packages
+## Translations
 
-### Translations
+If you are building a multi-language site, you will need to handle internationalization in your code. ProcessWire can't natively handle translations in Twig files, so here a some ideas on how to handle that. In general, there are three approaches:
 
-If you are building a multi-language site, you will need to handle internationalization of your code. ProcessWire can't natively handle translations in Twig files, so I wanted to briefly touch on how to handle this. For a recent project I considered three approaches:
+1. Build a module to add Twig support to ProcessWire's multi-language system.
+2. Use an existing module to do that.
+3. Build a custom solution that bypasses ProcessWire's translation system.
 
-- Build a module to add twig support to ProcessWire's multi-language system.
-- Use an existing module to do that.
-- Build a custom solution that bypasses ProcessWire's translation system.
+I'm going to focus on the third approach here and demonstrate one simple solution, since the ProcessWire translation interface is not very user-friendly to begin with. This certainly depends on the scope of your project, but the beauty of ProcessWire is that you can build your sites in whichever way you want.
 
-For this project, I went with the latter approach; I only needed a handful of phrases to be translated, as I tend to make labels and headlines into editable page fields or use the field labels themselves, so there are only few translatable phrases inside my ProcessWire templates. But the beauty of ProcessWire is that you can build your site whatever way you want. As an example, here's the system I came up with.
-
-I used a single [Table field](https://processwire.com/store/pro-fields/table/) (part of the ProFields module) with two columns: `msgid` (a regular text field which functions as a key for the translations) and `trans` (a multi-language text field that holds the translations in each language). I added this field to my central settings page and wrote a simple function to access individual translations by their `msgid`:
+For this method, all the translation will be stored in a single [Table field](https://processwire.com/store/pro-fields/table/) (part of the ProFields module) with two columns: `msgid` (a regular text field which contains the message id) and `translation` (a multi-language text field that holds the translations in each language). You can add this field to the central settings page and use a simple function to access individual translations by their `msgid`:
 
 ```php
 /**
-    * Main function for the translation API. Gets a translation for the msgid in
-    * the current language. If the msgid doesn't exist, it will create the
-    * corresponding entry in the settings field (site settings -> translations).
-    * In this case, the optional second parameter will be used as the default
-    * translation for this msgid in the default language.
-    *
-    * @param string $msgid
-    * @param ?string $default
-    * @return string
-    */
-function trans_api(
-    string $msgid,
-    ?string $default = null
-): string {
-    // this is a reference to my settings page with the translations field
-    $settings = \Processwire\wire('config')->settings;
+ * Main function for the translation API. Gets a translation for the msgid in
+ * the current language. If the msgid doesn't exist, it will create the
+ * corresponding entry in the settings field (site settings -> translations).
+ * In this case, the optional second parameter will be used as the default
+ * translation for this msgid in the default language.
+ *
+ * @param string $msgid     The ID to get a translation for.
+ * @param ?string $default  The default to set if the translation doesn't exist.
+ * @return string
+ */
+public static function translate(string $msgid, ?string $default = null): string
+{
+    $settings = wire('pages')->get(wire('config')->settingsPageId);
     $translations = $settings->translations;
-    $row = $settings->translations->findOne("msgid={$msgid}");
+    $row = $translations->findOne("msgid={$msgid}");
+    // return the found translation, or the msgid if it is empty
     if ($row) {
-        if ($row->trans) {
-            return $row->trans;
-        } else {
-            return $msgid;
-        }
-    } else {
-        $of = $settings->of();
-        $settings->of(false);
-        $new = $translations->makeBlankItem();
-        $new->msgid = $msgid;
-        if ($default) {
-            $default_lang = \Processwire\wire('languages')->get('default');
-            $new->trans->setLanguageValue($default_lang, $default);
-        }
-        $settings->translations->add($new);
-        $settings->save('translations');
-        $settings->of($of);
-        return $default ?? $msgid;
+        return $row->translation ?: $msgid;
     }
+    // create missing translations
+    $of = $settings->of();
+    $settings->of(false);
+    $new = $translations->makeBlankItem();
+    $new->msgid = $msgid;
+    if ($default) {
+        $default_lang = wire('languages')->get('default');
+        $new->translation->setLanguageValue($default_lang, $default);
+    }
+    $settings->translations->add($new);
+    $settings->save('translations');
+    $settings->of($of);
+    return $default ?: $msgid;
 }
-
-
-// _init.php
-
-// add the function with the key "trans" to the twig environment
-$twig_env->addFunction(new \Twig\TwigFunction('trans', 'trans_api'));	
+}
 ```
+
+This function checks if a translation with the passed `msgid` exists in the table and if so, returns the translation in the current language. If not, it automatically creates the corresponding row. This way, if you want to add a translatable phrase inside a template, you simply add the function call with a new `msgid`, reload the page once, and the new entry will be available in the backend. For this purpose, you can also add a second parameter, and the function will automatically set the translation in the default language to this text. Sweet.
+
+This function can be added to Twig as either as a function or a filter -- I prefer the latter. Since this will be used quite frequently, I prefer to name the filter something short, like `t`.
+
+```php
+$twigEnvironment->addFunction(
+    new \Twig\TwigFunction('t', 'translate')
+);
+```
+
+Example usage with a msgid and a default translation:
 
 {% raw %}
 ```twig
-// some_template.twig
-
-// example usage with a msgid and a default translation
-{{ trans('detail_link_label', 'Read More') }}
+<a href="{{ page.parent.url }}">
+    {{ 'back_to_overview_label'|t('Back to the search results') }}
+</a>
 ```
 {% endraw %}
 
-This function checks if a translation with the passed `msgid` exists in the table and if so, returns the translation in the current language. If not, it automatically creates the corresponding row. This way, if you want to add a translatable phrase inside a template, you simply add the function call with a new `msgid`, reload the page once, and the new entry will be available in the backend. For this purpose, you can also add a second parameter, which will be automatically set as the translation in the default language. Sweet.
-
-While this works, it will certainly break (in terms of performance and user-friendliness) if you have a site that required more than a couple dozen translations. So consider all three approaches and decide what will work best for you!
-
-### Bonus: responsive image template & functions
-
-I converted my [responsive image function](https://processwire.com/talk/topic/19964-building-a-reusable-function-to-generate-responsive-images/) to a Twig template, I'm including the full code here as a bonus and thanks for making it all the way through! I created a gist with the extension & and template that you can drop into your projects to create responsive images quickly (minor warning: I had to adjust the code a bit to make it universal, so this exact version isn't properly tested, let me know if you get any errors and I'll try to fix it!). [Here's the gist](https://gist.github.com/MoritzLost/a2af68289d8c4cd382baca544c23f30a). There's a usage example as well. If you don't understand what's going on there, make sure to read [my tutorial on responsive images with ProcessWire](https://processwire.com/talk/topic/19964-building-a-reusable-function-to-generate-responsive-images/).
-
-### Conclusion
-
-Including the first part, this has been the longest tutorial I have written so far. Again, most of this is opinionated and influenced by my own limited experience (especially the part about translations), so I'd like to hear how you all are using Twig in your projects, how you would improve the examples above and what other tips and tricks you have!
+While this works, it will certainly break (in terms of performance and user-friendliness) if you have a site that requires more than a couple dozen or hundred translations at best. So consider the three approaches and decide what will work best for your project.
