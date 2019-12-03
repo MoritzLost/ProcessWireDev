@@ -12,11 +12,11 @@ Sidenote: This tutorial builds on the basic Twig integration for ProcessWire [de
 
 </small>
 
-When you start writing all your templates in Twig, you may miss certain functions or language features that you can utilize in native PHP. What's awesome about Twig is that you can add functions, filters and tags with very little effort. This tutorial will demonstrate how to add functionality to Twig and build your own helper functions utilizing the ProcessWire API (or just plain old PHP). The following will mostly consist of some examples meant to show how easy it is to extend Twig and inspire you to write your own extensions and reusable blocks.
+When you start writing all your templates in Twig, you may miss certain functions or language features that you can utilize in native PHP. What's awesome about Twig is that you can add functions, filters and tags with very little effort. This tutorial will demonstrate how to add functionality to Twig and build your own helper functions utilizing the ProcessWire API (or just plain old PHP). The following will mostly consist of some simplified examples meant to show how easy it is to extend Twig and inspire you to write your own extensions and reusable blocks.
 
 ## Utility functions for string manipulation
 
-We all need some string manipulation from time to time. While Twig already has some built-in methods like [trim](https://twig.symfony.com/doc/3.x/filters/trim.html), writing your own helper functions gives you the opportunity to bundle related functionality into easy-to-use snippets with defaults that make sense for you. For example, when generating a meta description based on an HTML text field, you usually want to strip tags, truncate it to a certain length, replace newlines and consecutive spaces and possibly include an ellipsis marker (...) at the end. Here are two functions that will do exactly that:
+We all need some string manipulation from time to time. While Twig already has some built-in methods like [trim](https://twig.symfony.com/doc/3.x/filters/trim.html), writing your own helper functions gives you the opportunity to bundle related functionality into easy-to-use methods with defaults that make sense for you. For example, when generating a meta description based on an HTML text field, you usually want to strip tags, truncate it to a certain length, replace newlines and consecutive spaces and possibly include an ellipsis marker (...) at the end. Here are two functions that will do exactly that:
 
 ```php
 /**
@@ -99,7 +99,6 @@ function highlightTermInText(
     array $highlightElementClasses = [],
     bool $caseSensitive = false
 ): string {
-    // start and end tag to wrap around the highlighted terms
     $classString = implode(" ", $highlightElementClasses);
     $startTag = "<{$highlightElement} class=\"{$classString}\">";
     $endTag = "</{$highlightElement}>";
@@ -206,7 +205,7 @@ class StringUtilities
 }
 ```
 
-Now this class can be autoloaded by Composer. The next step is to define a Twig extension that will add those functions to Twig. The following example adds the two string utilities above, as well as the `instanceof` check.
+The next step is to define a Twig extension that will add those functions to Twig. The following example adds the two string utilities above, as well as the `instanceof` check.
 
 ```php
 // src/php/Twig/TwigUtilities.php
@@ -248,16 +247,17 @@ class TwigUtilities extends AbstractExtension
 }
 ```
 
-This custom Twig extension extends the `AbstractExtension` class from Twig. This way, all you need are public methods that return an array of all functions, filters, tests et c. that you want to add with this extension. By having this class only act as an adapter between the PHP utility classes and Twig, the utility functions can still be used outside of Twig. Now all that's left is to add an instance of the extension to our Twig environment, then you can access the methods through Twig as demonstrated above.
+This custom Twig extension extends the `AbstractExtension` class from Twig. This way, all you need are public methods that return an array of all functions, filters, tests et c. that you want to add with this extension. By having this class only act as an adapter between the PHP utility classes and Twig, the utility functions can still be used outside of Twig, and you have better separation of concerns. Now all that's left is to add an instance of the extension to our Twig environment, then you can access the methods through Twig as demonstrated above.
 
 ```php
-// custom extension to add functionality
 $twigEnvironment->addExtension(
     new \MoritzLost\Twig\TwigUtilities()
 );
 ```
 
 Now you have a separate folder with all our Twig utility functions and Twig extensions that can be easily put under version control and released as a micro-package that can then be installed and extended in other projects.
+
+---
 
 One caveat of the method above is that all the utility functions are added to the global scope in Twig (because you're no longer refering to the namespace of the PHP class, but only the individual method names in the Twig templates). If you plan on having lots of extensions and utility functions, one way to keep your Twig scope clean is to instantiate your utility classes and adding the instances as globals instead of adding individual methods:
 
@@ -274,17 +274,17 @@ class TwigUtilities extends AbstractExtension
 }
 ```
 
-Now you can access the individual methods of `StringUtilities` through the global instance available to Twig:
+Now you can access the individual methods of `StringUtilities` through the global instance available to Twig. Note that you can't use the filter syntax as shown above, because the `newlinesToSpace` method is no longer known to Twig as a filter.
 
 {% raw %}
 ```twig
-{% set description = page.body|StringUtilies.newlinesToSpace %}
+{% set description = StringUtilities.newslinesToSpace(page.body) %}
 ```
 {% endraw %}
 
 ## Type casting for twig
 
-Suprisingly, there are only few options for converting variables from one type to another built into twig. Not to worry though, because adding filters to convert a variable to different types is trivial.
+A super quick but useful example for a simple extension. This one adds filters to typecast variables to a different type.
 
 ```php
 // src/php/Twig/TypeCastingExtension.php
@@ -300,10 +300,18 @@ class TypeCastingExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('float', function ($value) { return (float) $value; }),
-            new TwigFilter('int', function ($value) { return (int) $value; }),
-            new TwigFilter('bool', function ($value) { return (bool) $value; }),
-            new TwigFilter('string', function ($value) { return (string) $value; }),
+            new TwigFilter('float', function ($value) {
+                return (float) $value;
+            }),
+            new TwigFilter('int', function ($value) {
+                return (int) $value;
+            }),
+            new TwigFilter('bool', function ($value) {
+                return (bool) $value;
+            }),
+            new TwigFilter('string', function ($value) {
+                return (string) $value;
+            }),
         ];
     }
 }
@@ -311,7 +319,7 @@ class TypeCastingExtension extends AbstractExtension
 
 ## Translations
 
-If you are building a multi-language site, you will need to handle internationalization in your code. ProcessWire can't natively handle translations in Twig files, so here a some ideas on how to handle that. In general, there are three approaches:
+If you are building a multi-language site, you will need to handle internationalization in your code. ProcessWire can't handle translations in Twig files natively, so you need to come up with your own internationalization scheme. Here are three possible approaches:
 
 1. Build a module to add Twig support to ProcessWire's multi-language system.
 2. Use an existing module to do that.
@@ -319,7 +327,7 @@ If you are building a multi-language site, you will need to handle international
 
 I'm going to focus on the third approach here and demonstrate one simple solution, since the ProcessWire translation interface is not very user-friendly to begin with. This certainly depends on the scope of your project, but the beauty of ProcessWire is that you can build your sites in whichever way you want.
 
-For this method, all the translation will be stored in a single [Table field](https://processwire.com/store/pro-fields/table/) (part of the ProFields module) with two columns: `msgid` (a regular text field which contains the message id) and `translation` (a multi-language text field that holds the translations in each language). You can add this field to the central settings page and use a simple function to access individual translations by their `msgid`:
+For this method, all the translations will be stored in a single [Table field](https://processwire.com/store/pro-fields/table/) (part of the ProFields module) with two columns: `msgid` (a regular text field which contains the message id) and `translation` (a multi-language text field that holds the translations in each language). You can add this field to the central settings page and use a simple function to access individual translations by their `msgid`:
 
 ```php
 /**
@@ -361,7 +369,7 @@ public static function translate(string $msgid, ?string $default = null): string
 
 This function checks if a translation with the passed `msgid` exists in the table and if so, returns the translation in the current language. If not, it automatically creates the corresponding row. This way, if you want to add a translatable phrase inside a template, you simply add the function call with a new `msgid`, reload the page once, and the new entry will be available in the backend. For this purpose, you can also add a second parameter, and the function will automatically set the translation in the default language to this text. Sweet.
 
-This function can be added to Twig as either as a function or a filter -- I prefer the latter. Since this will be used quite frequently, I prefer to name the filter something short, like `t`.
+The `translate` function can be added to Twig as either as a function or a filter -- I prefer the latter. Since this will be used quite frequently, I prefer to name the filter something short, like `t`.
 
 ```php
 $twigEnvironment->addFunction(
@@ -369,7 +377,7 @@ $twigEnvironment->addFunction(
 );
 ```
 
-Example usage with a msgid and a default translation:
+Example usage with a `msgid` and a default translation:
 
 {% raw %}
 ```twig
