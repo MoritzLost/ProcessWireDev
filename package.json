@@ -18,7 +18,7 @@
         "build": "npm run build:eleventy && npm run build:sass",
         "build:eleventy": "eleventy",
         "build:sass": "node-sass --output-style=compressed --omit-source-map-url src/_sass --output=dist/css/",
-        "start": "npm-run-all -p watch:*",
+        "start": "npm-run-all build:sass -p watch:*",
         "watch:eleventy": "eleventy --serve",
         "watch:sass": "node-sass --watch --output-style=expanded --source-maps=true src/_sass --output=dist/css"
     },
