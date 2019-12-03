@@ -40,6 +40,7 @@ hr {
 // code
 code, pre, kbd, samp {
     font-family: $font-family-mono;
+    font-size: .875em;
 }
 // inline code (code blocks will be wrapped in pre tags)
 :not(pre) > code {
