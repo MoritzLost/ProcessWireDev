@@ -1,0 +1,17 @@
+.footer {
+    text-align: center;
+    &__icon {
+        height: 1.5rem;
+        margin-right: .5rem;
+        vertical-align: middle;
+        .footer__link:hover &, .footer__link:focus & {
+            path {
+                fill: $link-hover-color;
+            }
+        }
+    }
+    &__seperator {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}

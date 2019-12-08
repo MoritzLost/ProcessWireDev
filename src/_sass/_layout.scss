@@ -18,6 +18,12 @@
         justify-content: space-between;
         align-items: stretch;
     }
+    &__footer {
+        background: $footer-bg;
+        color: $footer-color;
+        padding: .5rem 1rem;
+        @include font-size($font-size-sm);
+    }
 
     @include breakpoint-up(sm) {
         &__article {
@@ -30,7 +36,8 @@
         display: grid;
         grid-template-columns: 20rem 1fr 40rem 1fr;
         grid-template-rows: 1fr;
-        grid-template-areas: "navigation space-left main space-right";
+        grid-template-areas:    "navigation space-left main space-right"
+                                "navigation footer footer footer";
         justify-content: space-between;
         align-content: stretch;
         &__article {
@@ -40,6 +47,9 @@
         }
         &__nav {
             grid-area: navigation;
+        }
+        &__footer {
+            grid-area: footer;
         }
     }
 

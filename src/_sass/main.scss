@@ -4,10 +4,11 @@
 @import "../../node_modules/rfs/scss";
 
 @import "reset";
-
 @import "typography";
+@import "code-highlighting";
+
 @import "blocks";
+
 @import "layout";
 @import "navigation";
-
-@import "code-highlighting";
+@import "footer";

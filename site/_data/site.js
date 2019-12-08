@@ -2,7 +2,7 @@ const package = require('../../package.json');
 
 module.exports = () => {
     return {
-        url: 'https://processwire.dev',
+        url: package.homepage,
         version: package.version,
     }
 }
