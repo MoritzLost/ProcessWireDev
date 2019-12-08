@@ -1,0 +1,14 @@
+<link rel="canonical" href="{{ site.url + page.url }}">
+<meta property="og:url" content="{{ site.url + page.url }}">
+
+<meta property="og:title" content="{{ title }}">
+
+<meta property="og:locale" content="{{ site.lang }}">
+<meta property="og:site_name" content="{{ site.name }}">
+
+{% if description %}
+    <meta name="description" content="{{ description }}">
+    <meta property="og:description" content="{{ description }}">
+{% endif %}
+
+<meta name="generator" content="Eleventy (11ty.io)">

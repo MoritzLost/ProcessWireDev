@@ -24,7 +24,7 @@
                     <li class="navigation__item">
                         <a href="{{ '#content' if isCurrentPage else post.url }}" class="navigation__link"
                             {{ 'aria-current="page"' if isCurrentPage }}>
-                            {{- post.data.title or post.url -}}
+                            {{- post.data.menu_title or post.data.title or post.url -}}
                         </a>
                         {% if post.url === page.url %}
                             {% set pageSections = content | findSections %}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="{{ site.lang }}" dir="{{ site.dir }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/main.css?v={{ site.version }}">
     <script src="/js/main.js?v={{ site.version }}" defer></script>
 
-    <link rel="canonical" href="{{ site.url + page.url }}">
+    {% include "components/seo.njk" %}
 </head>
 <body>
     <main class="main">
