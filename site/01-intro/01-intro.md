@@ -1,7 +1,7 @@
 ---
 tags: post
 layout: homepage
-title: Intro
+title: ProcessWire Custom Development Guides | processwire.dev
 ---
 
 # The complete (opinionated) guide to adept ProcessWire development
