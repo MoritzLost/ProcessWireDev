@@ -5,7 +5,7 @@
         {% set nextPost = page | postTreeNext(collections.postTree) %}
         {% if prevPost %}
             <p class="continue-reading__part continue-reading__prev">
-                <span class="continue-reading__label">Back to previous article:</span>
+                <span class="continue-reading__label">{{ translations.article_prev_link }}</span>
                 <a href="{{ prevPost.url }}" class="continue-reading__link">
                     {{ prevPost.data.title }}
                 </a>
@@ -13,7 +13,7 @@
         {% endif %}
         {% if nextPost %}
             <p class="continue-reading__part continue-reading__next">
-                <span class="continue-reading__label">Continue to next article:</span>
+                <span class="continue-reading__label">{{ translations.article_next_link }}</span>
                 <a href="{{ nextPost.url }}" class="continue-reading__link">
                     {{ nextPost.data.title }}
                 </a>
@@ -21,8 +21,8 @@
         {% endif %}
     </nav>
     <p class="back-to-top">
-        <a href="#content" class="back-to-top__link" title="Back to top" aria-label="Back to top">
-            {% fontawesome "chevron-circle-up", "solid", ['back-to-top__icon'], 'Back to top' %}
+        <a href="#content" class="back-to-top__link" title="{{ translations.back_to_top }}" aria-label="{{ translations.back_to_top }}">
+            {% fontawesome "chevron-circle-up", "solid", ['back-to-top__icon'], translations.back_to_top %}
         </a>
     </p>
 </aside>

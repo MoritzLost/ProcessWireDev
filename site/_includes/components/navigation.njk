@@ -1,15 +1,15 @@
 <div class="header">
     <button class="header__burger hamburger hamburger--arrow" type="button" id="navigation-button"
         aria-controls="navigation-menu" aria-haspopup="true" aria-expanded="false">
-        <span class="sr-only" id="navigation-label">Toggle site navigation</span>
+        <span class="sr-only" id="navigation-label">{{ translations.nav_button_label }}</span>
         <span class="hamburger-box" aria-hidden="true">
             <span class="hamburger-inner"></span>
         </span>
     </button>
 </div>
 
-<nav class="navigation" id="navigation-menu" tabindex="-1" aria-label="Site navigation menu">
-    <a href="#content" class="skip-to-content sr-only-focusable">Skip to main content</a>
+<nav class="navigation" id="navigation-menu" tabindex="-1" aria-label="{{ translations.nav_menu_label }}">
+    <a href="#content" class="skip-to-content sr-only-focusable">{{ translations.main_content_link }}</a>
     {% for section in collections.postTree %}
         <section class="navigation__section">
             {% set section_id = 'section-' + section.name %}
@@ -18,7 +18,7 @@
                     {{- section.title -}}
                 </h4>
             {% endif %}
-            <ol class="navigation__list" aria-labelledby="{{ section_id }}">
+            <ol class="navigation__list" aria-describedby="{{ section_id }}">
                 {% for post in section.posts %}
                     {% set isCurrentPage = post.url === page.url %}
                     <li class="navigation__item">
