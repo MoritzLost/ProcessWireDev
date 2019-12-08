@@ -1,11 +1,17 @@
+@mixin breakpoint-up ($breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+        @content;
+    }
+}
+
 @mixin stack ($margin: $stack-default-margin) {
-    > * + * {
+    & > * + * {
         margin-top: $margin;
     }
 }
 
 @mixin stack-before-headlines ($margin: $stack-default-margin) {
-    > * {
+    & > * {
         + h1, + h2, + h3, + h4, + h5, + h6 {
             margin-top: $margin;
         }
@@ -13,7 +19,7 @@
 }
 
 @mixin stack-after-headlines ($margin: $stack-default-margin) {
-    > h1, > h2, > h3, > h4, > h5, > h6 {
+    & > h1, > h2, > h3, > h4, > h5, > h6 {
         + * {
             margin-top: $margin;
         }

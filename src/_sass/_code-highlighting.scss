@@ -13,7 +13,7 @@ pre[class*="language-"] {
     display: block;
     counter-reset: line-number;
     @include font-size($font-size-sm);
-    @media (min-width: 50rem) {
+    @include breakpoint-up(sm) {
         @include font-size($font-size-base);
     }
 
