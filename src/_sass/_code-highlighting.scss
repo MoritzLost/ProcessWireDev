@@ -54,15 +54,3 @@ pre[class*="language-"] {
         background-color: rgba(map-get($theme-colors, "red"), .4);
     }
 }
-code.language-bash, pre.language-bash {
-    .highlight-line {
-        &::before {
-            content: "$" " ";
-        }
-    }
-    .highlight-line-remove {
-        &::before {
-            content: unset;
-        }
-    }
-}
