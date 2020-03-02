@@ -38,6 +38,20 @@ Similar to Composer, NPM uses a text file (`package.json`) inside the project di
 
 ## SCSS compilation and structure
 
+There are multiple SASS compilers that you can choose from. I prefer [node-sass](https://github.com/sass/node-sass) because it's fast and you can install it quickly with NPM. Make sure to install it with `-S` / `--save` so it gets added to your dependencies in your `package.json`:
+
+```bash
+npm i -S node-sass
+```
+
+Now you need to decide where you want to keep your SASS source files, and where the compiled CSS files should go. The former should be outside the webroot, the latter needs to be inside it so it's accessible over the web. I use `src/sass/` and `public/site/css/` respectively. The compilation command can look something like this:
+
+```bash
+node-sass src/sass --output=public/site/css
+```
+
+This will compile any SASS files inside the source directory and put them inside the CSS directory. Note that I specified a source directory instead of
+
 - basic compilation setup (node-sass)
 - structure and naming conventions
 - example: BEM
