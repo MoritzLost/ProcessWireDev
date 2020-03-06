@@ -50,20 +50,95 @@ Now you need to decide where you want to keep your SASS source files, and where 
 node-sass src/sass --output=public/site/css
 ```
 
-This will compile any SASS files inside the source directory and put them inside the CSS directory. Note that I specified a source directory instead of
+This will compile any SASS files inside the source directory and put them inside the CSS directory. Note that I specified a source directory instead of a single file, so you can compile multiple files. This is useful if you want to split up your CSS into multiple smaller files, for example to have separate display and print stylesheets, or to generate multiple color themes for your site.
 
-- basic compilation setup (node-sass)
-- structure and naming conventions
-- example: BEM
+While you can run the above script directly from your command line, it's better to define it inside your `package.json` in the `scripts` section. This way, you don't have to remember paths and command line arguments. Here's an example that defines two scripts, a build command that generates minified CSS for production, and a watch command that will recompile the CSS whenever the source files are changed:
+
+```json
+// package.json
+{
+    // ...
+    "scripts": {
+        "watch:sass": "node-sass --watch --output-style=expanded --source-maps=true src/sass --output=public/site/css",
+        "build:sass": "node-sass --output-style=compressed --omit-source-map-url src/sass --output=public/site/css",
+    },
+    // ...
+}
+```
+
+Now you can run those scripts with NPM from the command line:
+
+```bash
+npm run watch:sass
+npm run build:sass
+```
+
+Since this is not an SCSS tutorial, I'll end this section with only a couple of tips:
+
+- The compilation script above will compile all SCSS files within the source directory, except those starting with an underscore. If you split your SCSS into multiple files and import them in your main entry file, make sure all included files start with an underscore.
+- If you are working on a larger sites, you want to consider how to organize all your SCSS files. One approach is the [7-1 pattern](https://sass-guidelin.es/#the-7-1-pattern).
+- For readability and coherence you't want to pick a naming methodology for classes and components. I like the [BEM (Block Element Modifier) approach](http://getbem.com/).
+
+## JavaScript compilation with Parcel
+
+I see many developers shy away from the topic of compiling JavaScript, because it [seems like a daunting task](https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f) – and, to be fair, it can be. But for a simple project, you don't need most of the complexity. If you only have a couple of simple scripts you want to bundle up, possibly include a couple of external libraries and serve those as one minified file, you can get going very quickly with [Parcel](https://parceljs.org/). Parcel is a bundler that does many things such as JavaScript transpilation and minification under the hood. The process is similar to the SASS compilation setup. Simple install the library, define a compilation script in your `package.json` and then run it with NPM.
+
+```bash
+npm install -S parcel
+```
+
+```json
+// package.json
+{
+    // ...
+    "scripts": {
+        "watch:parcel": "parcel watch src/js/* --target browser --public-url /site/js/ --out-dir public/site/js/",
+        "build:parcel": "parcel build src/js/* --no-source-maps --target browser --public-url /site/js/ --out-dir public/site/js/"
+    },
+    // ...
+}
+```
+
+With the wildcard syntax, this will compile all JavaScript files inside `src/js/*`. This excludes subfolders, so you can split up your JavaScript into multiple smaller files in subfolders and [import](https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Statements/import) everything you need inside one main entry file. The directory structure can look like this:
+
+```text
+.
+├── Components
+│   ├── Gallery.js
+│   ├── Lightbox.js
+│   └── Navigation.js
+└── main.js
+```
+
+The individual files inside the subdirectory can either include procedural code, or export classes, constants or functions to be used inside the main file. As long as you import them in your entry file, Parcel will resolve the imports and bundle everything into one compiled JavaScript file and save it inside the webroot.
+
+```javascript
+// src/js/Navigation.js
+const hamburger = document.querySelectorAll('.hamburger');
+hamburger.addEventListener('click', e => {
+    // open the navigation menu
+})
+
+// src/js/Lightbox.js
+import Tobi from "@rqrauhvmra/tobi";
+const lightbox = new Tobi();
+// this is a neat little lightbox npm package, make sure to install it first:
+// npm i -S @rqrauhvmra/tobi
+
+// src/js/main.js
+import "./Components/Navigation";
+import "./Components/Lightbox";
+import "./Components/Gallery";
+```
+
+With this setup, you have a couple of advantages over 'traditional', uncompiled JavaScript:
+
+- You can use up-to-date JavaScript language constructs and methods, Parcel automatically compiles and transpiles it so it works in older browsers. You can also specify [which browsers you want to target](https://parceljs.org/javascript.html#default-babel-transforms).
+- You can split up your code into smaller chunks and classes, without having to worry about browsers that don't support ES6 imports.
+- You can install and import libraries through NPM, without having to download them manually or adding arbitrary CDN links to your HTML.
 
 ## Integrate Bootstrap 4 as a library
 
 - use bootstrap for theme system (variables), utility methods and grid system
 - dislike javascript and most components, so don't include them
 - integrate seamlessly into your build system, and reuse theme variables in your own code to maximize themability
-
-## JavaScript compilation with Parcel
-
-- install parcel
-- simple compilation & watch script
-- ES6 ...
