@@ -2,12 +2,12 @@
 tags: post
 layout: homepage
 title: ProcessWire Development Guides | processwire.dev
-menu_title: Intro
+menu_title: Introduction
 ---
 
 # processwire.dev – Guides for adept ProcessWire development
 
-This site is a collection of tutorials for custom development with the [ProcessWire Content-Management-Framework](https://processwire.com/). The guides aim to illustrate best practices for ProcessWire development in terms of performance, accessibility, security, extensibility, developer and user experience in the context of ProcessWire.
+This site is a collection of (opinionated) tutorials for custom development with the [ProcessWire Content-Management-Framework](https://processwire.com/). The guides aim to illustrate best practices for ProcessWire development in terms of performance, accessibility, security, extensibility, developer and user experience in the context of ProcessWire.
 
 The tutorials are written and maintained by me, Moritz L'Hoest (MoritzLost on [Github](https://github.com/MoritzLost) and in the [ProcessWire Forum](https://processwire.com/talk/profile/7016-moritzlost/)).
 

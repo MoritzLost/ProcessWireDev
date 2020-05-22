@@ -2,6 +2,7 @@
 tags: post
 layout: post
 title: "Performance by doing less"
+permalink: false
 ---
 
 # How to get a fast and accessible site by doing less work

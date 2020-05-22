@@ -20,27 +20,29 @@
             {% endif %}
             <ol class="navigation__list" aria-describedby="{{ section_id }}">
                 {% for post in section.posts %}
-                    {% set isCurrentPage = post.url === page.url %}
-                    <li class="navigation__item">
-                        <a href="{{ '#content' if isCurrentPage else post.url }}" class="navigation__link"
-                            {{ 'aria-current="page"' if isCurrentPage }}>
-                            {{- post.data.menu_title or post.data.title or post.url -}}
-                        </a>
-                        {% if post.url === page.url %}
-                            {% set pageSections = content | findSections %}
-                            {% if pageSections.length %}
-                                <ol class="navigation__subnav">
-                                    {% for subsection in pageSections %}
-                                        <li class="navigation__subnav-item">
-                                            <a class="navigation__subnav-link" href="#{{ subsection.id }}">
-                                                {{- subsection.textOnly -}}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ol>
+                    {% if post.data.permalink %}
+                        {% set isCurrentPage = post.url === page.url %}
+                        <li class="navigation__item">
+                            <a href="{{ '#content' if isCurrentPage else post.url }}" class="navigation__link"
+                                {{ 'aria-current="page"' if isCurrentPage }}>
+                                {{- post.data.menu_title or post.data.title or post.url -}}
+                            </a>
+                            {% if post.url === page.url %}
+                                {% set pageSections = content | findSections %}
+                                {% if pageSections.length %}
+                                    <ol class="navigation__subnav">
+                                        {% for subsection in pageSections %}
+                                            <li class="navigation__subnav-item">
+                                                <a class="navigation__subnav-link" href="#{{ subsection.id }}">
+                                                    {{- subsection.textOnly -}}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                    </li>
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ol>
         </section>
