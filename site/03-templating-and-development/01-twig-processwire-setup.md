@@ -177,17 +177,17 @@ If a template doesn't have a specific Twig template, the default page template w
 
 <body class="{{ page.template }} page-{{ page.id }}">
     {% block navigation %}{{ include("components/navigation.twig") }}{% endblock %}
-    
+
     {% block header %}{{ include("components/header.twig") }}{% endblock %}
-    
+
     {% block before_content %}{% endblock %}
-    
+
     {% block content %}
         {# Most page content will go here #}
     {% endblock %}
-    
+
     {% block after_content %}{% endblock %}
-    
+
     {% block footer %}{{ include("components/footer.twig") }}{% endblock %}
 </body>
 </html>
