@@ -119,21 +119,22 @@ The individual files inside the subdirectory can either include procedural code,
 
 ```javascript
 // src/js/Components/Navigation.js
-const hamburger = document.querySelectorAll('.hamburger');
+const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', e => {
     // open the navigation menu
 })
 
+
 // src/js/Components/Lightbox.js
 import Tobi from "@rqrauhvmra/tobi";
 const lightbox = new Tobi();
-// this is a neat little lightbox npm package, make sure to install it first:
+// tobi is a neat little lightbox library, make sure to install it first:
 // npm i -S @rqrauhvmra/tobi
+
 
 // src/js/main.js
 import "./Components/Navigation";
 import "./Components/Lightbox";
-import "./Components/Gallery";
 ```
 
 With this setup, you have a couple of advantages over 'traditional', uncompiled JavaScript:
