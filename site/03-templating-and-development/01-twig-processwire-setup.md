@@ -73,7 +73,7 @@ $twigEnvironment = new \Twig\Environment(
     ]
 );
 if ($config->debug) {
-        $twigEnvironment->addExtension(new \Twig\Extension\DebugExtension());
+    $twigEnvironment->addExtension(new \Twig\Extension\DebugExtension());
 }
 ```
 

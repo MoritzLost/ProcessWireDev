@@ -6,19 +6,19 @@ title: Content sections with Repeater Matrix
 
 # Content sections with Repeater Matrix and Twig
 
-Most modern sites don't have fixed layouts with fixed fields, but instead need to support modular content-creation – multi-column layouts with text and images, accordions, image galleries, downloads, and more. To do this with ProcessWire we need a field structure for repeatable sets of fields and a solid template structure in Twig that makes it easy to add new sections. For the field structure, the commercial [Repeater Matrix](https://processwire.com/store/pro-fields/repeater-matrix/) module is the go-to approach to create dynamic content sections. For the output, this guide will demonstrate a scalable Twig template structure that will work as a baseline to add your own custom sections to.
+Most modern sites don't have fixed layouts with fixed fields, but instead need to support modular content creation – multi-column layouts with text and images, accordions, image galleries, downloads, and more. To do this with ProcessWire we need a field structure for repeatable sets of fields and a solid template structure in Twig that makes it easy to add new sections. For the field setup, the commercial [Repeater Matrix](https://processwire.com/store/pro-fields/repeater-matrix/) module is the go-to approach to create dynamic content sections. For the output, this guide will demonstrate a scalable Twig template structure that will work as a baseline to add your own custom sections to.
 
 ## Creating the Repeater Matrix field
 
-The Repeater Matrix module allows you to create a single repeatable field that will hold all the content sections. In the field, you define *types* of sections and the fields you need for them. For example, a *Gallery* section usually consists of either a multi-value image field or a repeater which in turn contains an image and a subline field. A *Call-to-Action Button* section may need URL field for the target URL and a text field for the button label. Besides that, you may want to include some fields that are shared between all section types. For this example, each of my sections will have a `headline` and a `background`. Headline is an optional text field, background will be a `Select Options` field with a couple of preset values.
+The Repeater Matrix module allows you to create a single repeatable field that will hold all the content sections. In the field, you define *types* of sections and the fields you need for them. For example, a *Gallery* section usually consists of either a multi-value image field or a repeater which in turn contains an image and a subline field. A *Call-to-Action Button* section may need a URL field for the target URL and a text field for the button label. Besides that, you may want to include some fields that are shared between all section types. For this example, each of my sections will have a `headline` and a `background`. Headline is an optional text field, background will be a [Select Options](https://processwire.com/docs/fields/select-options-fieldtype/) field with a couple of preset values.
 
-All types of sections are defined inside this single Repeater Matrix field. Then the Repeater Matrix field can be added to any template that you need to include dynamic content sections. This way, when you add a new section it is immediately available on all templates that use your sections field.
+All types of sections are defined inside this single Repeater Matrix field. Then the Repeater Matrix field can be added to any template that you want to have dynamic content sections. This way, when you add a new section it is immediately available on all templates that use your sections field.
 
 If you want to work alongside this tutorial, go ahead and create your Repeater Matrix field now. I'll call my field `sections`. Make sure to create at least one or two section types as well.
 
 ## Creating a base template for a section
 
-Most sections have some markup in common. In my case, most of my sections will be wrapped in a `<section>` tag with a class corresponding to the selected `background`. Inside that I want to have an `<h2>` with the section's `headline` (if any) and a container element, so each section's content starts out aligned to the grid. However, each of those aspects might need to change for individual sections (for example, some sections could be full-width, so they wouldn't need to container). This is where the power of [template inheritance](https://twig.symfony.com/doc/3.x/tags/extends.html) in Twig comes in handy. The base template can define several blocks which any extending template can optionally override. This way, we get sensible defaults without having to copy-and-paste a bunch of `include` statements in all our templates, but while retaining complete flexibility.
+Most sections have some markup in common. In my case, most of my sections will be wrapped in a `<section>` tag with a class corresponding to the selected `background`. Inside that I want to have an `<h2>` with the section's `headline` (if any) and a container element, so each section's content starts out aligned to the grid. However, each of those aspects might need to change for individual sections (for example, some sections could be full-width, so they wouldn't need a container). This is where the power of [template inheritance](https://twig.symfony.com/doc/3.x/tags/extends.html) in Twig comes in handy. The base template can define several blocks which any extending template can optionally override. This way, we get sensible defaults without having to copy-and-paste a bunch of `include` statements in all our templates, but while retaining complete flexibility.
 
 Here's an example of a section base template with those requirements:
 
@@ -53,7 +53,7 @@ Here's an example of a section base template with those requirements:
 ```
 {% endraw %}
 
-As you can see, the base template defines multiple blocks (some of them empty by default!) that can be overriden in extending templates. Note that the background color is just output as a class based on the selected value. The actual styling can be done in CSS.
+As you can see, the base template defines multiple blocks (some of them empty by default!) that can be overriden in extending templates. Note that the background field is just rendered as a class based on the selected value. The actual styling can be done in CSS.
 
 ## Individual section templates
 
@@ -103,7 +103,7 @@ By the way, if you have some sections that require a completely different HTML s
 
 ## A template to render all sections at once
 
-Now we have simple, readable templates for each section type. But in order to use them in a page template, you still have to iterate over each section on the page and include the appropriate section template. That step can be abstracted away in a template as well. Here's a template that just takes the section field from a page as a parameter, iterates through the sections and includes the appropriate template for each.
+Now we have simple, readable templates for each section type. But in order to use them in a page template, you still have to iterate over each Repeater Matrix item on the page and include the appropriate section template. That step can be abstracted away in a template as well. Here's a template that just takes the section field from a page as a parameter, iterates through the sections and includes the appropriate template for each.
 
 {% raw %}
 ```twig
@@ -127,7 +127,7 @@ Now we have simple, readable templates for each section type. But in order to us
 ```
 {% endraw %}
 
-This approach requires that your section templates use a predictable naming scheme based on the type. In this case, the `downloads` section type corresponds to the template name `section--downloads.twig`. Note that the array syntax in the include function tells Twig to render the first template that exists. So if aspecific template for a section type does not exists, it will fallback to the generic `sections/section.twig`. This way, when you add a new section type, you will not get a fatal error because of a missing template. Instead, the new section type will just render with the base section template, which displays the section type inside the `section_content` block.
+This approach requires that your section templates use a predictable naming scheme based on the type. In this case, the `downloads` section type corresponds to the template name `section--downloads.twig`. Note that the array syntax in the include function tells Twig to render the first template that exists. So if a specific template for a section type does not exists, it will fallback to the generic `sections/section.twig`. This way, when you add a new section type, you will not get a fatal error because of a missing template. Instead, the new section type will just render with the base section template, which displays the section type inside the `section_content` block.
 
 ## Rendering sections in a page context
 
@@ -147,3 +147,4 @@ Note the check for `page.hasField('sections')`, this makes sure that the `sectio
 
 ### Conclusion
 
+This setup enables a flexible, module-based approach to content editing, where content is created in terms of different section types. Because the Repeater Matrix field is only concerned with content, the markup and styling can be adjusted for all sections of a particular type at any time. The killer feature provided by Twig is template inheritance: Being able to define a base template (`section.twig`) that contains common markup while still having full flexibility in individual section templates. This makes it super easy to add new sections, even ones that don't adhere to the pre-defined section structure provided by the base template.
