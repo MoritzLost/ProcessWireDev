@@ -4,7 +4,7 @@ layout: post
 title: "Case study: Responsive image component"
 ---
 
-## Component case study: Generating responsive images with ProcessWire and Twig
+# Component case study: Generating responsive images with ProcessWire and Twig
 
 Modern web design & development is rarely done in terms of finished pages. Instead, most tools are tailored towards a module- or component-based approach. This can be seen in the tooling available for web design (Figma, Sketch) and in the popular frameworks for web development (React, Vue, etc). The tutorial on [Content Sections](/repeater-matrix-content-sections) demonstrates one such approach. Beyond that, working in terms of reusable components can be a major productivity boost, especially when you're building base components that can be used in multiple sites.
 
