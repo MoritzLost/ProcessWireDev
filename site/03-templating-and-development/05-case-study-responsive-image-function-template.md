@@ -48,243 +48,242 @@ A helpful responsive image component will do the following:
 - Generate the markup for the image tag containing the `sizes` and `srcset` attributes.
 - Provide sensible defaults for some arguments.
 
-The component will accept the following arguments, with some defaults:
-
-- The `PageImage` to use – that is, a single value of a ProcessWire image field containing the image to render responsively.
-- Either fixed image sizes or factors to create differently-sized variants of the base image. I prefer factors, because it's easier to provide a sensible default.
-- The arguments for the sizes query.
-- The base width and base height (or only one of those to retain the original aspect ratio).
-- Additional HTML attributes (`title`, `alt`, `loading` etc).
-
 The component will consist of two parts: A PHP function that generates the image variants and a Twig template that calls this function with the appropriate arguments and renders the `<img>` tag. This way, any Twig template can `include` the component with arbitrary arguments.
 
+## Writing a PHP function to generate image variations
 
---- OLD
+At the core of the component is a function that physically generates all the image variants listed in the `srcset` on the server. It will accept the following arguments:
 
+- A `PageImage`, which is a single value of a ProcessWire image field containing the image to render responsively.
+- The base target size in width and height.
+- A list of size factors to scale the base image by to create smaller and larger variants.
 
-## Building a reusable responsive image function
+<small class="sidenote sidenote--success">
 
-Let's start with a function that takes two parameters: a `Pageimage` object and a standard width. Every time you access an image field through the API in a template (e.g. `$page->my_image_field`), you get a `Pageimage` object. Let's start with a skeleton for our function:
+The combination of base size and scaling factors are only one possible approach. Another (maybe slightly more intuitive) solution would be to have the function accept an array of sizes to generate. I prefer scaling factors, because it's easier to provide sensible defaults for those, as I will demonstrate below.
 
-    function buildResponsiveImage(
-        Pageimage $img,
-        int $standard_width
-    ): string {
-        $default_img = $img->maxWidth($standard_width);
-        return '<img src="' . $default_img->url() . '" alt="' . $img->description() . '">';
+</small>
+
+Here's a function that accepts the arguments above, generates the images and returns a `srcset` attribute string listing all the available variants. See below for more explanations.
+
+```php
+/**
+ * Returns a srcset string containing a list of sources for the passed image,
+ * based on the provided width, height, and variant factors. All required images
+ * will be created automatically.
+ *
+ * @param Pageimage $img The base image. Must be passed in the largest size available.
+ * @param int|null $standard_width The standard width for the generated image. Use NULL to use the inherent width of the passed image.
+ * @param int|null $standard_height The standard height for the generated image. Use NULL to use the inherent height of the passed image.
+ * @param array|null $variant_factors The multiplication factors for the alternate resolutions.
+ * @return string
+ */
+public function getSrcset(
+    Pageimage $img,
+    ?int $standard_width = null,
+    ?int $standard_height = null,
+    array $variant_factors = [0.25, 0.5, 0.75, 1, 1.5, 2]
+): string {
+    // use inherit dimensions of the passed image if standard width/height is empty
+    if (empty($standard_width)) {
+        $standard_width = $img->width();
+    }
+    if (empty($standard_height)) {
+        $standard_height = $img->height();
     }
 
-    // usage example
-    echo buildResponsiveImage($page->my_image_field, 1200);
-
-This is already enough for a normal `img` tag (and it will serve as a fallback for older browsers). Now let's start adding to this, trying to keep the function as flexible and reusable as possible.
-
-### Generating alternate resolutions
-
-We want to add a parameter that will allow the caller to specify in what sizes the alternatives should be generated. We could just accept an array parameter that contains the desired sizes as integers. But that is not very extendible, as we'll need to specify those sizes in each function call and change them all if the normal size of the image in the layout changes. Instead, we can use an array of *factors*; that will allow us to set a reasonable default, and still enable us to manually overwrite it. In the following, the function gets an optional parameter `$variant_factor`.
-
-    // get the original image in full size
-    $original_img = $img->getOriginal() ?? $img;
-    
-    // the default image for the src attribute, it wont be upscaled
-    $default_image = $original_img->width($standard_width, ['upscaling' => false]);
-
-    // the maximum size for our generated images
-    $full_image_width = $original_img->width();
-
-    // fill the variant factors with defaults if not set
-    if (empty($variant_factors)) {
-        $variant_factors = [0.25, 0.5, 0.75, 1, 1.5, 2];
-    }
+    // get original image for resizing
+    $original_image = $img->getOriginal() ?? $img;
 
     // build the srcset attribute string, and generate the corresponding widths
     $srcset = [];
     foreach ($variant_factors as $factor) {
         // round up, srcset doesn't allow fractions
-        $width = ceil($standard_width * $factor);
+        $width = (int) ceil($standard_width * $factor);
+        $height = (int) ceil($standard_height * $factor);
         // we won't upscale images
-        if ($width <= $full_image_width) {
-            $srcset[] = $original_img->width($width)->url() . " {$width}w";
+        if ($width <= $original_image->width() && $height <= $original_image->height()) {
+            $current_image = $original_image->maxSize($width, $height);
+            $srcset[] = $current_image->url() . " {$width}w";
         }
     }
     $srcset = implode(', ', $srcset);
 
-    // example usage
-    echo buildResponsiveImage($page->my_image_field, 1200, [0.4, 0.5, 0.6, 0.8, 1, 1.25, 1.5, 2]);
+    return $srcset;
+}
 
-Note that for resizing purposes, we want to get the original image through the API first, as we will generate some larger alternatives of the images for retina displays. We also don't want to generate upscaled versions of the image if the original image isn't wide enough, so I added a constraint for that.
+// usage example
+$image = $page->my_image_field;
+// build the srcset string and generate the missing images
+// this will generate the following sizes: 200x200, 400x400, 800x800
+$srcset = getSrcset($image, 400, 400, [0.5, 1, 2]);
+```
 
-The great thing about the `foreach`-loop is that it generates the markup and the images on the server at the same time. When we call `$original_img->width($width)`, ProcessWire automatically generates a variant of the image in that size if it doesn't exist already. So we need to do little work in terms of image manipulation.
+Things to note:
 
-## Generating the sizes attribute markup
+- The only required argument is the `PageImage` itself. For width and height, we default to using the base images inherit size. For the variant factors, we provide a default list of factors that will generate a total of six image variants of differing sizes.
+- The method uses `PageImage::getOriginal` to create variations based on the original image, just in case the argument is a Pageimage that has already been resized.
+- The method avoids upscaling images by only creating a variant (and adding it to the `srcset`) if the target size is not larger than the original image. If the image in `$page->my_image_field` has a size of 300x300, only the 200x200 variant will be created.
+- ProcessWire will create any requested size if it's missing. This means that the first time the example code above is executed, the 200x200 and 800x800 variants will be generated, resulting in a longer page load. During subsequent runs, no new images need to be created, unless you change the base image, the target width and height or the variant factors.
 
-For this, we could build elaborate abstractions of the normal media queries, but for now, I've kept it very simple. The sizes attribute is defined through another array parameter that contains the media queries as strings in order of appearance.
+There's one problem remaining. Oftentimes your templates will need to support different aspect ratios of images, especially for CMS-driven content. For a classic multi-column layout, you will only know the width of the column the image will go into (which can of course vary between different sizes), but the height depends on the aspect ratio of the uploaded image. The problem is that if you only specifiy a width in the example above, the image will be cropped based on the inherit height of the image. This can be solved by adding to additional function that take only a width *or* a height argument, respectively, and determine the other one based on the aspect ratio of the passed image (the example code shows only the width function, check below for a full code example).
 
-    $sizes_attribute = implode(', ', $sizes_queries);
-
-The media queries are always separated by commas followed by a space character, so that part can be handled by the function. We'll still need to manually write the media queries when calling the function though, so that is something that can be improved upon.
-
-## Finetuning & improvements
-
-This is what the function looks like now:
-
-    function buildResponsiveImage(
-        Pageimage $img,
-        int $standard_width,
-        array $sizes_queries,
-        ?array $variant_factors = []
-    ): string {
-
-        // get the original image in full size
-        $original_img = $img->getOriginal() ?? $img;
-        
-        // the default image for the src attribute, it wont be upscaled
-        $default_image = $original_img->width($standard_width, ['upscaling' => false]);
-    
-        // the maximum size for our generated images
-        $full_image_width = $original_img->width();
-    
-        // fill the variant factors with defaults if not set
-        if (empty($variant_factors)) {
-            $variant_factors = [0.25, 0.5, 0.75, 1, 1.5, 2];
-        }
-    
-        // build the srcset attribute string, and generate the corresponding widths
-        $srcset = [];
-        foreach ($variant_factors as $factor) {
-            // round up, srcset doesn't allow fractions
-            $width = ceil($standard_width * $factor);
-            // we won't upscale images
-            if ($width <= $full_image_width) {
-                $srcset[] = $original_img->width($width)->url() . " {$width}w";
-            }
-        }
-        $srcset = implode(', ', $srcset);
-
-        return '<img src="' . $default_img->url() . '" alt="' . $img->description() . '" sizes="' . $sizes_attribute . '" srcset="' . $srcset . '">';
-    }
-
-It contains all the part we need, but there are some optimizations to make.
-
-First, we can make the `$sizes_queries` parameters optional. The sizes attribute default to `100vw` (so the browser will always download an image large enough to fill the entire viewport width). This isn't optimal as it wastes bandwidth if the image doesn't fill the viewport, but it's good enough as a fallback.
-
-We can also make the width optional. When I have used this function in a project, the image I passed in was oftentimes already resized to the correct size. So we can make `$standard_width` an optional parameter that defaults to the width of the passed image.
-
+```php
+/**
+* Shortcut for getSrcset that only takes a width parameter.
+* Height is automatically generated based on the aspect ratio of the passed image.
+*
+* @param Pageimage $img The base image. Must be passed in the largest size available.
+* @param int|null $standard_width The standard width for this image. Use NULL to use the inherent size of the passed image.
+* @param array $variant_factors The multiplication factors for the alternate resolutions.
+* @return string
+*/
+public function getSrcsetByWidth(
+    Pageimage $img,
+    ?int $standard_width = null,
+    array $variant_factors = [0.25, 0.5, 0.75, 1, 1.5, 2]
+): string {
     if (empty($standard_width)) {
         $standard_width = $img->width();
     }
+    // automatically fill the height parameter based
+    // on the aspect ratio of the passed image
+    $factor = $img->height() / $img->width();
+    $standard_height = ceil($factor * $standard_width);
 
-Finally, we want to be able to pass in arbitrary attributes that will be added to the element. For now, we can just add a parameter `$attributes` that will be an associative array of attribute => value pairs. Then we need to collapse those into html markup.
-
-    $attr_string = implode(
-        ' ',
-        array_map(
-            function($attr, $value) {
-                return $attr . '="' . $value . '"';
-            },
-            array_keys($attributes),
-            $attributes
-        )
+    return getSrcset(
+        $img,
+        $standard_width,
+        (int) $standard_height,
+        $variant_factors
     );
+}
+```
 
-This will also allow for some cleanup in the way the other attributes are generated, as we can simply add those to the `$attributes` array along the way.
+With this set of base functions that generate all required image variants and return the `srcset`, the rest of the component can be written in Twig. Don't forget to add the PHP functions to the Twig environment:
 
-Here's the final version of this function with typehints & phpdoc:
+```php
 
-    /**
-    * Builds a responsive image element including different resolutions
-    * of the passed image and optionally a sizes attribute build from
-    * the passed queries.
-    *
-    * @param \Processwire\Pageimage $img The base image.
-    * @param int|null $standard_width The standard width for this image. Use 0 or NULL to use the inherent size of the passed image.
-    * @param array|null $attributes Optional array of html attributes.
-    * @param array|null $sizes_queries The full queries and sizes for the sizes attribute.
-    * @param array|null $variant_factors The multiplication factors for the alternate resolutions.
-    * @return string
-    */
-    function buildResponsiveImage(
-        \Processwire\Pageimage $img,
-        ?int $standard_width = 0,
-        ?array $attributes = [],
-        ?array $sizes_queries = [],
-        ?array $variant_factors = []
-    ): string {
+$twigEnvironment->addFunction(
+    new \Twig\TwigFunction('getSrcset', 'getSrcset')
+);
+$twigEnvironment->addFunction(
+    new \Twig\TwigFunction('getSrcsetByWidth', 'getSrcsetByWidth')
+);
+$twigEnvironment->addFunction(
+    new \Twig\TwigFunction('getSrcsetByHeight', 'getSrcsetByHeight')
+);
+```
 
-        // if $attributes is null, default to an empty array
-        $attributes = $attributes ?? [];
+## Writing a responsive image component in Twig
 
-        // if the standard width is empty, use the inherent width of the image
-        if (empty($standard_width)) {
-            $standard_width = $img->width();
-        }
+While the functional core is done in PHP, the template can be written in Twig. In addition to passing the required parameters to the PHP method, the Twig component will accept some additional optional parameters that make it as reusable as possible:
 
-        // get the original image in full size
-        $original_img = $img->getOriginal() ?? $img;
+- The `sizes` attribute that allows the browser to chose a size.
+- Additional HTML attributes like `title`, `alt`, `loading` and `class`.
 
-        // the default image for the src attribute, it wont be
-        // upscaled if the desired width is larger than the original
-        $default_image = $original_img->width($standard_width, ['upscaling' => false]);
+The component can look something like this:
 
-        // we won't create images larger than the original
-        $full_image_width = $original_img->width();
+{% raw %}
+```twig
+{# block/responsive-image.twig #}
 
-        // fill the variant factors with defaults
-        if (empty($variant_factors)) {
-            $variant_factors = [0.25, 0.5, 0.75, 1, 1.5, 2];
-        }
+{#-
+ # Renders a responsive image tag.
+ #
+ # @var \ProcessWire\Pageimage image    The image to display.
+ # @var string alt                      Optional alt text to use for this image.
+ # @var string title                    Optional title text.
+ # @var array classes                   Optional classes for the image.
+ # @var int width                       The standard / fallback width for the image.
+ # @var int height                      The standard height for the image.
+ # @var array sizes                     The sizes queries for the responsive image.
+ # @var array variant_factors           The variant factors for the responsive image.
+ # @var bool lazy                       Lazy load this image?
+ -#}
 
-        // build the srcset attribute string, and generate the corresponding widths
-        $srcset = [];
-        foreach ($variant_factors as $factor) {
-            // round up, srcset doesn't allow fractions
-            $width = ceil($standard_width * $factor);
-            // we won't upscale images
-            if ($width <= $full_image_width) {
-                $srcset[] = $original_img->width($width)->url() . " {$width}w";
-            }
-        }
-        $attributes['srcset'] = implode(', ', $srcset);
+{%- set alt = alt|default(image.description) -%}
+{%- set title = title|default(null) -%}
+{%- set classes = classes|default([]) -%}
+{%- set sizes = sizes is defined and sizes is not empty ? sizes|join(', ') : '100vw' -%}
+{%- set variant_factors = variant_factors|default([0.25, 0.5, 0.75, 1, 1.5, 2]) -%}
+{%- set lazy = lazy|default(false) -%}
 
-        // build the sizes attribute string
-        if ($sizes_queries) {
-            $attributes['sizes'] = implode(', ', $sizes_queries);
-        }
+{%- if width and height -%}
+    {%- set base_image = image.maxSize(width, height) -%}
+    {%- set srcset = getSrcset(image, width, height, variant_factors) -%}
+{%- elseif width -%}
+    {%- set base_image = image.maxWidth(width) -%}
+    {%- set srcset = getSrcsetByWidth(image, width, variant_factors) -%}
+{%- elseif height -%}
+    {%- set base_image = image.maxHeight(height) -%}
+    {%- set srcset = getSrcsetByHeight(image, height, variant_factors) -%}
+{%- else -%}
+    {%- set base_image = image -%}
+    {%- set srcset = getSrcset(image, null, null, variant_factors) -%}
+{%- endif -%}
 
-        // add src fallback and alt attribute
-        $attributes['src'] = $default_image->url();
-        if ($img->description()) {
-            $attriutes['alt'] = $img->description();
-        }
-    
-        // implode the attributes array to html markup
-        $attr_string = implode(' ', array_map(function($attr, $value) {
-            return $attr . '="' . $value . '"';
-        }, array_keys($attributes), $attributes));
+<img srcset="{{ srcset }}" sizes="{{ sizes }}" src="{{ base_image.url }}"
+    {%- if alt %} alt="{{ alt }}"{% endif -%}
+    {%- if title %} title="{{ title }}"{% endif %}
+    {%- if lazy %} loading="lazy"{% endif -%}
+    {%- if classes is not empty %} class="{{ classes|map(c => c is not empty)|join(' ') }}"{% endif %}>
+```
+{% endraw %}
 
-        return "<img ${attr_string}>";
+Some points to note:
 
-    }
+- The only required parameter, once again, is the image to use. All other parameters use the [default filter](https://twig.symfony.com/doc/3.x/filters/default.html) to provide sensible defaults or leave that parameter out.
+- The component figures out which PHP function to call to generate the srcset based on which or the `width` and `height` parameters are passed to it.
+- The parameters for both the `class` and `sizes` attributes are passed as arrays of strings that are then concatenated with [join](https://twig.symfony.com/doc/3.x/filters/join.html). But that's just a matter of personal preference.
 
-Example usage with all arguments:
+Now that the component is finished, we can actually start to use it in our templates.
 
-    echo buildResponsiveImage(
-        $page->testimage,
-        1200,
-        ['class' => 'img-fluid', 'id' => 'photo'],
-        [
-            '(min-width: 1140px) 350px',
-            '(min-width: 992px) 480px',
-            '(min-width: 576px) 540px',
-            '100vw'
-        ],
-        [0.4, 0.5, 0.6, 0.8, 1, 1.25, 1.5, 2]
-    );
+## How to use the component and determine the sizes queries
 
-Result:
+Twig templates can be included using the unsurprisingly named [include function](https://twig.symfony.com/doc/3.x/functions/include.html). It takes the name of the template to include, as well as a number of arguments to pass to the included template. Arguments are provided as associative arrays (see [Hash literals](https://twig.symfony.com/doc/3.x/templates.html#literals)), which is nice because it allows use to only specifiy the arguments we need. Here's a barebones call that only passes an image:
 
-    <img class="img-fluid" id="photo" srcset="/site/assets/files/1/sean-pierce-1053024-unsplash.480x0.jpg 480w, /site/assets/files/1/sean-pierce-1053024-unsplash.600x0.jpg 600w, /site/assets/files/1/sean-pierce-1053024-unsplash.720x0.jpg 720w, /site/assets/files/1/sean-pierce-1053024-unsplash.960x0.jpg 960w, /site/assets/files/1/sean-pierce-1053024-unsplash.1200x0.jpg 1200w, /site/assets/files/1/sean-pierce-1053024-unsplash.1500x0.jpg 1500w, /site/assets/files/1/sean-pierce-1053024-unsplash.1800x0.jpg 1800w, /site/assets/files/1/sean-pierce-1053024-unsplash.2400x0.jpg 2400w" sizes="(min-width: 1140px) 350px, (min-width: 992px) 480px, (min-width: 576px) 540px, 100vw" src="/site/assets/files/1/sean-pierce-1053024-unsplash.1200x0.jpg" alt="by Sean Pierce">
+{% raw %}
+```twig
+{{ include('blocks/responsive-image.twig', {
+    image: page.my_image_field,
+}) }}
+```
+{% endraw %}
 
-Now this is actually too much functionality for one function; also, some of the code will be exactly the same for other, similar helper functions. If some of you are interested, I'll write a second part on how to split this into multiple smaller helper functions with some ideas on how to build upon it. But this has gotten long enough, so yeah, I hope this will be helpful or interesting to some of you :)
+But we can override the default by passing all the parameters we want:
 
-Also, if you recognized any problems with this approach, or can point out some possible improvements, let me know. Thanks for reading!
+{% raw %}
+```twig
+{{ include('blocks/responsive-image.twig', {
+    image: page.my_image_field,
+    width: 500,
+    sizes: ['(min-width: 1200px) 33vw', '(min-width: 768px) 50vw', 'calc(100vw - 30px)'],
+    variant_factors: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 0.9, 1, 1.25, 1.5, 2],
+    lazy: true,
+    classes: ['my-image-field', 'img-fluid']
+}) }}
+```
+{% endraw %}
+
+The last thing I want to mention here is how to determine the correct arguments for the `sizes` attribute. It's important to realize that this is completely independent of the actual size of the image in most cases. Instead, it depends on the slot in your template where the image is going to be placed, and the size of that slot.
+
+For example, let's consider a full-width multi-column layout with the following column count per breakpoint:
+
+- Three equal columns for viewports >=1200px
+- Two equal columns for viewports >= 768px
+- Only one column for everything below that, with a fixed padding of 15px to either side of the viewport.
+
+In a full-page layout, the column widths can be described with [viewport width units](https://developer.mozilla.org/en-US/docs/Web/CSS/length#Viewport-percentage_lengths). Remember that `100vw` is the full width of the viewport, so in a three-column layout each column will have a width of `33vw` (rounded down). So the correct `sizes` attribute for this layout looks like this: `(min-width: 1200px) 33vw', '(min-width: 768px) 50vw', 'calc(100vw - 30px)`. For the smallest breakpoint, the image needs to fill the full width of the viewport minus the fixed padding (`15px` to either side, so `30px` total). This is accounted for with the [calc](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) function.
+
+If you instead have a fixed-width container with a predefined width per breakpoint (like a normal [container in Bootstrap](https://getbootstrap.com/docs/4.5/layout/overview/)), the slot for the image will have a fixed width (per breakpoint) as well, depending on the amount of columns it spans. In this case, the individual `sizes` should be specified in `px` instead of `vw` units.
+
+## Conclusion
+
+This finishes the case study on the responsive image. Now you might be thinking that all this was way to much work just for a simple responsive image component. But it's gonna by worth it once you start using responsive images *everywhere*. No more boilerplate code, difficult calculations of aspect ratios or repetitive loops. Just a single declarative `include` statement in your Twig template and you're done.
+
+The point is this: If you invest the time to build your components in the most generic way that's possible and practical for your use case, it will pay off once you utilize it a couple of times. The general consideration for those components should be:
+
+- What **parameters** does the component need to accept? The more general the component, the more parameters it will require.
+- How many of those parameters are **required**? The fewer the better, because it reduces friction when using the component. The responsive image component has only one required parameter, which is the image itself.
+- What are sensible **defaults** for the optional parameters? A default may either be an empty value or the appropriate value for the most common use case. For example, the argument corresponding to the `title` atttribute is empty by default. The default value for the `alt` attribute is the images `description`, which is automatically available on ProcessWire's image fields and is often used for `alt` texts.
