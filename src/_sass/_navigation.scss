@@ -25,6 +25,12 @@
         padding: 2rem;
     }
 
+    &__logo {
+        width: 100%;
+        height: auto;
+        margin-bottom: 2rem;
+    }
+
     &__section {
         margin-bottom: 2rem;
         @include stack(.75rem);
