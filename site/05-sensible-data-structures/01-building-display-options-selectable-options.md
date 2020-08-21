@@ -158,10 +158,4 @@ You can see how it will be easy to add an additional section and integrate it in
 
 ## Conclusion
 
-
----OLD
-
-
-I always try to keep my code and the interfaces I create with ProcessWire extensible and intuitive. Those are a couple of solutions I came up with for projects at work. They are certainly not the only approach, and there is nothing super special about those examples, but I found that putting a little more effort into defining options with meaningful labels and using option values that I can use directly in my templates makes the result less verbose and more maintainable. Some or most of this tutorial may be immediately obvious to you, but if you made it this far, hopefully you got something out of it :)
-
-Feel free to share your own methods to create display options, or how you would've approached those problems differently. Thanks for reading!
+Using simple, limited display options gives the editors some control over how their content is displayed. Limiting the amount of options available reduces the cognitive load for editors, and ensures that the result adheres to the intended design. Options labels should correspond to their semantical meaning, not be based on their technical implementation. Using *Selectable Options* fields with useful values provides synergy with PHP templates and SCSS stylesheets, allowing you to handle a lot of options at once and allowing you to add more options with no or only minor adjustments to the code.
