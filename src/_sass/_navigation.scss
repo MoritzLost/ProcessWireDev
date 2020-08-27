@@ -48,6 +48,8 @@
         display: block;
         font-weight: $font-weight-medium;
         line-height: $line-height-sm;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         color: inherit;
         text-decoration: none;
         &:hover,

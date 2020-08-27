@@ -54,7 +54,7 @@
     }
 
     @include breakpoint-up(lg) {
-        grid-template-columns: 25rem 1fr 50rem 1fr;
+        grid-template-columns: 30rem 1fr 50rem 1fr;
         &__article {
             margin-top: 5rem;
             margin-bottom: 5rem;
