@@ -50,6 +50,8 @@ module.exports = eleventyConfig => {
     // numbers within sections
     eleventyConfig.addCollection('postTree', collections => {
         return collections.getFilteredByTag('post').reduce((coll, post) => {
+            // don't include drafts or unpublished pages
+            if (!post.data.permalink) return coll;
             // information on the directory which acts as a content section
             const sectionDir = post.filePathStem.split('/')[1];
             const sectionName = stripVersionPrefix(sectionDir);
