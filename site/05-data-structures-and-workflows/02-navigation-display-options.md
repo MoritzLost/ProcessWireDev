@@ -85,58 +85,18 @@ In terms of downsides, consider carefully how to name and use your fields in ord
 
 This may seem like a minor details, but consider which fields you actually need is important – you don't want to end up with too many. If each page has individual fields for the title, a headline, a menu title and an SEO-title (for the `<title>`), you will have a hard time explaining to the client what each field is used for.
 
-Another example in this category would be an additional checkbox field representing an option to hide a page in the menu. This could also be accomplished by using the built-in *hidden* status, skipping hidden pages in the menu. But if it's hidden it won't show up in other listings as well, so separating the menu display from the hidden status might be a good idea if your site has lots of page listings.
+Another example in this category would be an additional checkbox field representing an option to hide a page in the menu. This could also be accomplished by using the built-in *hidden* status, skipping hidden pages in the menu. But if a page is hidden it won't show up in other listings by default as well, so separating the menu display from the hidden status might be a good idea if your site has lots of page listings.
 
+### Example 2: A template for anchor links
 
----OLD
+Another requirement from the list above was to be able to include links to external URLs in the menu. This can be achieved creating a *Menu Link* template that can be placed anywhere in the page tree. This template needs only one additional field to hold the target URL (the global title field can be used for the link text in the menu). This way, you can link to an external URL anywhere inside your navigation menu by placing a *Menu Link* page at the appropriate position. If you want to offer even more flexibility, you can even add more options to choose between linking to an external URL, an internal page or a file download. Using [conditional field visibility](https://processwire.com/docs/fields/dependencies/) you can show the appropriate field for each option: A URL field for external links, a page reference field for internal page links, or a file field for downloads. This is also a clean solution, because the navigation menu will still reflect the page tree, making the custom links visible and easily editable by the editors.
 
-
-### Example 2: "Menu link" template
-
-
-
-One solution that is quite flexible in allowing for custom links to pages or external URLs is creating a `menu-link` template that can be placed anywhere in the page tree. This templates can have fields for the menu title, target page and/or external target URL. This way, you can link to another top-level page or an external service inside a drop-down menu, by placing a *Menu Link* page at the appropriate position. This is also a clean solution, because the navigation menu will still reflect the page tree, making the custom links visible and easily editable by the editors.
-
-
-
-A minor downside is that those templates are non-semantical in the sense that they aren't pages with content of their own. You'll need to make sure not to display them in listings or in other places, as they aren't viewable. It may also require loosening up strict family rules - for example, allowing for Menu Link pages to be placed below the news index page, which normally can only hold news pages.
-
-
-
-### Example 3: Drop-down menu override
-
-
-
-This one is a more radical solution to override drop-down menus. You add a repeater field to top-level pages, similar to the one mentioned as a custom solution, where you can add multiple links to internal pages or URLs. If the repeater is empty, the drop-down menu is generated normally, based on the sub-pages in the page tree. But if the repeater contains some links, it completely overrides the drop-down menu. It's similar to the fully custom solution in that as soon as you override a sub-menu for a top-level page, you have to manually manage it in case the page structure changes. But you can make that decision for each top-level page individually, so you can leave some of them as is and only have to worry about the ones that you have overwritten.
-
-
-
-Again, this offers sensible defaults with good customizability. A downside is that the mixed approach may confuse the client, if some changes to the page tree are reflected in the drop-down menu directly, while others don't seem to have any effect (especially if you have multiple editors working on a site).
-
-
+A minor downside is that those templates are non-semantical in the sense that they aren't pages with content of their own. You'll need to make sure not to display them in other listings on the site, as they aren't viewable and don't have any content of their own. It may also require loosening up strict family rules - for example, allowing *Menu Link* as children of a *News index* page, which normally can only have *News* pages as children.
 
 ## Finding the right solution
 
+So how do you choose the right approach in a given situation? It depends on the client, the requirements and on the special cases you expect and want to handle. Sometimes, not implementing a special case at all can be an option as well, especially if it would overcomplicate the workflows for the editors. Also, make sure you understand the actual reason behind a change request, instead of just blindly implementing the suggestion by the client. Often, clients will suggest solutions without telling you what the actual problem is they're trying to solve.
 
+One example was mentioned above: If the client requests an additional *Menu title* field, the best solution might really be a *Headline* field. To gracefully handle those conversation, I recommend reading [Articulating Design Decisions](https://www.oreilly.com/library/view/articulating-design-decisions/9781491921555/) by Tom Greever. It includes some chapters on listening to the client, finding out the real reason behind a change request, and responding appropriately. It's written from a design perspective, but is applicable to development as well. Since UX becomes more important by the day, the lines between the disciplines are blurred anyway. Being able to conceptualize good solutions to problems is as important as knowing how to implement them, and will save you a lot of energy and nerves in the long run.
 
-So how do you choose between the approaches? It depends on the client, the requirements, and on what special cases you expect and want to handle. Sometimes, a special request can be turned down by explaining how it would complicate editorial workflows or have a negative impact on SEO (for example, if you risk having some pages not accessible from the homepage at all). Also, make sure you understand the actual reason behind a change request, instead of just blindly implementing the suggestion by the client. Often, clients will suggest solutions without telling you what the actual problem is they're trying to solve.
-
-
-
-For example: In one case, I implemented the drop-down override mentioned in example three. However, what the client really wanted was to have the top-level page as the first item in the drop-down menu (see the example requests mentioned above). So they ended up overwriting every single drop-down menu, making the menu harder to maintain. In this case, it would have been better to go with a more specialized solution, such as adding a checkbox option, or even handling it in the code, since it would have been consistent throughout the menu.
-
-
-
-Another example was mentioned above: If the client requests an additional "Menu title" field, maybe what they really need is a "Headline" field. I recommend reading [Articulating Design Decisions](https://www.goodreads.com/book/show/25520974-articulating-design-decisions) by Tom Greever; it includes some chapters on listening to the client, finding out the real reason behind a change request, and responding appropriately. It's written from a design perspective, but is applicable to development as well, and since UX becomes more important by the day, the lines between the disciplines are blurred anyway.
-
-
-
-## Conclusion
-
-
-
-I realize now this reads more like a podcast (or worse, a rant) than an actual tutorial, but hopefully I got my point across. ProcessWire is at is greatest if you utilize it as a Content Management Framework, creating options and interfaces that allow for customizability while retaining usability for the client / editor. I usually try to hit a sweet spot where the editors have maximum control over the relevant aspects of their site, while requiring minimal work on their part by providing sensible defaults. Above, I listed some examples of requests I've gotten and different solutions I came up with to handle those with custom fields or templates. Though in some cases the requirements call for a custom solution or a quick hack in the template code as well!
-
-
-
-What are some of the special requests you got? How did you solve them? I'd love to get some insights and examples from you. Thanks for reading!
+ProcessWire is at is greatest if you utilize it as a Content Management Framework, creating options and interfaces that allow for customizability while retaining usability for the editors. I usually try to hit a sweet spot where the editors have maximum control over the relevant aspects of their site, while requiring minimal work on their part by providing sensible defaults.
