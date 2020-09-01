@@ -36,8 +36,7 @@
         @include stack(.75rem);
     }
     &__headline {
-        @include font-size($font-size-sm);
-        font-weight: $font-weight-light;
+        font-weight: $font-weight-normal;
     }
     &__list {
         list-style: none;
@@ -45,6 +44,10 @@
         @include stack(.75rem);
     }
     &__link {
+        @include font-size($font-size-sm);
+        &::before {
+            content: "—" " ";
+        }
         display: block;
         font-weight: $font-weight-medium;
         line-height: $line-height-sm;
@@ -71,6 +74,9 @@
         @include font-size($font-size-sm);
     }
     &__subnav-link {
+        &::before {
+            content: unset;
+        }
         @extend .navigation__link;
         font-weight: $font-weight-normal;
         padding: .25rem 1rem;
