@@ -1,5 +1,6 @@
 const markdownIt = require('markdown-it');
 const utils = require('./src/utils');
+const generatePreviewImages = require('./plugins/generate-preview-images/.eleventy.js');
 
 const extractVersionPrefix = slug => {
     const prefixMatch = slug.match(new RegExp(/^\d{1,3}(?=-)/));
@@ -9,6 +10,8 @@ const extractVersionPrefix = slug => {
 const stripVersionPrefix = slug => slug.replace(new RegExp(/^\d{1,3}-/), '')
 
 module.exports = eleventyConfig => {
+    eleventyConfig.addPlugin(generatePreviewImages);
+
     // custom markdown library with automatic anchors for h2 headings
     const markdownLib = markdownIt({
         html: true,
