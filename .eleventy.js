@@ -48,6 +48,7 @@ module.exports = eleventyConfig => {
     // build a tree of post sections (folders) and posts inside them
     // this assumes that each section number exists only once, same for post
     // numbers within sections
+    eleventyConfig.addCollection('posts', collections => collections.getFilteredByTag('post').filter(post => Boolean(post.data.permalink)));
     eleventyConfig.addCollection('postTree', collections => {
         return collections.getFilteredByTag('post').reduce((coll, post) => {
             // don't include drafts or unpublished pages
