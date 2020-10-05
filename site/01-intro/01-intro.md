@@ -5,15 +5,15 @@ title: ProcessWire Development Guides | processwire.dev
 menu_title: Introduction
 ---
 
-# processwire.dev – Guides for adept ProcessWire development
+# Guides for adept ProcessWire development
 
-This site is a collection of (opinionated) tutorials for custom development with the [ProcessWire Content-Management-Framework](https://processwire.com/). The guides aim to illustrate best practices for ProcessWire development in terms of performance, accessibility, security, extensibility, developer and user experience in the context of ProcessWire.
+[processwire.dev](https://processwire.dev) is a collection of (opinionated) tutorials for custom development with the [ProcessWire Content-Management-Framework](https://processwire.com/). The guides aim to illustrate best practices for ProcessWire development in terms of performance, accessibility, security, extensibility, developer and user experience in the context of ProcessWire.
 
 The tutorials are written and maintained by me, Moritz L'Hoest (MoritzLost on [Github](https://github.com/MoritzLost) and in the [ProcessWire Forum](https://processwire.com/talk/profile/7016-moritzlost/)).
 
 ## How to get started
 
-I do not want to write the millionth `hello world` tutorial that will teach you how to install the CMS and set up your first field. If you're looking for a ProcessWire starter tutorial, take a look at [ProcessWire CMS - A Beginner's Guide by Smashing Magazine](https://www.smashingmagazine.com/2016/07/the-aesthetic-of-non-opinionated-content-management-a-beginners-guide-to-processwire/). Instead, This guide assumes some level of familiarity with ProcessWire and PHP, as well as a solid grasp on current web technologies (HTML5, CSS, JavaScript / ES6 and above). The reason for that is because I want to talk about high-level concepts without reiterating the basics in every step.
+I do not want to write the millionth `hello world` tutorial that will teach you how to install the CMS and set up your first field. If you're looking for a ProcessWire starter tutorial, take a look at [ProcessWire CMS - A Beginner's Guide by Smashing Magazine](https://www.smashingmagazine.com/2016/07/the-aesthetic-of-non-opinionated-content-management-a-beginners-guide-to-processwire/). Instead, this guide assumes some level of familiarity with ProcessWire and PHP, as well as a solid grasp on current web technologies (HTML5, CSS, JavaScript / ES6 and above). The reason for that is because I want to talk about high-level concepts without reiterating the basics in every step.
 
 That said, I want this resource to be as inclusive as possible, so I'll try to write as inclusively as possible and avoid overcomplicating things unnecessarily.
 
