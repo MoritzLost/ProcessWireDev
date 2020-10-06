@@ -6,7 +6,7 @@ generatePreviewImages(
     {
         globPattern: 'preview-images/**/*.{html,htm}',
         removeOriginalFiles: true,
-        screenshotElementSelector: '#preview-image',
+        screenshotElementSelector: '#preview-image > .content',
     }
 )
 .then(() => process.exit(0))

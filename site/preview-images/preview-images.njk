@@ -19,32 +19,30 @@ permalink: "preview-images/{{ currentPost.data.page.fileSlug }}.html"
             box-sizing: border-box;
         }
         body, html {
-            width: 1500px;
             margin: 0;
             padding: 0;
             background: #333;
             color: white;
             font-family: 'Fira Sans', sans-serif;
         }
+        p, h1 {
+            margin: 0 0 1rem 0;
+        }
         #preview-image {
             padding: 0;
             margin: 1rem;
-            position: relative;
         }
         .content {
-            min-height: calc(1000px - 40px);
-            width: 100%;
-            padding: 100px 100px 50px 100px;
+            position: relative;
+            width: 1200px;
+            min-height: 630px;
+            padding: 80px 100px 40px 100px;
             display: grid;
             grid-auto-rows: min-content;
             justify-items: stretch;
             align-items: center;
             justify-content: stretch;
             align-content: space-between;
-        }
-        .content > * {
-            margin: 0 0 16px 0;
-            padding: 0;
         }
         .border {
             position: absolute;
@@ -61,7 +59,7 @@ permalink: "preview-images/{{ currentPost.data.page.fileSlug }}.html"
             bottom: 0;
         }
         .title {
-            font-size: 80px;
+            font-size: 60px;
             line-height: 120%;
             font-family: 'Fira Code', monospace;
         }
@@ -71,36 +69,38 @@ permalink: "preview-images/{{ currentPost.data.page.fileSlug }}.html"
             border-bottom: 3px solid white;
         }
         .description {
-            font-size: 64px;
+            font-size: 40px;
             line-height: 140%;
         }
         .url {
-            font-size: 36px;
+            font-size: 28px;
             font-style: italic;
             margin-bottom: 16px;
         }
         .logo {
-            width: 100%;
+            width: 75%;
             margin-bottom: 0;
         }
     </style>
 </head>
 <body>
     <main id="preview-image">
-        <div class="border border--top"></div>
         <div class="content">
-            <h1 class="title">{{ currentPost.data.title }}</h1>
-            {% if currentPost.data.description %}
-                <p class="description">{{ currentPost.data.description }}</p>
-            {% endif %}
-            {# <p class="author">@MoritzLost</p> #}
-            <hr class="line">
+            <div class="border border--top"></div>
+            <div class="text">
+                <h1 class="title">{{ currentPost.data.title }}</h1>
+                {% if currentPost.data.description %}
+                    <p class="description">{{ currentPost.data.description }}</p>
+                {% endif %}
+                {# <p class="author">@MoritzLost</p> #}
+                <hr class="line">
+            </div>
             <div class="footer">
                 <div class="url">{{ site.url }}/{{ currentPost.fileSlug | stripVersionPrefix }}/</div>
                 <img class="logo" src="/assets/processwire-dev.svg">
             </div>
+            {# <div class="border border--bottom"></div> #}
         </div>
-        {# <div class="border border--bottom"></div> #}
     </main>
 </body>
 </html>
