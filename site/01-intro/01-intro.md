@@ -3,6 +3,7 @@ tags: post
 layout: homepage
 title: ProcessWire Development Guides | processwire.dev
 menu_title: Introduction
+description: ProcessWire development made easy with free tutorials for web developers.
 ---
 
 # Guides for adept ProcessWire development

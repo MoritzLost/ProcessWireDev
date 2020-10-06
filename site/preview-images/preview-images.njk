@@ -7,4 +7,101 @@ pagination:
 permalink: "preview-images/{{ currentPost.data.page.fileSlug }}.html"
 ---
 
-<h1>{{ currentPost.data.title }}</h1>
+<!DOCTYPE html>
+<html lang="{{ site.lang }}" dir="{{ site.dir }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ currentPost.data.title }}</title>
+     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@700&family=Fira+Sans:ital@0;1&display=swap" rel="stylesheet"> 
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 1500px;
+            margin: 0;
+            padding: 0;
+            background: #333;
+            color: white;
+            font-family: 'Fira Sans', sans-serif;
+        }
+        #preview-image {
+            padding: 0;
+            margin: 1rem;
+            position: relative;
+        }
+        .content {
+            min-height: calc(1000px - 40px);
+            width: 100%;
+            padding: 100px 100px 50px 100px;
+            display: grid;
+            grid-auto-rows: min-content;
+            justify-items: stretch;
+            align-items: center;
+            justify-content: stretch;
+            align-content: space-between;
+        }
+        .content > * {
+            margin: 0 0 16px 0;
+            padding: 0;
+        }
+        .border {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 40px;
+            background-color: #E64A3C;
+        }
+        .border--top {
+            top: 0;
+        }
+        .border--bottom {
+            bottom: 0;
+        }
+        .title {
+            font-size: 80px;
+            line-height: 120%;
+            font-family: 'Fira Code', monospace;
+        }
+        .line {
+            margin: 16px 0;
+            border: 0;
+            border-bottom: 3px solid white;
+        }
+        .description {
+            font-size: 64px;
+            line-height: 140%;
+        }
+        .url {
+            font-size: 36px;
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+        .logo {
+            width: 100%;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <main id="preview-image">
+        <div class="border border--top"></div>
+        <div class="content">
+            <h1 class="title">{{ currentPost.data.title }}</h1>
+            {% if currentPost.data.description %}
+                <p class="description">{{ currentPost.data.description }}</p>
+            {% endif %}
+            {# <p class="author">@MoritzLost</p> #}
+            <hr class="line">
+            <div class="footer">
+                <div class="url">{{ site.url }}/{{ currentPost.fileSlug | stripVersionPrefix }}/</div>
+                <img class="logo" src="/assets/processwire-dev.svg">
+            </div>
+        </div>
+        {# <div class="border border--bottom"></div> #}
+    </main>
+</body>
+</html>
+
