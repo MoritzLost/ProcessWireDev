@@ -2,6 +2,8 @@
 tags: post
 layout: post
 title: Extend Twig with custom functionality
+menu_title: "Twig integration: Custom functionality"
+description: How to customize and extend Twig with custom functionality for ProcessWire.
 ---
 
 # How to extend Twig with custom functionality and connect with the ProcessWire API

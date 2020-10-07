@@ -1,12 +1,12 @@
 ---
 tags: post
 layout: homepage
-title: ProcessWire Development Guides | processwire.dev
+title: Tutorials for adept ProcessWire development
 menu_title: Introduction
 description: ProcessWire development made easy with free tutorials for web developers.
 ---
 
-# Guides for adept ProcessWire development
+# Tutorials for adept ProcessWire development
 
 [processwire.dev](https://processwire.dev) is a collection of (opinionated) tutorials for custom development with the [ProcessWire Content-Management-Framework](https://processwire.com/). The guides aim to illustrate best practices for ProcessWire development in terms of performance, accessibility, security, extensibility, developer and user experience in the context of ProcessWire.
 

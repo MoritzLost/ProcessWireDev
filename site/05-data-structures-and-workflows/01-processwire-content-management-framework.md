@@ -1,7 +1,9 @@
 ---
 tags: post
 layout: post
-title: "Utilizing the Content Management Framework"
+title: Content strategies for the ProcessWire framework
+menu_title: "Content strategies: Utilizing the framework"
+description: Learn how to utilize the ProcessWire framework with diverse strategies for content structure.
 ---
 
 # Customize everything: Using ProcessWire as a Content Management Framework

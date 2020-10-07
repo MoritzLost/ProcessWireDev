@@ -6,9 +6,13 @@
 <meta property="og:locale" content="{{ site.lang }}">
 <meta property="og:site_name" content="{{ site.name }}">
 
+<meta property="og:image" content="{{ site.url }}/preview-images/{{ page.fileSlug | stripVersionPrefix }}.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="{{ title }} | {{ description }}">
+
 {% if description %}
     <meta name="description" content="{{ description }}">
     <meta property="og:description" content="{{ description }}">
 {% endif %}
 
-<meta name="generator" content="Eleventy (11ty.io)">
+<meta name="generator" content="Eleventy (11ty.dev)">

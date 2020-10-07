@@ -4,7 +4,7 @@ pagination:
   size: 1
   alias: currentPost
   resolve: values
-permalink: "preview-images/{{ currentPost.data.page.fileSlug }}.html"
+permalink: "preview-images/{{ currentPost.fileSlug | stripVersionPrefix }}.html"
 ---
 
 <!DOCTYPE html>
@@ -78,10 +78,17 @@ permalink: "preview-images/{{ currentPost.data.page.fileSlug }}.html"
             margin-bottom: 16px;
         }
         .logo {
-            width: 75%;
+            width: 100%;
             margin-bottom: 0;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/balance-text/3.3.0/balancetext.min.js" defer></script>
+    <script defer>
+        window.onload = () => {
+            balanceText(document.querySelector('.title'));
+            // balanceText(document.querySelector('.description'));
+        }
+    </script>
 </head>
 <body>
     <main id="preview-image">
@@ -92,11 +99,17 @@ permalink: "preview-images/{{ currentPost.data.page.fileSlug }}.html"
                 {% if currentPost.data.description %}
                     <p class="description">{{ currentPost.data.description }}</p>
                 {% endif %}
-                {# <p class="author">@MoritzLost</p> #}
+                {# <p class="author">...</p> #}
                 <hr class="line">
             </div>
             <div class="footer">
-                <div class="url">{{ site.url }}/{{ currentPost.fileSlug | stripVersionPrefix }}/</div>
+                <div class="url">
+                    {% if currentPost.data.layout == 'homepage' %}
+                        {{ site.url }}
+                    {% else %}
+                        {{ site.url }}/{{ currentPost.fileSlug | stripVersionPrefix }}
+                    {% endif %}
+                </div>
                 <img class="logo" src="/assets/processwire-dev.svg">
             </div>
             {# <div class="border border--bottom"></div> #}

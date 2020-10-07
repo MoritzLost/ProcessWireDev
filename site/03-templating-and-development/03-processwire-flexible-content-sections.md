@@ -1,10 +1,12 @@
 ---
 tags: post
 layout: post
-title: Content sections with Repeater Matrix
+title: Resubable content sections with Repeater Matrix
+menu_title: Content sections using Repeater Matrix
+description: How to create flexible content sections using the Repeater Matrix module for ProcessWire.
 ---
 
-# Content sections with Repeater Matrix and Twig
+# Create flexible content sections using Repeater Matrix fields and Twig
 
 Most modern sites don't have fixed layouts with fixed fields, but instead need to support modular content creation – multi-column layouts with text and images, accordions, image galleries, downloads, and more. To do this with ProcessWire we need a field structure for repeatable sets of fields and a solid template structure in Twig that makes it easy to add new sections. For the field setup, the commercial [Repeater Matrix](https://processwire.com/store/pro-fields/repeater-matrix/) module is the go-to approach to create dynamic content sections. For the output, this guide will demonstrate a scalable Twig template structure that will work as a baseline to add your own custom sections to.
 

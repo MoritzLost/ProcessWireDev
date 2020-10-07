@@ -1,7 +1,9 @@
 ---
 tags: post
 layout: post
-title: Composer setup
+title: Integrating Composer with ProcessWire
+menu_title: Composer integration
+description: Learn how to set up dependency management with Composer for ProcessWire projects.
 ---
 
 # How to set up and integrate Composer with ProcessWire

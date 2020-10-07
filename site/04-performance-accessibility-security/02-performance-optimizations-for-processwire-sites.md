@@ -2,6 +2,8 @@
 tags: post
 layout: post
 title: Performance optimizations for ProcessWire sites
+menu_title: Performance optimization
+description: Learn how to optimize the performance of your ProcessWire site using these simple techniques!
 ---
 
 # Optimize the performance of ProcessWire sites
@@ -16,7 +18,7 @@ Before you get started, make sure to test the performance of your site with some
 
 For every website that contains image, using responsive images is **the most important aspect of performance**, period. If you are including desktop-resolution images on mobile devices, you can optimize loading times all you want, your performance will still be abysmall. For a near-instantaneous page load you will need to get the initial request size down to a couple hundred kilobytes or less – that budget will already be exceeded by one huge hero image. So before you apply any other optimization technique, you need to make sure your images are only served in the size they are actually needed, depending on the device width.
 
-Responsive images involves creating multiple variations of the same source image in different resolutions, and including a list of alternatives for the browser to choose from. This is covered in detail in [Generating responsive images](/case-study-responsive-image-function-template/). That tutorial includes a general introduction on how responsive images work, as some pointers on implementing responsive images in ProcessWire sites and a complete production-ready component to include in your projects.
+Responsive images involves creating multiple variations of the same source image in different resolutions, and including a list of alternatives for the browser to choose from. This is covered in detail in [Generating responsive images](/processwire-responsive-images/). That tutorial includes a general introduction on how responsive images work, as some pointers on implementing responsive images in ProcessWire sites and a complete production-ready component to include in your projects.
 
 Once your site is using responsive images, you can take it one step further and implement [lazy loading](https://web.dev/browser-level-image-lazy-loading/). Since lazy loading is already supported natively by Chrome and Firefox, you can massively improve the perceived loading speed of your site for a large number of visitors by only including one additional attribute in your image tags.
 

@@ -2,6 +2,8 @@
 tags: post
 layout: post
 title: CSS and JS compilation for ProcessWire
+menu_title: CSS and JS compilation
+description: How to get started with CSS and JavaScript compilation for ProcessWire sites.
 ---
 
 # Set up your own CSS and JavaScript build pipeline

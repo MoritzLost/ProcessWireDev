@@ -1,12 +1,14 @@
 ---
 tags: post
 layout: post
-title: "Case study: Responsive image component"
+title: Using responsive images in ProcessWire
+menu_title: "Case study: Responsive image component"
+description: Learn how to create a reusable responsive image component using the ProcessWire API.
 ---
 
 # Component case study: Generating responsive images with ProcessWire and Twig
 
-Modern web design and development is rarely done in terms of finished pages. Instead, current trends lean towards a module- or component-based approach. This can be seen in the tooling available for web design (Figma, Sketch) and in the popular frameworks for web development (React, Vue, etc). The tutorial on [Content Sections](/repeater-matrix-content-sections) demonstrates one such approach to building pages with dynamic content sections. Beyond that, working in terms of reusable components can be a major productivity boost, especially when you're building base components that can be used in multiple sites.
+Modern web design and development is rarely done in terms of finished pages. Instead, current trends lean towards a module- or component-based approach. This can be seen in the tooling available for web design (Figma, Sketch) and in the popular frameworks for web development (React, Vue, etc). The tutorial on [Content Sections](/processwire-flexible-content-sections) demonstrates one such approach to building pages with dynamic content sections. Beyond that, working in terms of reusable components can be a major productivity boost, especially when you're building base components that can be used in multiple sites.
 
 This tutorial is a case study that demonstrates how to build a flexible, developer-friendly component for a *responsive image* component (the first section contains an introduction to responsive images in HTML). The component will be generic enough to use in most sites.
 

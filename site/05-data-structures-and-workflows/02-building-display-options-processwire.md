@@ -1,7 +1,9 @@
 ---
 tags: post
 layout: post
-title: Building flexible display options
+title: Display options for ProcessWire sites
+menu_title: Building flexible display options
+description: Pointers and examples on how to create easy to use yet effective display options for ProcessWire pages and content.
 ---
 
 # Building flexible display options for ProcessWire

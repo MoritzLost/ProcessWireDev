@@ -1,7 +1,9 @@
 ---
 tags: post
 layout: post
-title: Use Twig as a flexible view layer
+title: Integrating Twig with ProcessWire
+menu_title: "Twig integration: Setup"
+description: Tutorial on using Twig as a flexible view layer for ProcessWire projects.
 ---
 
 # How to set up Twig as a flexible view layer for ProcessWire
