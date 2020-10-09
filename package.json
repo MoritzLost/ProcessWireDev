@@ -15,7 +15,7 @@
     "license": "UNLICENSED",
     "author": "MoritzLost <info@herebedragons.world>",
     "scripts": {
-        "build": "npm run build:eleventy && npm run build:sass",
+        "build": "npm run build:eleventy && npm run generate-preview-images && npm run build:sass",
         "build:eleventy": "eleventy",
         "build:sass": "node-sass --output-style=compressed --omit-source-map-url src/_sass --output=dist/css/",
         "start": "npm-run-all build:sass -p watch:*",
