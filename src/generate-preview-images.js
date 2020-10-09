@@ -1,5 +1,5 @@
 const path = require('path');
-const { generatePreviewImages } = require('../generate-preview-images/main');
+const { generatePreviewImages } = require('generate-preview-images');
 
 generatePreviewImages(
     path.resolve(__dirname, '../dist/'),
