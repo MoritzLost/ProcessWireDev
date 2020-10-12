@@ -1,4 +1,3 @@
-{# canonical URLs / links #}
 <link rel="canonical" href="{{ site.url + page.url }}">
 <meta property="og:url" content="{{ site.url + page.url }}">
 
@@ -18,4 +17,10 @@
 
 <meta name="generator" content="Eleventy (11ty.dev)">
 
-<meta name="twitter:card" content="summary_large_image">
+{%- if seo.twitter -%}
+    {%- for name, value in seo.twitter -%}
+        {% if value %}
+            <meta name="twitter:{{ name }}" content="{{ value }}">
+        {% endif %}
+    {%- endfor -%}
+{%- endif -%}
