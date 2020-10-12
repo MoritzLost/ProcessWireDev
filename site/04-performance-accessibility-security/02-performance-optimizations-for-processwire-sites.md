@@ -40,9 +40,75 @@ If you need to have that sort of dynamic output, here are some possible solution
 
 ## Granular caching using the $cache API
 
-- used when template cache / procache is not an options
-- api-based caching of specific sections / variables
-- procache
+Both the template cache and the ProCache module represent an all-or-nothing approach to caching which won't work for highly dynamic sites with many moving parts. In this case, you need a more granular approach which allows you to cache only selected parts of the output to a cache. ProcessWire provides a general-purpose database cache through the [$cache API](https://processwire.com/api/ref/wire-cache/) for this purpose. The cache API can be used as a key-value store to store strings like partial output from your templates or serializable data objects which are CPU-intensive to compute or require a lot of database queries. By caching those values, the template can essentially skip some sections and use cached values for those instead.
+
+For example, let's say you're building a listing of stores locations, each store being represented by a page. This can result in a lot of database queries: First you have to get all stores through the $pages API. Then you iterate through them in the template and output each store's title, address, opening hours and so on. Each field access requires an additional database query, unless all your fields are auto-joined (which presents problems in other areas). By caching the generated HTML output for the store listing, you can reduce that overhead for subsequent requests:
+
+```php
+$cacheKey = 'store-listing';
+$storeListing = $cache->get($cacheKey);
+if (!$storeListing) {
+    $storeListing = wireRenderFile('partials/store-listing.php');
+    $cache->set($cacheKey, $storeListing, WireCache::expireDaily);
+}
+echo $storeListing;
+```
+
+The two main problems you have to solve is (1) making sure to vary your cache keys depending on all moving parts and (2) when and how to invalidate
+ the cached data.
+
+### Varying cache keys
+
+When using the $cache API, you have to make sure not to access the wrong piece of data from the cache. For example, let's say the `store-listing.php` displays a list of all locations beloging to the current store page, so the list of location on the pages `/stores/brand-a/` and `/stores/brand-b/` would be completely different. The snippet above would produce incorrect results in this case, because the cache key `'store-listing'` is identical in both cases, so the cached results from `/stores/brand-a/` might be displayed on `/stores/brand-a/` or vice versa. The solution to this is to vary your cache keys by all factors that the cached content depends on. For example:
+
+```php
+$cacheKey = 'store-listing-' . $page->id;
+$storeListing = $cache->get($cacheKey);
+// ...
+```
+
+Now the cache key differs depending on the current page ID, so there's no chance of mixing up cached data from different stores.
+
+Here's a list of things you will often need to vary your cache keys by:
+
+- The current page.
+- The current language (for multi-language sites).
+- The user roles of the current user, or the current user altogether.
+- URL segments or query parameters.
+- Cookies, session data or request headers.
+
+You should only make the cache keys as granular as you need them to be, as it will increase the amount of cache hits. For example, if the store listing above does *not* depend on the current page, the cache could be reused across different pages, so varying the cache key by page ID would only store unnecessary duplicate entries in the cache table.
+
+You can also define your own function or class acting as an adapter that automatically adds a namespace to the cache key based on the most common factors. Using namespaces allows you to very easily make cache keys vary by multiple factors. This way, you don't have to worry too much about collisions, unless your output also depends on URL parameters, cookies, session data and so on.
+
+```php
+// build a namespace string that varies by page, language and user role(s)
+$user = wire('user');
+$language = $user->language;
+$cacheNamespace = sprintf(
+    'page:%1$s--language:%2$s--roles:%3$s',
+    wire('page')->id,
+    $language ? $language->name : 'unknown',
+    $user->roles->implode('|', 'name')
+);
+
+// a static key is safe to use now because the cache entry is namespaced
+$cacheKey = 'store-listing';
+$storeListing = $cache->getFor($cacheNamespace, $cacheKey);
+// ...
+```
+
+<small class="sidenote sidenote--warning">
+
+Be careful when saving JSON-encoded strings through $cache API, because ProcessWire will attempt to decode them upon retrieval. You can use [this hook](https://processwire.com/talk/topic/13342-wirecache-and-json-data-quirks/?tab=comments#comment-180789) as a workaround.
+
+</small>
+
+### Invalidating cached data
+
+The example above uses `WireCache::expireDaily`, one of the [available constants](https://processwire.com/api/ref/wire-cache/#pwapi-methods-constants), to specify that the cached data is valid for up to one day. This is a simple approach that you can use if you know the data isn't going to change very frequently. The downside is that the cached data may be outdated if the content is displayed is updated. Another approach is using `WireCache::expireSave`, which expires the cache as soon as any page or template is saved. But using this on a page with very frequent updates might actually reduce performance if caches are created and expired in quick succession.
+
+The best solution depends on a decision between precision and performance. Do you want to guarantee that you will never display outdated content, or do you want to ensure fast response times by making sure caches get used for a while before expiring? You can make that decision for each indidividual piece of cacheable content.
 
 ## Utilizing the browser cache
 
