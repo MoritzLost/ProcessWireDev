@@ -4,6 +4,7 @@ layout: post
 title: Handling special cases in ProcessWire
 menu_title: "Handling special cases: Navigation display options"
 description: Combine flexibility with ease of use with these techniques to manage complexity with the ProcessWire Content Management Framework.
+discuss_url: https://processwire.com/talk/topic/22220-handling-special-cases-the-elusive-navigation-menu-override/
 ---
 
 # Handling special cases gracefully: The elusive navigation override

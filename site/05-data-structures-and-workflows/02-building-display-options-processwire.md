@@ -4,6 +4,7 @@ layout: post
 title: Display options for ProcessWire sites
 menu_title: Building flexible display options
 description: Pointers and examples on how to create easy to use yet effective display options for ProcessWire pages and content.
+discuss_url: https://processwire.com/talk/topic/20662-building-extensible-display-options-with-selectable-option-fields/
 ---
 
 # Building flexible display options for ProcessWire

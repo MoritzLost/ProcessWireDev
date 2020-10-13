@@ -1,5 +1,17 @@
 
 <aside class="post-footer">
+    <p class="article-notices">
+        &copy; Moritz L'Hoest<br>
+        The copyright on all code examples in this post is waived by <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>.<br>
+    </p>
+    <p class="article-links">
+        {% if discuss_url %}
+            <a href="{{ discuss_url }}" class="article-links__link">
+                {%- fontawesome "comments", "solid", ['article-links__icon'], "" -%}
+                {{- translations.article_discuss_link -}}
+            </a>
+        {% endif %}
+    </p>
     <nav class="continue-reading">
         {% set prevPost = page | postTreePrevious(collections.postTree) %}
         {% set nextPost = page | postTreeNext(collections.postTree) %}

@@ -4,6 +4,7 @@ layout: post
 title: Integrating Composer with ProcessWire
 menu_title: Composer integration
 description: Learn how to set up dependency management with Composer for ProcessWire projects.
+discuss_url: https://processwire.com/talk/topic/20490-how-to-setup-composer-and-use-external-libraries-in-processwire/
 ---
 
 # How to set up and integrate Composer with ProcessWire

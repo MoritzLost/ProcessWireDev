@@ -1,7 +1,9 @@
 ---
 layout: html
 permalink: "{{ page.fileSlug | stripVersionPrefix }}/index.html"
+discuss_url: false
 ---
+
 {{ content | safe }}
 
 {% include "components/post-footer.njk" %}
