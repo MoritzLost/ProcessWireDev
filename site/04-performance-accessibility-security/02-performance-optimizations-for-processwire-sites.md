@@ -112,7 +112,58 @@ The best solution depends on a decision between precision and performance. Do yo
 
 ## Utilizing the browser cache
 
+Most of the assets the browser needs to load to display your site like scripts, stylesheets and images are static, so they can be cached by the browser. This way, the browser only needs to load those assets once and can reuse them on subsequent requests. However, a browser needs a way to tell if it may cache a given asset. Since the browser has no way of telling if a resource is static or generated dynamically – for example, if your site comes with a dark theme and a light theme, you might use a server-side script to serve a different stylesheet depending on a cookie storing the user's preference. So caching this resource might result in incorrect results, which is why browsers are generally conservative with caching unless we tell them it's ok.
+
+The server can inform the browser about cacheable assets using [HTTP response headers](https://developer.mozilla.org/en-US/docs/Glossary/Response_header). The [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) header tells a browser if it's ok to cache a given resource as well as how long the cached resource is valid. Sending the following response header for a stylesheet or script would allow the browser to cache that particular resource for one year:
+
+```text
+Cache-Control: public, immutable, max-age=31536000
+```
+
+You can send headers using either PHP or the Apache server. In a typical ProcessWire installation, static assets will be served directly by Apache, so for those PHP is not an option. Luckily, Apache can be configured to add different HTTP response headers depending on the type of resource it serves for a request. There are multiple methods to add 
+
+```apacheconf
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault                  "access plus 1 day"
+
+    # HTML
+    ExpiresByType text/html         "access plus 1 week"
+
+    # CSS & JS
+    ExpiresByType text/css                  "access plus 1 year"
+    ExpiresByType text/javascript           "access plus 1 year"
+    ExpiresByType application/javascript    "access plus 1 year"
+    ExpiresByType application/x-javascript  "access plus 1 year"
+
+    # Images, Videos, Media
+    ExpiresByType audio/ogg                 "access plus 6 month"
+    ExpiresByType image/apng                "access plus 6 month"
+    ExpiresByType image/bmp                 "access plus 6 month"
+    ExpiresByType image/gif                 "access plus 6 month"
+    ExpiresByType image/jpeg                "access plus 6 month"
+    ExpiresByType image/png                 "access plus 6 month"
+    ExpiresByType image/svg+xml             "access plus 6 month"
+    ExpiresByType image/webp                "access plus 6 month"
+    ExpiresByType video/mp4                 "access plus 6 month"
+    ExpiresByType video/ogg                 "access plus 6 month"
+    ExpiresByType video/webm                "access plus 6 month"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Vary by Accept-Encoding, prevents serving compressed files to non-supporting browsers
+    Header append Vary Accept-Encoding
+
+    # Mark files that we can reliably use version strings for as immutable
+    <FilesMatch "\.(css|js|woff2?|ttf|otf|eot)$">
+        Header append Cache-Control immutable
+    </FilesMatch>
+</IfModule>
+```
+
 - htacces rules for caching & compression (or: precompressed assets?)
+
+## Serving compressed assets to reduce bandwidth usage
 
 ## Conclusion
 
