@@ -120,7 +120,13 @@ The server can inform the browser about cacheable assets using [HTTP response he
 Cache-Control: public, immutable, max-age=31536000
 ```
 
-You can send headers using either PHP or the Apache server. In a typical ProcessWire installation, static assets will be served directly by Apache, so for those PHP is not an option. Luckily, Apache can be configured to add different HTTP response headers depending on the type of resource it serves for a request. There are multiple methods to add 
+You can send headers using either PHP or the Apache server. In a typical ProcessWire installation, static assets will be served directly by Apache, so for those PHP is not an option. Luckily, Apache can be configured to add different HTTP response headers depending on the type of resource it serves for a request. There are multiple methods available in Apache to add those headers. The easiest way to add those headers is the `ExpiresByType` directive (provided by [mod_expires](https://httpd.apache.org/docs/2.4/mod/mod_expires.html)), which adds headers based on the [MIME-type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the served document.
+
+<small class="sidenote sidenote--success">
+
+Despite the name, `ExpiresByType` sets the `max-age` directive of the `Cache-Control` header as well as the older `Expires` header. The `Expires` header isn't stricly needed since `Cache-Control` takes precedence over it, but it doesn't do any harm either.
+
+</small>
 
 ```apacheconf
 <IfModule mod_expires.c>
@@ -149,11 +155,14 @@ You can send headers using either PHP or the Apache server. In a typical Process
     ExpiresByType video/ogg                 "access plus 6 month"
     ExpiresByType video/webm                "access plus 6 month"
 </IfModule>
+```
 
+This snippet adds a default cache lifetime of one day to all resources, as well as some custom limits for the specified file types.
+
+If you're including version parameters in your asset URLs (like `/css/main.css?v=[hash-or-timestamp]`), you can go one step further. Since you know that the asset won't change as long as the version parameter stays the same, you can use the `immmutable` directive in your Cache-Control header. This tells the browser that this asset will never change, so it doesn't need to revalidate it at all (as long as the query string stays the same).
+
+```apacheconf
 <IfModule mod_headers.c>
-    # Vary by Accept-Encoding, prevents serving compressed files to non-supporting browsers
-    Header append Vary Accept-Encoding
-
     # Mark files that we can reliably use version strings for as immutable
     <FilesMatch "\.(css|js|woff2?|ttf|otf|eot)$">
         Header append Cache-Control immutable
@@ -161,9 +170,16 @@ You can send headers using either PHP or the Apache server. In a typical Process
 </IfModule>
 ```
 
-- htacces rules for caching & compression (or: precompressed assets?)
+If you are *not* using query strings, you may want to use lower cache lifetimes – with the `ExpiresByType` directives above, it may take up to a year until a returning visitor receives updates to your assets!
 
 ## Serving compressed assets to reduce bandwidth usage
+
+Client-side caching is great for returning visitors, but it doesn't do anything for the first visit. This is where *compression* can shine. By [compressing HTML, JS and CSS using GZIP or brotli](https://web.dev/reduce-network-payloads-using-text-compression/) you can reduce the amount of bytes the browser needs to download from the server, which is especially important for users with slow internet connections. There are two main approaches to serving compressed assets:
+
+- Have Apache encode assets on-the-fly before they're sent to the client. This is easy to set up and even works with dynamically generated content (such as the HTML output of your pages). However, it only works well with GZIP, since brotli encoding takes too long to be feasible.
+- Generate compressed assets in your development pipeline during the build step. This is of course more efficient, but it requires you to use a build pipeline (like Webpack, Parcel, Gulp or Grunt), which not everyone does.
+
+Both options require some additional Apache configuration which can be done in the `.htaccess` file. On-the-fly encoding usually makes use of [mod_deflate, the Apache documentation has some useful examples](https://httpd.apache.org/docs/2.4/mod/mod_deflate.html). You can also configure Apache to serve pre-compressed assets depending on the client's `Accept-Encoding` header, this only requires [a few simple RewriteRules](https://httpd.apache.org/docs/2.4/mod/mod_deflate.html#precompressed). Make sure to understand both options. If you don't use a build pipeline, adding the DEFLATE filter is very simple and can already have a huge impact. If you are using a build pipeline, you can probably find a plugin that adds pre-compressed files to your output – like [parcel-plugin-compress](https://www.npmjs.com/package/parcel-plugin-compress) for [Parcel](https://parceljs.org/) or [compression-webpack-plugin](https://github.com/webpack-contrib/compression-webpack-plugin) for [Webpack](https://webpack.js.org/).
 
 ## Conclusion
 
