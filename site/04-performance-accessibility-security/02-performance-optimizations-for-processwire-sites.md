@@ -36,7 +36,7 @@ The downside of both approaches is that you can't use it for pages that include 
 If you need to have that sort of dynamic output, here are some possible solutions:
 
 - You can implement that functionality client-side using JavaScript. For example, displaying some information stored in a session can also be done in the browser (though you'd have to use a cookie or [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) instead of a session). Of course, that's not possible in every scenario, in particular if you can't expose the data or credentials you need for your application to run to the browser. But it will work with both the template cache and the ProCache.
-- My ProcessWire module [Cache Control](https://modules.processwire.com/modules/process-cache-control/) aims to solve that exact problem. It does so by using placeholders which are dynamically replaced with whatever dynamic data you need, even when the response is served from the cache. However, this will only work with the template cache, not with ProCache!
+- My ProcessWire module [Cacheable Placeholders](https://modules.processwire.com/modules/cache-placeholders/) aims to solve that exact problem. It does so by using placeholders which are dynamically replaced with whatever dynamic data you need, even when the response is served from the cache. However, this will only work with the template cache, not with ProCache!
 
 ## Granular caching using the $cache API
 
@@ -183,4 +183,6 @@ Both options require some additional Apache configuration which can be done in t
 
 ## Conclusion
 
-- clear all caches (link to ProcessCacheControl)
+Website optimization has many different facets, most of which are more or less important depending on what type of project you're working on. Those techniques are merely a baseline that will provide a solid performance boost to most ProcessWire sites.
+
+With all those layers of caching, it can become cumbersome to roll out updates to your site's CSS or JavaScript. If you forget to clear even one of the caching layers, visitors might not see the updates for some time, or even see broken pages if, for example, their browser loads new HTML content but still uses an older stylesheet from the cache. To solve this problem I built the [Cache Control module](https://modules.processwire.com/modules/process-cache-control/), which allows you to clear *all* caches with one click. This includes the template cache, the ProCache module, the $cache API and custom locations like the Twig template cache if you're using Twig. You can even use it to add version parameters to your assets and update the current version when you clear the cache, thereby forcing browsers to download updated assets.
