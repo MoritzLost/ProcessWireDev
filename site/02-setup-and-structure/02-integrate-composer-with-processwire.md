@@ -16,7 +16,7 @@ Composer is the de-facto standard for package management in the PHP world. Howev
 - By following a sensible folder structure (see below), you get increased security out of the box.
 - You can even utilize Composer scripts to automate your project setup and build your own ProcessWire project boilerplate.
 
-In this tutorial, I will walk through all the steps required to install Composer, add it's autoloader to ProcessWire, and use it to install external libraries and wire up custom classes. This setup is pretty basic and includes some general information on using Composer, so you can follow along even if you haven't worked with it before.
+In this tutorial, I will walk through all the steps required to install Composer, add its autoloader to ProcessWire, and use it to install external libraries and wire up custom classes. This setup is pretty basic and includes some general information on using Composer, so you can follow along even if you haven't worked with it before.
 
 ## Recommended directory structure for ProcessWire projects with Composer
 
@@ -83,7 +83,7 @@ git clone https://github.com/processwire/processwire public
 
 <small class="sidenote sidenote--info">
 
-_Sidenote:_ Of course it would be best if the ProcessWire core lived outside the webroot alongside our other dependecies. However, ProcessWire doesn't really support that, and it does include some configuration in it's `.htaccess` file to safeguard sensitive directories and files inside the CMS, so it's not a big problem.
+_Sidenote:_ Of course it would be best if the ProcessWire core lived outside the webroot alongside our other dependecies. However, ProcessWire doesn't really support that, and it does include some configuration in its `.htaccess` file to safeguard sensitive directories and files inside the CMS, so it's not a big problem.
 
 </small>
 

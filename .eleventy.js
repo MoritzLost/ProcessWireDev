@@ -45,6 +45,9 @@ module.exports = eleventyConfig => {
     // uncompiled assets
     eleventyConfig.addPassthroughCopy('site/assets/');
 
+    // favicons
+    eleventyConfig.addPassthroughCopy({'site/favicons/': '/'})
+
     // build a tree of post sections (folders) and posts inside them
     // this assumes that each section number exists only once, same for post
     // numbers within sections

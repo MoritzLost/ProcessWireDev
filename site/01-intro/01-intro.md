@@ -32,7 +32,7 @@ Since this site is about following best practices, it's important to define the 
 
 I invite you to read through the list and think about which aspects are more or less important to you, and what other things would go on your list. If there is a large disconnect between your values and mine, some of the chapters might feel unnecessary or counterproductive - which is totally fine. You should carefully consider what's important to you and disregard any advice I give if it clashes with your goals for your development work or individual projects.
 
-1. **User experience and accessibility.** Browsing and using the site is effortless. The site is inclusive by following established accessibility standards. Design flourishes and delightful interactions never trump ease-of-use or accessibility.
+1. **User experience and accessibility.** Browsing and using the site is effortless. The site is inclusive by following established accessibility standards. Design flourishes and delightful interactions never trump ease of use or accessibility.
 2. **Security.** Follow best practices for security hardening. Security should be considered from the beginning, not as an afterthought. Improve your code's resilience against unknown bugs and exploits by reducing the attack surface.
 3. **Performance.** Vital for user experience, user retention and search engine ratings. The best performance optimization is cutting out things you don't need.
 4. **Future-proof work.** Data and content are stored in sensible formats and structures, independent of the current presentation format or design. Source code is clear, concise and separates concerns.

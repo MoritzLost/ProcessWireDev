@@ -1,0 +1,24 @@
+@media print {
+    @page {
+        size: A4;
+        margin: 2rem;
+    }
+    a:after {
+        content: " (" attr(href) ") ";
+    }
+    .main {
+        display: block !important;
+        width: 100% !important;
+    }
+    .main__article {
+        margin: 0 !important;
+        padding: 1rem;
+    }
+    .main__nav, .main__footer, .article-links, .continue-reading, .back-to-top {
+        display: none !important;
+    }
+    code[class*="language-"],
+    pre[class*="language-"] {
+        white-space: pre-wrap;
+    }
+}

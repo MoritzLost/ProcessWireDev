@@ -8,7 +8,7 @@ description: Learn how to optimize the performance of your ProcessWire site usin
 
 # Optimize the performance of ProcessWire sites
 
-ProcessWire is already pretty fast by default because of it's small overhead. However, with a growing expactation for sites to load pretty much instantaneously, there's always something to optimize. This tutorial documents a number of opportunities for page speed gains which you can apply to your own sites to achieve noticably faster loading times.
+ProcessWire is already pretty fast by default because of its small overhead. However, with a growing expactation for sites to load pretty much instantaneously, there's always something to optimize. This tutorial documents a number of opportunities for page speed gains which you can apply to your own sites to achieve noticably faster loading times.
 
 Of course, performance optimization has many layers and there are many techniques to cover – too many for one tutorial. Also, some of the most important techniques are not specific to ProcessWire, but apply to all CMS-based web projects. This tutorial focuses mainly on 'low-hanging fruit' - techniques that are easy to use and can be applied to most normal ProcessWire sites while having a huge impact on performance.
 

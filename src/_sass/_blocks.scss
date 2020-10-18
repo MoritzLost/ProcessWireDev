@@ -49,7 +49,7 @@
             transition: transform 250ms ease-out;
         }
         path {
-            fill: map-get($theme-colors, "red");
+            fill: $primary;
         }
     }
 }

@@ -149,7 +149,7 @@ $twigTemplate = file_exists($config->twigDirectory . '/' . $templateFile)
 echo $config->twigEnvironment->render($twigTemplate, $variables);
 ```
 
-This function checks if a specific template for the current content type exists (e.g. `pages/page--projects-index.twig`) and falls back to the default page template if it doesn't (e.g. `pages/page.twig`). This way, each content type on your site can have it's own entry point (the Twig template) where you have total freedom over how to structure your markup.
+This function checks if a specific template for the current content type exists (e.g. `pages/page--projects-index.twig`) and falls back to the default page template if it doesn't (e.g. `pages/page.twig`). This way, each content type on your site can have its own entry point (the Twig template) where you have total freedom over how to structure your markup.
 
 ## Create an HTML skeleton in the default page template
 
@@ -273,7 +273,7 @@ Note that if you are creating sections based on a Repeater Matrix field with dif
 
 </small>
 
-As you can see, this section template doesn't output any content on it's own. Instead, it defines a `section_content` block that the extending template can then fill with content, as well as some parameters for common aspects of content sections (headline, background color, et c.). Here's what the corresponding SCSS can look like (note that I left out the `container` class, which is [borrowed from Bootstrap](https://getbootstrap.com/docs/4.3/layout/overview/#containers)):
+As you can see, this section template doesn't output any content on its own. Instead, it defines a `section_content` block that the extending template can then fill with content, as well as some parameters for common aspects of content sections (headline, background color, et c.). Here's what the corresponding SCSS can look like (note that I left out the `container` class, which is [borrowed from Bootstrap](https://getbootstrap.com/docs/4.3/layout/overview/#containers)):
 
 ```scss
 // _variables.scss

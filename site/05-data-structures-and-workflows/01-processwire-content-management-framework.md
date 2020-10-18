@@ -18,7 +18,7 @@ For ProcessWire, everything can be a page. That includes the normal pages in the
 
 Pages don't need to be visible to visitors by themselves. To make all pages of a template unviewable, simply don't include a corresponding PHP template in your templates folder. This way, those pages will act as data containers only. You can then query those pages for data on other (visible) pages.
 
-For example, let's consider a registry of companies (template `company`) that contains a list of all branch offices. Each company has it's own page in the frontend that lists all the branch offices. This data structure could be handled with a [repeater field](https://processwire.com/docs/fields/repeaters/) `offices` containing names and addresses. The page tree will look like this (with URLs in parenthesis):
+For example, let's consider a registry of companies (template `company`) that contains a list of all branch offices. Each company has its own page in the frontend that lists all the branch offices. This data structure could be handled with a [repeater field](https://processwire.com/docs/fields/repeaters/) `offices` containing names and addresses. The page tree will look like this (with URLs in parentheses):
 
 ```text
 - Companies (/companies/)
@@ -28,7 +28,7 @@ For example, let's consider a registry of companies (template `company`) that co
     - ...
 ```
 
-In this case, all information on each company (including it's branch offices) is collected on the company page. However, requirements change. If you instead add another template `branch-office` and represent individual branch offices as individual pages, this will allow you to later add frontend pages for each branch office as well, by just adding a PHP template for the `branch-office` template – without having to migrate any data. In this case, the page tree will have one more level of hierarchy:
+In this case, all information on each company (including its branch offices) is collected on the company page. However, requirements change. If you instead add another template `branch-office` and represent individual branch offices as individual pages, this will allow you to later add frontend pages for each branch office as well, by just adding a PHP template for the `branch-office` template – without having to migrate any data. In this case, the page tree will have one more level of hierarchy:
 
 ```text
 - Companies (/companies/)
@@ -74,7 +74,7 @@ Confused by the Twig template syntax? Check out the [tutorial on integrating Twi
 
 Another useful technique is to collect site-wide options (such as the site name and logo) into a singular template with only one instance page and make that available globally. This way, you can expose site settings you want your editors to be able to change through the ProcessWire API (as opposed to defining those statically in your `config.php`, for example).
 
-To get started, create a `settings` template and set it to allow only one page in the family options. Then, create the new settings page and take note of it's ID. In order to be able to find that page, you can specify the page ID in your config file:
+To get started, create a `settings` template and set it to allow only one page in the family options. Then, create the new settings page and take note of its ID. In order to be able to find that page, you can specify the page ID in your config file:
 
 ```php
 $config->settingsPageId = 1234;
@@ -138,4 +138,4 @@ For many common problems, there's usually a preferred way of solving them within
 
 ProcessWire mostly sidesteps this problem by only defining basic building blocks of content containers (i.e. the concepts of *pages* and *fields*) and allowing you to define your own content categories and relationships (i.e. *templates* with their corresponding *fieldgroups*). It definitely is a bit more work to create something like a taxonomy system, but it's usually worth it if you're building anything larger than a small blog.
 
-One measure of a good CMS is how much – as I like to call it – *ideology* you have to swallow to get started. For Drupal development, you first have to understand the it's concept of *Entities*, *Nodes*, *Schemas* and much more before you can work with it productively. With ProcessWire, that overhead is much smaller. The *ProcessWire way* to structure content is pretty much always to have specific templates as content containers, and then either output them directly in their corresponding template, or use the API to retreive and display their data in various places. So go ahead and structure your content in a way that makes sense to you, the developer than comes after you, and – of course – the people that have to work with the site.
+One measure of a good CMS is how much – as I like to call it – *ideology* you have to swallow to get started. For Drupal development, you first have to understand its concept of *Entities*, *Nodes*, *Schemas* and much more before you can work with it productively. With ProcessWire, that overhead is much smaller. The *ProcessWire way* to structure content is pretty much always to have specific templates as content containers, and then either output them directly in their corresponding template, or use the API to retreive and display their data in various places. So go ahead and structure your content in a way that makes sense to you, the developer than comes after you, and – of course – the people that have to work with the site.

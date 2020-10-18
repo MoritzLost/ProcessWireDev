@@ -81,7 +81,7 @@ Now let's look at one of those extending templates. For example, consider a `dow
 ```
 {% endraw %}
 
-As you can see, this template only needs to concern itself with it's own markup. There is zero boilerplate code that will have to be copy-and-pasted. This way, you can change the structure of your sections in one place (the section base template) and it will be immediately reflected in all your sections.
+As you can see, this template only needs to concern itself with its own markup. There is zero boilerplate code that will have to be copy-and-pasted. This way, you can change the structure of your sections in one place (the section base template) and it will be immediately reflected in all your sections.
 
 But what if you want to change override some aspect of the base template. For example, let's say you wanted the download section's headline to be an `<h3>` instead of an `<h2>`. With the block system, this is trivial:
 
