@@ -81,11 +81,11 @@ mkdir public
 git clone https://github.com/processwire/processwire public
 ```
 
-<small class="sidenote sidenote--info">
+{% alert 'info' %}
 
 _Sidenote:_ Of course it would be best if the ProcessWire core lived outside the webroot alongside our other dependecies. However, ProcessWire doesn't really support that, and it does include some configuration in its `.htaccess` file to safeguard sensitive directories and files inside the CMS, so it's not a big problem.
 
-</small>
+{% endalert %}
 
 I like to clean up the directory, since we don't need most of the scaffolding files:
 

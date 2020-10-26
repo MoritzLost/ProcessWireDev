@@ -8,11 +8,11 @@ description: How to customize and extend Twig with custom functionality for Proc
 
 # How to extend Twig with custom functionality and connect with the ProcessWire API
 
-<small class="sidenote sidenote--warning">
+{% alert 'warning' %}
 
 Sidenote: This tutorial builds on the basic Twig integration for ProcessWire [detailed in the previous post](/twig-processwire-setup).
 
-</small>
+{% endalert %}
 
 When you start writing all your templates in Twig, you may miss certain functions or language features that you can utilize in native PHP. What's awesome about Twig is that you can add functions, filters and tags with very little effort. This tutorial will demonstrate how to add functionality to Twig and build your own helper functions utilizing the ProcessWire API (or just plain old PHP). The following will mostly consist of some simplified examples meant to show how easy it is to extend Twig and inspire you to write your own extensions and reusable blocks.
 

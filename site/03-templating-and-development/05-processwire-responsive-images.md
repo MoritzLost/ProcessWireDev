@@ -60,11 +60,11 @@ At the core of the component is a function that physically generates all the ima
 - The base target size in width and height.
 - A list of size factors to scale the base image by to create smaller and larger variants.
 
-<small class="sidenote sidenote--success">
+{% alert 'success' %}
 
 The combination of base size and scaling factors are only one possible approach. Another (maybe slightly more intuitive) solution would be to have the function accept an array of sizes to generate. I prefer scaling factors, because it's easier to provide sensible defaults for those, as I will demonstrate below.
 
-</small>
+{% endalert %}
 
 Here's a function that accepts the arguments listed above, generates the image variants and returns a `srcset` attribute string listing all the available variants. See below for more explanations.
 

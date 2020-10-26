@@ -28,6 +28,9 @@ module.exports = eleventyConfig => {
     eleventyConfig.addFilter('stripVersionPrefix', stripVersionPrefix);
     eleventyConfig.addFilter('findSections', utils.findSections);
     eleventyConfig.addShortcode('fontawesome', utils.fontawesome);
+    eleventyConfig.addPairedShortcode('alert', (content, level = 'info') => {
+        return `<small class="sidenote sidenote--${level}">${"\n\n"}${content}${"\n\n"}</small>`;
+    });
 
     // syntax highlighting
     const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");

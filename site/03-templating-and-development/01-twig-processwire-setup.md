@@ -267,11 +267,11 @@ The approach will be the same as with the page template itself. We create a base
 ```
 {% endraw %}
 
-<small class="sidenote sidenote--info">
+{% alert 'info' %}
 
 Note that if you are creating sections based on a Repeater Matrix field with different section types, the available options and defaults will be slightly different. I will cover this technique in a later tutorial.
 
-</small>
+{% endalert %}
 
 As you can see, this section template doesn't output any content on its own. Instead, it defines a `section_content` block that the extending template can then fill with content, as well as some parameters for common aspects of content sections (headline, background color, et c.). Here's what the corresponding SCSS can look like (note that I left out the `container` class, which is [borrowed from Bootstrap](https://getbootstrap.com/docs/4.3/layout/overview/#containers)):
 

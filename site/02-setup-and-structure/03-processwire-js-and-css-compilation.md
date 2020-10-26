@@ -17,11 +17,11 @@ This article demonstrates easy-to-use tools that allow you to write SASS and mod
 - **node-sass**, Dart Sass, Ruby Sass, or the corresponding tool for your chosen pre-processor
 - **Parcel**, WebPack, Gulp, Grunt
 
-<small class="sidenote sidenote--info">
+{% alert 'info' %}
 
 This tutorial is only tangentially related to ProcessWire. However, SCSS in particular is a prerequisite for some of the later tutorials, so it's included as a sort of common ground.
 
-</small>
+{% endalert %}
 
 ## How to set up NPM and initialize a project
 
@@ -53,11 +53,11 @@ node-sass src/sass --output=public/site/css
 
 This will compile any SASS files inside the source directory and put them inside the CSS directory. Note that I specified a source directory instead of a single file, so you can compile multiple files. This is useful if you want to split up your CSS into multiple smaller files, for example to have separate display and print stylesheets, or to generate multiple color themes for your site.
 
-<small class="sidenote sidenote--info">
+{% alert 'info' %}
 
 Usability tip: Generate a separate stylesheet including only your typography styles and fonts to use with CK Editor fields, this way the text in WYSQIG editors will look exactly the same as on the site itself.
 
-</small>
+{% endalert %}
 
 While you can run the above script directly from your command line, it's better to define it inside your `package.json` in the `scripts` section. This way, you don't have to remember paths and command line arguments. Here's an example that defines two scripts, a build command that generates minified CSS for production, and a watch command that will recompile the CSS whenever the source files are changed:
 

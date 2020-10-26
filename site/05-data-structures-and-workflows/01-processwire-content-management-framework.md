@@ -64,11 +64,11 @@ Keep in mind that while each branch office will have a unique path within the sy
 ```
 {% endraw %}
 
-<small class="sidenote sidenote--info">
+{% alert 'info' %}
 
 Confused by the Twig template syntax? Check out the [tutorial on integrating Twig](/twig-processwire-setup/)!
 
-</small>
+{% endalert %}
 
 ## Global site options
 

@@ -98,11 +98,11 @@ $storeListing = $cache->getFor($cacheNamespace, $cacheKey);
 // ...
 ```
 
-<small class="sidenote sidenote--warning">
+{% alert 'warning' %}
 
 Be careful when saving JSON-encoded strings through $cache API, because ProcessWire will attempt to decode them upon retrieval. You can use [this hook](https://processwire.com/talk/topic/13342-wirecache-and-json-data-quirks/?tab=comments#comment-180789) as a workaround.
 
-</small>
+{% endalert %}
 
 ### Invalidating cached data
 
@@ -122,11 +122,11 @@ Cache-Control: public, immutable, max-age=31536000
 
 You can send headers using either PHP or the Apache server. In a typical ProcessWire installation, static assets will be served directly by Apache, so for those PHP is not an option. Luckily, Apache can be configured to add different HTTP response headers depending on the type of resource it serves for a request. There are multiple methods available in Apache to add those headers. The easiest way to add those headers is the `ExpiresByType` directive (provided by [mod_expires](https://httpd.apache.org/docs/2.4/mod/mod_expires.html)), which adds headers based on the [MIME-type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the served document.
 
-<small class="sidenote sidenote--success">
+{% alert 'success' %}
 
 Despite the name, `ExpiresByType` sets the `max-age` directive of the `Cache-Control` header as well as the older `Expires` header. The `Expires` header isn't stricly needed since `Cache-Control` takes precedence over it, but it doesn't do any harm either.
 
-</small>
+{% endalert %}
 
 ```apacheconf
 <IfModule mod_expires.c>
