@@ -129,12 +129,12 @@ If you don't recognize the syntax in the first line, it's [symmetric array destr
 Depending on how flexible you want the template to be, you might use a Repeater Matrix field to represent page sections. But the display order of the three sections can also be made configurable through an options field:
 
 ```text
-body_gallery_embeds|Description - Gallery - Videos
-body_embeds_gallery|Description - Videos - Gallery
-gallery_body_embeds|Gallery - Description - Videos
-gallery_embeds_body|Gallery - Videos - Description
-embeds_body_gallery|Videos - Description - Gallery
-embeds_gallery_body|Videos - Gallery - Description
+body_gallery_embeds|Description — Gallery — Videos
+body_embeds_gallery|Description — Videos — Gallery
+gallery_body_embeds|Gallery — Description — Videos
+gallery_embeds_body|Gallery — Videos — Description
+embeds_body_gallery|Videos — Description — Gallery
+embeds_gallery_body|Videos — Gallery — Description
 ```
 
 Since there are six possibilities to sort three items, this is the expected number of options. That's just few enough to include them all, even though some might be used more than others. As in the previous example, you can destructure this to an array, and use the order of the section keys to output the corresponding templates in that order.

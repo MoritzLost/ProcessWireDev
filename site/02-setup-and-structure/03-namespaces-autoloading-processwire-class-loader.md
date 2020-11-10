@@ -113,7 +113,7 @@ The exact way class names and namespaces are mapped to directory structures and 
 2. Each sub-namespace corresponds to a sub-directory. So by looking at the namespace, you can follow subdirectories to the location where you expect to find the class file.
 3. Finally, the class name is mapped directly to the file name. So `MyCoolClass` needs to be put inside `MyCoolClass.php`.
 
-This all sounds simple and straightforward - and it absolutely is! It's only once you mash everything together, mix up language features, accepted conventions and proprietary implementations like Composer on top that it becomes hard to grasp in one go.
+This all sounds simple and straightforward — and it absolutely is! It's only once you mash everything together, mix up language features, accepted conventions and proprietary implementations like Composer on top that it becomes hard to grasp in one go.
 
 ## Composer and ProcessWire's class loader
 

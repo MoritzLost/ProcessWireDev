@@ -16,8 +16,8 @@ This tutorial is a case study that demonstrates how to build a flexible, develop
 
 If you want an in-depth explanation, there's a really good [article about responsive images on MDN](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images). The short version is that a responsive image tag is simply an `<img>`-tag that includes a couple of alternative image sources with different resolutions for the browser to choose from. This way, smaller screens can download the small image variant and save data, whereas high-resolution displays can download the extra-large variants for a crisp display experience. The standard defines two HTML attributes which inform the browser about the available image sizes and help them pick the one:
 
-- `srcset` - This attribute contains a list of source URLs for the image. For each source, the width of the image in pixels is specified.
-- `sizes` - This attribute tells the browser how wide a space is available for the image, based on media queries (usually the width of the viewport).
+- `srcset` — This attribute contains a list of source URLs for the image. For each source, the width of the image in pixels is specified.
+- `sizes` — This attribute tells the browser how wide a space is available for the image, based on media queries (usually the width of the viewport).
 
 This is what a complete responsive image tag may look like:
 
