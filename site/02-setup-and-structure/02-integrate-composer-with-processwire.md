@@ -20,7 +20,7 @@ In this tutorial, I will walk through all the steps required to install Composer
 
 ## Recommended directory structure for ProcessWire projects with Composer
 
-ProcessWire has some built-in Composer support, which is outlined [in this blogpost](https://processwire.com/blog/posts/composer-google-calendars-and-processwire/). Hoever, this setup requires that the `vendor` folder lives _inside the webroot_ (the directory that is used as the entry point by the server, e.g. the `DocumentRoot` in Apache). This is problematic from a security standpoint, because all included libraries will be directly accessible over the web. So if only one file in any library you're using contains a vulnerability, your entire server is vulnerable. In general, you want to have only the stuff that needs to be accessible over the web in the webroot, and anything else outside it.
+ProcessWire has some built-in Composer support, which is outlined [in this blogpost](https://processwire.com/blog/posts/composer-google-calendars-and-processwire/). However, this setup requires that the `vendor` folder lives _inside the webroot_ (the directory that is used as the entry point by the server, e.g. the `DocumentRoot` in Apache). This is problematic from a security standpoint, because all included libraries will be directly accessible over the web. So if only one file in any library you're using contains a vulnerability, your entire server is vulnerable. In general, you want to have only the stuff that needs to be accessible over the web in the webroot, and anything else outside it.
 
 This is the directory structure we will create:
 
@@ -47,7 +47,7 @@ One caveat of this setup is that it's not possible to install ProcessWire module
 
 You'll need to have Composer installed on your system for this. Installation guides can be found on [getcomposer.org/download](https://getcomposer.org/download/).
 
-If you are starting a new project, you can just run the following commands in an empty directory. If you want to add Composer to an existing ProcessWire site, make sure to initilize the Composer project **one directory above the webroot**. This directory will become your project root. I'll assume a new project for the following instructions.
+If you are starting a new project, you can just run the following commands in an empty directory. If you want to add Composer to an existing ProcessWire site, make sure to initialize the Composer project **one directory above the webroot**. This directory will become your project root. I'll assume a new project for the following instructions.
 
 First, create the new project directory and enter it. Then, initialize a new Composer project:
 
@@ -83,7 +83,7 @@ git clone https://github.com/processwire/processwire public
 
 {% alert 'info' %}
 
-_Sidenote:_ Of course it would be best if the ProcessWire core lived outside the webroot alongside our other dependecies. However, ProcessWire doesn't really support that, and it does include some configuration in its `.htaccess` file to safeguard sensitive directories and files inside the CMS, so it's not a big problem.
+_Sidenote:_ Of course it would be best if the ProcessWire core lived outside the webroot alongside our other dependencies. However, ProcessWire doesn't really support that, and it does include some configuration in its `.htaccess` file to safeguard sensitive directories and files inside the CMS, so it's not a big problem.
 
 {% endalert %}
 
@@ -112,7 +112,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 This has one caveat: Since this file is executed by ProcessWire **after** all ProcessWire modules had their `init` methods called, the autoloader will not be available in those. I haven't yet come across a case where I needed it this early. If you really need to include the autoloader earlier than that, you could also include the autoloader in your site's `config.php` file, this way it gets loaded before any module. I try to avoid this method, because I don't want my configuration file to have side effects.
 
-Now we can finally include external libraries and use them in our code without hassle! For example, let's say you want to parse URLs and extract individual parts from it. You could use [parse_url](https://secure.php.net/manual/en/function.parse-url.php), however that has a couple of downsides (specifically, it doesn't throw exceptions on invalid input, but just fails silently). A good alternative is the [this URI parser](https://uri.thephpleague.com/uri/6.0/) by the PHP League, which is available as a Composer library.
+Now we can finally include external libraries and use them in our code without hassle! For example, let's say you want to parse URLs and extract individual parts from it. You could use [parse_url](https://secure.php.net/manual/en/function.parse-url.php), however that has a couple of downsides (specifically, it doesn't throw exceptions on invalid input, but just fails silently). A good alternative is [this URI parser](https://uri.thephpleague.com/uri/6.0/) by the PHP League, which is available as a Composer library.
 
 First, install the dependency (all Composer commands should be run from the project root, the folder your `composer.json` file lives in):
 
@@ -139,7 +139,7 @@ if ($url = $page->get('some_url_field')) {
 
 ## How to autoload your own code and classes with Composer
 
-Another topic that I find really useful but often gets overlooked in Composer tutorials is the ability to wire up your own namespace to a directory. If you want to write some object-oriented code outside of your template files, this gives you an easy way to autoload those using Composer as well.
+Another topic that I find really useful but often gets overlooked in Composer tutorials is the ability to wire up your own namespace to a directory. If you want to write some object-oriented code separate from your template files, this gives you an easy way to autoload those using Composer as well.
 
 As an example, suppose I have a custom `ContentBag` class that I use to collect content snippets from different places (it doesn't really matter what the class does at the moment). I want this to live inside my custom project namespace so it can never interfere with the ProcessWire core or other dependencies. Here's the file:
 
@@ -176,7 +176,7 @@ Note the namespace, which gives the Full Qualified Class Name `MoritzLost\Conten
 }
 ```
 
-The `autoload` section tells Composer that our namespace / directory mapping follows [PSR-4](https://www.php-fig.org/psr/psr-4/). And most importantly, the line `"MoritzLost\\": "src/php/"` tells Composer that all classes under the namespace `MoritzLost` will be located inside the directory `src/php/` (relative to the project root). Note that you have to escape the namespace seperator (backslash) with another backslash (see the [documentation](https://getcomposer.org/doc/04-schema.md#autoload) for more information).
+The `autoload` section tells Composer that our namespace / directory mapping follows [PSR-4](https://www.php-fig.org/psr/psr-4/). And most importantly, the line `"MoritzLost\\": "src/php/"` tells Composer that all classes under the namespace `MoritzLost` will be located inside the directory `src/php/` (relative to the project root). Note that you have to escape the namespace separator (backslash) with another backslash (see the [documentation](https://getcomposer.org/doc/04-schema.md#autoload) for more information).
 
 After adding the autoload information, you have to tell Composer to refresh the generated autoloader:
 
@@ -203,4 +203,4 @@ By the way, in PSR-4, sub-namespaces correspond to folders, so I can put the cla
 
 ## Conclusion
 
-With this setup, you are following secure practices and have much flexibility over what you want to include in your project. For example, you can just as easily include some npm libraries in your project root and set up JavaScript and CSS compilation. You can also start tracking the source code of your project inside your `src/php/` directory independently of the ProcessWire installation. All in all, you have good seperation of concerns between ProcessWire, external dependencies, your ProcessWire templates and your custom classes, as well as another level of security by not exposing source files over the web. You can also build upon this approach. For example, it's good practice to keep credentials for your database outside the webroot. So you could modify the `public/site/config.php` file to include a config or `.env` file in your project root and read the database credentials from there.
+With this setup, you are following secure practices and have much flexibility over what you want to include in your project. For example, you can just as easily include some npm libraries in your project root and set up JavaScript and CSS compilation. You can also start tracking the source code of your project inside your `src/php/` directory independently of the ProcessWire installation. All in all, you have good separation of concerns between ProcessWire, external dependencies, your ProcessWire templates and your custom classes, as well as another level of security by not exposing source files over the web. You can also build upon this approach. For example, its good practice to keep credentials for your database outside the webroot. So you could modify the `public/site/config.php` file to include a config or `.env` file in your project root and read the database credentials from there.
