@@ -4,6 +4,7 @@
     &__article {
         background: $article-bg;
         color: $article-color;
+        box-shadow: 0 0 3px 0 rgba($gray-700, .3);
         @include font-size($font-size-lg);
         width: 100%;
         max-width: 50rem;
