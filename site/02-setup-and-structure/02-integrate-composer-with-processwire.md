@@ -141,19 +141,19 @@ if ($url = $page->get('some_url_field')) {
 
 Another topic that I find really useful but often gets overlooked in Composer tutorials is the ability to wire up your own namespace to a directory. If you want to write some object-oriented code separate from your template files, this gives you an easy way to autoload those using Composer as well.
 
-As an example, suppose I have a custom `ContentBag` class that I use to collect content snippets from different places (it doesn't really matter what the class does at the moment). I want this to live inside my custom project namespace so it can never interfere with the ProcessWire core or other dependencies. Here's the file:
+As an example, suppose I have a custom class with functionality I want to use in multiple template files (it doesn't really matter what the class does at the moment). I want this to live inside my custom project namespace so it can never interfere with the ProcessWire core or other dependencies. Here's the file:
 
 ```php
-// src/php/ContentBag.php
+// src/php/MyAwesomeClass.php
 <?php
 namespace MoritzLost;
 
-class ContentBag {
+class MyAwesomeClass {
     // class functionality
 }
 ```
 
-Note the namespace, which gives the Full Qualified Class Name `MoritzLost\ContentBag`. The file is located at `src/php/ContentBag.php`. What we need to do is map the namespace `MoritzLost` to the directory `src/php` (of course, you could choose another location, as long as it's outside the webroot!). To do this, edit your `composer.json` file:
+Note the namespace, which gives the Full Qualified Class Name `MoritzLost\MyAwesomeClass`. The file is located at `src/php/MyAwesomeClass.php`. What we need to do is map the namespace `MoritzLost` to the directory `src/php` (of course, you could choose another location, as long as it's outside the webroot!). To do this, edit your `composer.json` file:
 
 ```json/12-16
 {
@@ -184,17 +184,17 @@ After adding the autoload information, you have to tell Composer to refresh the 
 composer dump-autoload
 ```
 
-Now I'm ready to use my `ContentBag` class in my templates, without having to include those files manually:
+Now I'm ready to use my `MyAwesomeClass` class in my templates, without having to include those files manually:
 
 ```php
 // public/site/templates/home.php
 <?php
 namespace Processwire;
 
-use MoritzLost\ContentBag;
+use MoritzLost\MyAwesomeClass;
 
-$contentbag = new ContentBag();
-// do stuff with $contentbag ...
+$myAwesomeInstance = new MyAwesomeClass();
+// do stuff with $myAwesomeInstance ...
 ```
 
 Awesome!
