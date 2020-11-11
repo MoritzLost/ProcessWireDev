@@ -105,7 +105,7 @@ Every time you need to define a site option, you can add it as a new field to th
 
 When starting out with ProcessWire, it's easy to fall into the trap of using [Select Options](https://processwire.com/docs/fields/select-options-fieldtype/) fields for page options with a limited, pre-defined set of possible values. Taxonomies such as categories or tags are a perfect example of this. The downside of having all possible values defined in the field options is that editors can't change them independently (alongside with a couple of other issues, including limited API access). A better representation for taxonomies are page templates. Usually you'll want to create two templates for a new taxonomy. Using post categories for a blog as an example:
 
-- One `category` template that only needs a title. Each category page will represent one post category, so there will be multiple category pages such as *News*, *Events*, et c.
+- One `category` template that only needs a title. Each category page will represent one post category, so there will be multiple category pages such as *News*, *Events*, etc.
 - One template that is the root page of the `category` pages in the page tree. I like to name those `category-index`, predictably.
 
 You'll want to set the `category-index` template to allow only one page, and only allow `category` pages as children. Likewise, category pages will allow only the `category-index` template as the parent page. If you want to create a hierarchical taxonomy, you could also allow category pages as children of other category pages.

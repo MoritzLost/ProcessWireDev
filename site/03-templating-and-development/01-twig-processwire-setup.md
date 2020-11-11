@@ -1,14 +1,14 @@
 ---
 tags: post
 layout: post
-title: Integrating Twig with ProcessWire
+title: How to integrate Twig with ProcessWire
 menu_title: "Twig integration: Setup"
-description: Tutorial on using Twig as a flexible view layer for ProcessWire projects.
+description: Learn how to use Twig as a flexible view layer in ProcessWire projects.
 ---
 
 # How to set up Twig as a flexible view layer for ProcessWire
 
-ProcessWire sites can run on only PHP without any additional templating language (after all, PHP started out as a template language itself) — and it's totally fine to leave it that way. However, as a project grows in complexity, it may benefit from separating the logic (input processing, data preparation et c.) from the view (HTML output through templates). Using a dedicated template language helps you adhere to this separation of concerns, because it doesn't allow you to do all the heavy processing you can do in pure PHP. You also get some neat features for template structuring out of the box, especially template inheritance which will help you keep your code [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
+ProcessWire sites can run on simple PHP without any additional templating language (after all, PHP started out as a template language itself) — and it's totally fine to leave it that way. However, as a project grows in complexity, it may benefit from separating the logic (input processing, data preparation etc.) from the view (HTML output through templates). Using a dedicated template language helps you adhere to this separation of concerns, because it doesn't allow you to do all the heavy processing you can do in pure PHP. You also get some neat features for template structuring out of the box, especially template inheritance which will help you keep your code [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
 
 This tutorial will show you how to create your own flexible, extendable template system with Twig and integrate it seamlessly into a ProcessWire site. Note that there is a [Twig module](https://modules.processwire.com/modules/template-engine-twig/) that includes Twig automatically, but integrating it manually requires only a couple lines of code and allows you to set up your environment and template structure exactly how you want it.
 
@@ -112,7 +112,7 @@ This includes the most common API variables from ProcessWire, but not all of the
 
 After the `_init.php` with the environment setup is finished, ProcessWire will load the appropriate PHP template for the current page. Since we're using Twig to output the actual markup, the PHP template will only include logic and preprocessing that is required for the current page. For example, if you have a template `projects-index` where you want to show a list of all your projects, you can query the ProcessWire API for all pages to show inside the PHP template. This is also the place to perform logic, like handling user input. For instance, parsing filter parameters in the URL so the visitor can filter projects by category.
 
-The code below handles a numeric "category" filter that gets passed as a URL parameter in form of the page ID of the selected category. Then it finds all projects under the current page in the page tree, optionally filtered by the selected category.
+The code below handles a numeric "category" filter that gets passed as a URL parameter in the form of the page ID of the selected category. Then it finds all projects under the current page in the page tree, optionally filtered by the selected category.
 
 ```php
 // public/site/templates/projects-index.php
@@ -196,7 +196,7 @@ If a template doesn't have a specific Twig template, the default page template w
 ```
 {% endraw %}
 
-All layout regions (`header`, `footer`, `content` et c.) are defined as twig blocks, so each page template can override them individually, without having to touch those it doesn't need. Most templates will only need to override the `content` block. Note that I don't do most of the actual html markup in the base page template, but in individual components (e.g. `components/header.twig`) that can be reused across content types. This will be a recurring pattern. At this point, you can start building those default components and they will be included on every page.
+All layout regions (`header`, `footer`, `content` etc.) are defined as twig blocks, so each page template can override them individually, without having to touch those it doesn't need. Most templates will only need to override the `content` block. Note that I don't do most of the actual html markup in the base page template, but in individual components (e.g. `components/header.twig`) that can be reused across content types. This will be a recurring pattern. At this point, you can start building those default components and they will be included on every page.
 
 On the `projects-index` page, we want to output the list of projects that was passed to Twig in the PHP template.
 
@@ -224,7 +224,7 @@ This template demonstrates the real benefit of this long setup: We only have to 
 
 Now that we have a solid foundation, we can add layout components very easily. We can go one step further and define a basic "section" template that will be the basis for the content sections we assemble pages from. Those sections can then be reused across content types. For example, a "Recent news" section might appear on the homepage as well as all news pages.
 
-The approach will be the same as with the page template itself. We create a base template that includes some boilerplate HTML for recurring markup (such as a container element to wrap the section content in) and defines blocks that can be overwritted by section-specific templates. How that base template is structured and what blocks you define in it depends on the site you're building. I'll give an example of a section template with a main content, an optional headline and a background colour.
+The approach will be the same as with the page template itself. We create a base template that includes some boilerplate HTML for recurring markup (such as a container element to wrap the section content in) and defines blocks that can be overwritten by section-specific templates. How that base template is structured and what blocks you define in it depends on the site you're building. I'll give an example of a section template with a main content, an optional headline and a background colour.
 
 {% raw %}
 ```twig
@@ -233,7 +233,7 @@ The approach will be the same as with the page template itself. We create a base
 {#-
  # This is the base section template. Individual section templates can extend
  # this to avoid repeating section boilerplate code (section markup,
- # headline, CSS container, background color, et c.).
+ # headline, CSS container, background color, etc.).
  # 
  # @var string Headline     An optional headline for this section.
  # @var string background   The background theme color as a string (see SCSS for corresponding color codes). Default = white.
@@ -273,7 +273,7 @@ Note that if you are creating sections based on a Repeater Matrix field with dif
 
 {% endalert %}
 
-As you can see, this section template doesn't output any content on its own. Instead, it defines a `section_content` block that the extending template can then fill with content, as well as some parameters for common aspects of content sections (headline, background color, et c.). Here's what the corresponding SCSS can look like (note that I left out the `container` class, which is [borrowed from Bootstrap](https://getbootstrap.com/docs/4.3/layout/overview/#containers)):
+As you can see, this section template doesn't output any content on its own. Instead, it defines a `section_content` block that the extending template can then fill with content, as well as some parameters for common aspects of content sections (headline, background color, etc.). Here's what the corresponding SCSS can look like (note that I left out the `container` class, which is [borrowed from Bootstrap](https://getbootstrap.com/docs/4.3/layout/overview/#containers)):
 
 ```scss
 // _variables.scss
@@ -351,4 +351,4 @@ To tie it all together, here is part of a `project` template that has a `downloa
 
 ## Conclusion
 
-This first part of the Twig integration tutorial was mostly about a clean environment setup and template structure. By creating sensible base templates on multiple levels (pages, sections) and reusing them across pages, you pretty much never need to worry about boilerplate HTML, container classes et c. This will be especially useful if your pages are created with a Repeater Matrix field, where each Repeater Matrix element corresponds to a section, this technique will be covered in a later tutorial.
+This first part of the Twig integration tutorial was mostly about a clean environment setup and template structure. By creating sensible base templates on multiple levels (pages, sections) and reusing them across pages, you pretty much never need to worry about boilerplate HTML, container classes etc. This will be especially useful if your pages are created with a Repeater Matrix field, where each Repeater Matrix element corresponds to a section, this technique will be covered in a later tutorial.

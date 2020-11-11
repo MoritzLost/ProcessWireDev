@@ -249,7 +249,7 @@ class TwigUtilities extends AbstractExtension
 }
 ```
 
-This custom Twig extension extends the `AbstractExtension` class from Twig. This way, all you need are public methods that return an array of all functions, filters, tests et c. that you want to add with this extension. By having this class only act as an adapter between the PHP utility classes and Twig, the utility functions can still be used outside of Twig, and you have better separation of concerns. Now all that's left is to add an instance of the extension to our Twig environment, then you can access the methods through Twig as demonstrated above.
+This custom Twig extension extends the `AbstractExtension` class from Twig. This way, all you need are public methods that return an array of all functions, filters, tests etc. that you want to add with this extension. By having this class only act as an adapter between the PHP utility classes and Twig, the utility functions can still be used outside of Twig, and you have better separation of concerns. Now all that's left is to add an instance of the extension to our Twig environment, then you can access the methods through Twig as demonstrated above.
 
 ```php
 $twigEnvironment->addExtension(
