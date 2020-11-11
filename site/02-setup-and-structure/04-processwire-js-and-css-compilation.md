@@ -88,7 +88,7 @@ Since this is not an SCSS tutorial, I'll end this section with only a couple of 
 
 ## JavaScript compilation with Parcel
 
-I see many developers shy away from the topic of compiling JavaScript, because it [seems like a daunting task](https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f) – and, to be fair, it can be. But for a simple project, you don't need most of the complexity. If you only have a couple of simple scripts you want to bundle up, possibly include a couple of external libraries and serve those as one minified file, you can get going very quickly with [Parcel](https://parceljs.org/). Parcel is a bundler that does many things such as JavaScript transpilation and minification under the hood. The process is similar to the SASS compilation setup. Simply install the library, define a compilation script in your `package.json` and then run it with NPM.
+I see many developers shy away from the topic of compiling JavaScript, because it [seems like a daunting task](https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f) — and, to be fair, it can be. But for a simple project, you don't need most of the complexity. If you only have a couple of simple scripts you want to bundle up, possibly include a couple of external libraries and serve those as one minified file, you can get going very quickly with [Parcel](https://parceljs.org/). Parcel is a bundler that does many things such as JavaScript transpilation and minification under the hood. The process is similar to the SASS compilation setup. Simply install the library, define a compilation script in your `package.json` and then run it with NPM.
 
 ```bash
 npm install -S parcel

@@ -2,7 +2,7 @@
 tags: post
 layout: post
 title: Namespaces, autoloading and PSR-4
-menu_title: Namespaces and autoloading
+menu_title: Namespaces and autoloading for ProcessWire developers
 description: Namespaces and autoloading in PHP explained for ProcessWire developers.
 ---
 
@@ -20,7 +20,7 @@ You can skip the sections you're already familiar with.
 
 ## Namespaces in PHP
 
-The purpose of namespaces in PHP is to avoid naming conflicts between classes, functions and constants, especially when you're using external libraries and frameworks. Nothing more. It's important to understand that this has nothing at all to do with autoloading, directory structures or file names. You can put namespaced stuff everywhere you want. You can even have multiple namespaces inside a single file (don't try this at home). Namespaces only exist to be able to use a generic name – for example, ProcessWire's `Config` class – multiple times in different contexts without getting a naming conflict. Without namespaces, you couldn't use any library that includes a `Config` class of its own in a ProcessWire project, because that name is already taken. With namespaces, you can have a distinction between the classes `ProcessWire\Config` and `MoritzLost\Config`. You can also use sub-namespaces to further segregate your code into logical groups. For example, there can be two classes `MoritzLost\Frontend\Config` and `MoritzLost\Backend\Config` without any problems – a class name only needs to be unique within its namespace.
+The purpose of namespaces in PHP is to avoid naming conflicts between classes, functions and constants, especially when you're using external libraries and frameworks. Nothing more. It's important to understand that this has nothing at all to do with autoloading, directory structures or file names. You can put namespaced stuff everywhere you want. You can even have multiple namespaces inside a single file (don't try this at home). Namespaces only exist to be able to use a generic name — for example, ProcessWire's `Config` class — multiple times in different contexts without getting a naming conflict. Without namespaces, you couldn't use any library that includes a `Config` class of its own in a ProcessWire project, because that name is already taken. With namespaces, you can have a distinction between the classes `ProcessWire\Config` and `MoritzLost\Config`. You can also use sub-namespaces to further segregate your code into logical groups. For example, there can be two classes `MoritzLost\Frontend\Config` and `MoritzLost\Backend\Config` without any problems — a class name only needs to be unique within its namespace.
 
 You can declare the namespace for a PHP file using the namespace statement at the top:
 
@@ -36,7 +36,7 @@ namespace MoritzLost\Frontend;
 
 This way, all classes, methods and constants defined inside this file are placed in that namespace. All ProcessWire classes live in the `ProcessWire` namespace.
 
-Now to use one of those classes – for example, to instantiate it – you have a couple of options. You can either use its fully qualified class name or import it into the current namespace. Also, if you are inside a namespaced file, any reference to a class is relative to that namespace. Unless it starts with a backward slash, in this case it's relative to the global namespace. So all of those examples are equivalent:
+Now to use one of those classes — for example, to instantiate it — you have a couple of options. You can either use its fully qualified class name or import it into the current namespace. Also, if you are inside a namespaced file, any reference to a class is relative to that namespace. Unless it starts with a backward slash, in this case it's relative to the global namespace. So all of those examples are equivalent:
 
 ```php
 // example-one.php
@@ -63,7 +63,7 @@ The `use` statement in the second example can be read like this: *“Inside this
 
 ## How autoloading works in PHP
 
-Every PHP program starts with one entry file – for ProcessWire, that's usually its `index.php`. But you don't want to keep all your code in one file, that would get out of hand quickly. Once you start to split your code into several individual files however, you have to take care of manually including them with `require` or `include` calls. That becomes very tedious as well. The purpose of autoloading is to be able to add new code in new files without having to import them manually. This, again, has nothing to do with namespaces, not even something with file locations. Autoloading is a pretty simple concept: If you try to use a class (or function or constant, I'll just refer to classes from now on) that hasn't been loaded yet, PHP calls upon its registered autoloaders as a last-ditch attempt to load them before throwing an exception.
+Every PHP program starts with one entry file — for ProcessWire, that's usually its `index.php`. But you don't want to keep all your code in one file, that would get out of hand quickly. Once you start to split your code into several individual files however, you have to take care of manually including them with `require` or `include` calls. That becomes very tedious as well. The purpose of autoloading is to be able to add new code in new files without having to import them manually. This, again, has nothing to do with namespaces, not even something with file locations. Autoloading is a pretty simple concept: If you try to use a class (or function or constant, I'll just refer to classes from now on) that hasn't been loaded yet, PHP calls upon its registered autoloaders as a last-ditch attempt to load them before throwing an exception.
 
 Let's look at a simple example:
 
@@ -109,7 +109,7 @@ As you see, namespaces and autoloading are both pretty limited concepts. And the
 
 The exact way class names and namespaces are mapped to directory structures and file names is purely conventional. The accepted convention for this is [PSR-4](https://www.php-fig.org/psr/psr-4/). This is a super simple standard which basically just sums up the ideas above:
 
-1. A base namespace is mapped to a specific directory in the file system. When the autoloader is asked to load a class in that namespace (or a sub-namespace of it), it starts looking in that folder. This "base" namespace may include multiple parts – for example, I could use `MoritzLost\MyAwesomeLibrary` as a base and map that to my source directory. PSR-4 calls this a "namespace prefix".
+1. A base namespace is mapped to a specific directory in the file system. When the autoloader is asked to load a class in that namespace (or a sub-namespace of it), it starts looking in that folder. This "base" namespace may include multiple parts — for example, I could use `MoritzLost\MyAwesomeLibrary` as a base and map that to my source directory. PSR-4 calls this a "namespace prefix".
 2. Each sub-namespace corresponds to a sub-directory. So by looking at the namespace, you can follow subdirectories to the location where you expect to find the class file.
 3. Finally, the class name is mapped directly to the file name. So `MyCoolClass` needs to be put inside `MyCoolClass.php`.
 

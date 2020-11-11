@@ -13,12 +13,12 @@ In comparison to visual page builders like the [Gutenberg editor in WordPress](h
 
 Different fields may be used depending on the type of option you want to provide. For example, a simple *yes/no* option (like a toggle for a specific element) may be represented by a simple checkbox field. A field type I have found useful for display options is the [Selectable Options Fieldtype](https://processwire.com/docs/fields/select-options-fieldtype/). The examples in this tutorial will all use this field type, so make sure you understand how it works. Note that this field is part of the ProcessWire core, but not installed by default.
 
-## Example 1 – Headline levels and semantics
+## Example 1 — Headline levels and semantics
 
 **Problem:** For a project that needs many pages with long text content, you use a [Repeater field](https://processwire.com/docs/fields/repeaters/) to represent sections of text alongside a headline (which is a separate text field). Each section has a headline. Those sections may have a hierarchical order, and the editor needs to be able to differentiate between main sections and sub-sections.
 
 **Solution**  
-The requirement of main sections and sub-sections maps nicely to the headline level of the section's heading tags – `h2` or `h3`. In this sense, the options is not merely a design consideration, but also impacts the semantic structure of the page. The definition of the options can look like this:
+The requirement of main sections and sub-sections maps nicely to the headline level of the section's heading tags — `h2` or `h3`. In this sense, the options is not merely a design consideration, but also impacts the semantic structure of the page. The definition of the options can look like this:
 
 ```text
 h2|Section headline
@@ -42,7 +42,7 @@ This is a pretty simplistic example, but consider the following takeaways:
 - The editor may only choose between two headline levels (even though it would be trivial to add more if needed). Just because there are six levels of headlines in HTML, doesn't mean those are all relevant to the editor. The fewer options there are, the easier it is to understand them, especially for non-technical editors. In this case, only two levels of hierarchy are needed, so only two are provided. Note also that the options start at `h2` since the page title is used for the `h1` and there should only be one of those on a page.
 - The two options are labelled semantically, not technically. Even though the underlying implementation of the option is done in terms of the heading level, the option's semantic meaning is expressed in terms of section hierarchy. This way, the option is immediately intuitive.
 
-## Example 2 – Image width selector
+## Example 2 — Image width selector
 
 **Problem:** You want to add an optional image field to each section. However, some of the images need to span the entire width of the column, some only half of the width.
 
@@ -92,7 +92,7 @@ $breakpoint-mobile: 576px;
 
 One important takeaway: It might be tempting to use an integer field for the width option with allowed values between 0 and 100. In fact, the amount of SASS code required to generate the corresponding declarations would be identical with a [@for-directive](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#for) to loop through the numbers. But that's exactly what makes point-and-click page builders so terrible for editors: too many options. Most people don't want to think about size, positioning, margins and so on for each and every element. In fact, having too many options makes it much harder to create a consistent layout. So in this case, less is more.
 
-## Example 3 – Multiple options in one field
+## Example 3 — Multiple options in one field
 
 **Problem:** You want to build content sections that are split across two columns. To create some visual variety, you want to allow for multiple variants of column-span and alignment. Using a 12-column grid, we want to offer options for a simple 6-6 split, a centered 5-5 split, a left-aligned 6-4 split and a right-aligned 4-6 split.
 
@@ -121,7 +121,7 @@ echo '</section>';
 
 If you don't recognize the syntax in the first line, it's [symmetric array destructuring, introduced in PHP 7.1](https://secure.php.net/manual/en/migration71.new-features.php#migration71.new-features.symmetric-array-destructuring). This example uses [Bootstrap 4 grid classes](https://getbootstrap.com/docs/4.5/layout/grid/) and [flexbox utility classes](https://getbootstrap.com/docs/4.5/utilities/flex/#justify-content) for alignment. The corresponding CSS can be quickly generated in SASS as well, check the [Bootstrap source code](https://github.com/twbs/bootstrap/blob/v4-dev/scss/utilities/_flex.scss) if you need some pointers.
 
-## Example 4 – Changing the display order
+## Example 4 — Changing the display order
 
 **Problem:** You're working on a page template that consists of three main sections: Some text content, an image gallery and some embedded videos (each using their own set of fields). The editor needs to be able to change the order in which those sections appear on the page.
 

@@ -86,7 +86,7 @@ This is probably the first thing you thought of for the very first change reques
 
 In terms of downsides, consider carefully how to name and use your fields in order to reduce mental overload. Maybe the `menu_title` field isn't the best solution for this problem. If this solution was suggested by a client, find out what the actual problem is first. Perhaps they feel limited because the title is also displayed as the headline (`<h1>`) on the page itself. In this case, the sensible solution might be an additional `headline` field that will overwrite the title as `<h1>`, allowing you to use the existing title field for the menu title as well as the page's meta `<title>`.
 
-This may seem like a minor details, but considering which fields you actually need is important – you don't want to end up with too many. If each page has individual fields for the title, a headline, a menu title and an SEO-title (for the `<title>` tag), you will have a hard time explaining to the client what each field is used for.
+This may seem like a minor details, but considering which fields you actually need is important — you don't want to end up with too many. If each page has individual fields for the title, a headline, a menu title and an SEO-title (for the `<title>` tag), you will have a hard time explaining to the client what each field is used for.
 
 Another example in this category would be an additional checkbox field representing an option to hide a page in the menu. This could also be accomplished by using the built-in *hidden* status, skipping hidden pages in the menu. But if a page is hidden it won't show up in other listings by default as well, so separating the menu display from the hidden status might be a good idea if your site has lots of page listings.
 
