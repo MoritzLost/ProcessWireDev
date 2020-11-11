@@ -2,7 +2,7 @@
 tags: post
 layout: post
 title: Namespaces, autoloading and PSR-4
-menu_title: Namespaces and autoloading for ProcessWire developers
+menu_title: Namespaces and autoloading
 description: Namespaces and autoloading in PHP explained for ProcessWire developers.
 ---
 

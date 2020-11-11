@@ -1,21 +1,21 @@
 ---
 tags: post
 layout: post
-title: CSS and JS compilation for ProcessWire
-menu_title: CSS and JS compilation
+title: CSS and JavaScript compilation for ProcessWire
+menu_title: CSS and JavaScript compilation
 description: How to get started with CSS and JavaScript compilation for ProcessWire sites.
 ---
 
 # Set up your own CSS and JavaScript build pipeline
 
-The JavaScript ecosystem of transpilers, bundlers, minifiers and so on can be daunting to grasp, especially for beginners. If you have not setup your own CSS or JS build pipelines before, it can be easy to see all that as unnecessary complexitiy that you don't really need for small sites. And while this is true, you will benefit greatly from using a CSS pre-processor in particular and, to a lesser degree, a JavaScript bundler.
+The JavaScript ecosystem of transpilers, bundlers, minifiers and so on can be daunting to grasp, especially for beginners. If you have not set up your own CSS or JS build pipelines before, it can be easy to see all that as unnecessary complexity that you don't really need for small sites. And while this is true, you will benefit greatly from using a CSS pre-processor in particular and, to a lesser degree, a JavaScript bundler.
 
 This article demonstrates easy-to-use tools that allow you to write SASS and modern JavaScript and compile them to optimized and compatible CSS and JS output. Note that there are alternatives for every tool in this setup; the tools I present here are merely my preference. Here's a list of tools used in this tutorial (in bold) along with some popular alternatives:
 
 - **NPM**, Yarn
 - **SCSS**, LESS, PostCSS
 - **node-sass**, Dart Sass, Ruby Sass, or the corresponding tool for your chosen pre-processor
-- **Parcel**, WebPack, Gulp, Grunt
+- **Parcel**, Webpack, Gulp, Grunt
 
 {% alert 'info' %}
 
@@ -30,9 +30,9 @@ Compilation and bundler tools for CSS and JavaScript usually come in the form of
 ```bash
 nvm install node
 node -v
-# v13.9.0
+# v15.1.0
 npm -v
-# 6.13.7
+# 7.0.8
 ```
 
 Similar to Composer, NPM uses a text file (`package.json`) inside the project directory to keep track of the dependencies of your project. This file will also be used to define build scripts so that you don't have to remember individual shell commands. You can initialize the repository through `npm init`. If you're unsure about the individual fields, [check the documentation](https://docs.npmjs.com/creating-a-package-json-file).
@@ -83,12 +83,12 @@ npm run build:sass
 Since this is not an SCSS tutorial, I'll end this section with only a couple of tips:
 
 - The compilation script above will compile all SCSS files within the source directory, except those starting with an underscore. If you split your SCSS into multiple files and import them in your main entry file, make sure all included files start with an underscore.
-- If you are working on a larger sites, you want to consider how to organize all your SCSS files. One approach is the [7-1 pattern](https://sass-guidelin.es/#the-7-1-pattern).
+- If you are working on a larger site, you want to consider how to organize all your SCSS files. One approach is the [7-1 pattern](https://sass-guidelin.es/#the-7-1-pattern).
 - For readability and coherence you'll want to pick a naming methodology for classes and components. I like the [BEM (Block Element Modifier) approach](http://getbem.com/).
 
 ## JavaScript compilation with Parcel
 
-I see many developers shy away from the topic of compiling JavaScript, because it [seems like a daunting task](https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f) — and, to be fair, it can be. But for a simple project, you don't need most of the complexity. If you only have a couple of simple scripts you want to bundle up, possibly include a couple of external libraries and serve those as one minified file, you can get going very quickly with [Parcel](https://parceljs.org/). Parcel is a bundler that does many things such as JavaScript transpilation and minification under the hood. The process is similar to the SASS compilation setup. Simply install the library, define a compilation script in your `package.json` and then run it with NPM.
+I see many developers shy away from the topic of compiling JavaScript, because it [seems like a daunting task](https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f) — and, to be fair, it can be. But for a simple project, you don't need most of the complexity. If you only have a couple of simple scripts you want to bundle up, possibly include a couple of external libraries and serve those as one minified file, you can get going very quickly with [Parcel](https://parceljs.org/). Parcel is a bundler that does many things such as JavaScript compilation and minification under the hood. The process is similar to the SASS compilation setup. Simply install the library, define a compilation script in your `package.json` and then run it with NPM.
 
 ```bash
 npm install -S parcel
@@ -125,15 +125,17 @@ const hamburger = document.querySelector('.hamburger');
 hamburger.addEventListener('click', e => {
     // open the navigation menu
 })
+```
 
-
+```javascript
 // src/js/Components/Lightbox.js
 import Tobi from "@rqrauhvmra/tobi";
 const lightbox = new Tobi();
-// tobi is a neat little lightbox library, make sure to install it first:
+// tobi is a lightbox library, make sure to install it first:
 // npm i -S @rqrauhvmra/tobi
+```
 
-
+```javascript
 // src/js/main.js
 import "./Components/Navigation";
 import "./Components/Lightbox";
