@@ -94,8 +94,10 @@ $stack-default-margin: 1rem;
 
 // $body-bg: #91241A;
 // $body-bg: $gray-100;
-$body-bg: $gray-200;
+// $body-bg: $gray-200;
 // $body-bg: rgba(179, 39, 31, 0.15);
+$body-bg: linear-gradient(to bottom, $primary 16rem, $gray-200 16rem);
+// $body-bg: linear-gradient(to bottom, #91241A 16rem, $gray-200 16rem);
 $body-color: $black;
 
 $article-bg: $white;
