@@ -2,15 +2,15 @@
 tags: post
 layout: post
 title: Content strategies for the ProcessWire framework
-menu_title: "Content strategies: Utilizing the framework"
-description: Learn how to utilize the ProcessWire framework with diverse strategies for content structure.
+menu_title: "Content strategies"
+description: Learn how to utilize the ProcessWire framework with these strategies for content structure.
 ---
 
-# Customize everything: Using ProcessWire as a Content Management Framework
+# Content strategies: Using ProcessWire as a Content Management Framework
 
 With ProcessWire, you can output your content in whatever way you want to. Want to write traditional PHP templates that generate HTML? No problem. Need a headless CMS for a JavaScript Single-Page-Application? Simply change the `Content-Type` header to `application/json` [through the template settings](https://processwire.com/docs/start/structure/templates/#other-page-settings-managed-by-templates) and output JSON, easy. ProcessWire truly is API-first — though the API is PHP-based instead of HTTP-based, unlike a pure headless CMS like [Contentful](https://www.contentful.com). That allows you to build anything you want as long as you can develop it with PHP.
 
-This post is about adopting a mindset of flexibility in regards to how you want to structure your site and make things easier for you. The key is to understand ProcessWire as a Content Management **Framework** (CMF) which allows you to customize, basically, anything.
+This post is about adopting a mindset of flexibility in regard to how you want to structure your site and make things easier for you. The key is to understand ProcessWire as a Content Management **Framework** (CMF) which allows you to customize, basically, anything.
 
 ## Pages as containers for content
 
@@ -43,7 +43,7 @@ In this case, all information on each company (including its branch offices) is 
     - ...
 ```
 
-Keep in mind that while each branch office will have a unique path within the system this way, those aren't necessarily publicy accessible. If you don't include the corresponding template (`branch-office.php`), ProcessWire will have nothing to render for those pages, so going to `example.com/companies/company-x/branch-office-1/` will simply show a 404 page. But you can still query that data, for example to show a list of branch offices in the company template:
+Keep in mind that while each branch office will have a unique path within the system this way, those aren't necessarily publicly accessible. If you don't include the corresponding template (`branch-office.php`), ProcessWire will have nothing to render for those pages, so going to `example.com/companies/company-x/branch-office-1/` will simply show a 404 page. But you can still query that data, for example to show a list of branch offices in the company template:
 
 {% raw %}
 ```twig
@@ -138,4 +138,4 @@ For many common problems, there's usually a preferred way of solving them within
 
 ProcessWire mostly sidesteps this problem by only defining basic building blocks of content containers (i.e. the concepts of *pages* and *fields*) and allowing you to define your own content categories and relationships (i.e. *templates* with their corresponding *fieldgroups*). It definitely is a bit more work to create something like a taxonomy system, but it's usually worth it if you're building anything larger than a small blog.
 
-One measure of a good CMS is how much — as I like to call it — *ideology* you have to swallow to get started. For Drupal development, you first have to understand its concept of *Entities*, *Nodes*, *Schemas* and much more before you can work with it productively. With ProcessWire, that overhead is much smaller. The *ProcessWire way* to structure content is pretty much always to have specific templates as content containers, and then either output them directly in their corresponding template, or use the API to retreive and display their data in various places. So go ahead and structure your content in a way that makes sense to you, the developer than comes after you, and — of course — the people that have to work with the site.
+One measure of a good CMS is how much — as I like to call it — *ideology* you have to swallow to get started. For Drupal development, you first have to understand its concept of *Entities*, *Nodes*, *Schemas* and much more before you can work with it productively. With ProcessWire, that overhead is much smaller. The *ProcessWire way* to structure content is pretty much always to have specific templates as content containers, and then either output them directly in their corresponding template, or use the API to retrieve and display their data in various places. So go ahead and structure your content in a way that makes sense to you, the developer than comes after you, and — of course — the people that have to work with the site.

@@ -1,13 +1,13 @@
 ---
 tags: post
 layout: post
-title: Display options for ProcessWire sites
+title: Display options for ProcessWire pages
 menu_title: Building flexible display options
-description: Pointers and examples on how to create easy to use yet effective display options for ProcessWire pages and content.
+description: Learn how to create intuitive and powerful display options for ProcessWire pages and content.
 discuss_url: https://processwire.com/talk/topic/20662-building-extensible-display-options-with-selectable-option-fields/
 ---
 
-# Building flexible display options for ProcessWire
+# Building flexible display options for ProcessWire content
 
 In comparison to visual page builders like the [Gutenberg editor in WordPress](https://wordpress.org/gutenberg/), ProcessWire lends itself to a more semantic approach to content editing. Instead of placing content components and having to make low-level design decisions (like colors, fonts, spacing) you can create interfaces that only concern themselves with the actual content in terms of structured data. The presentation is then determined by templates and stylesheets. However, editors may still want to have some amount of flexibility in terms of design decisions, like choosing a background color for a section, or determining the order in which some elements are displayed. This tutorial demonstrates a technique for creating such *display options* by walking through multiple examples, while striking a balance between flexibility and ease of use.
 
@@ -44,7 +44,7 @@ This is a pretty simplistic example, but consider the following takeaways:
 
 ## Example 2 — Image width selector
 
-**Problem:** You want to add an optional image field to each section. However, some of the images need to span the entire width of the column, some only half of the width.
+**Problem:** You want to add an optional image field to each section. However, some images need to span the entire width of the column, some only half of the width.
 
 **Solution**  
 Again, this can be solved with a simple select field with two options:
@@ -156,7 +156,7 @@ foreach ($order as $item) {
 }
 ```
 
-You can see how it will be easy to add an additional section and integrate it into the existing solution. Though a fourth item would result in `4! = 24` possibilities to sort them. At that point, there should be a discussion about which arrangements are actually needed, and only those should be included as options.
+You can see how it will be easy to add a new section and integrate it into the existing solution. Though a fourth item would result in `4! = 24` possibilities to sort them. At that point, there should be a discussion about which arrangements are actually needed, and only those should be included as options.
 
 ## Conclusion
 

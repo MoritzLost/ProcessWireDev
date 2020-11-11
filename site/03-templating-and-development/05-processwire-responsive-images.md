@@ -3,7 +3,7 @@ tags: post
 layout: post
 title: Using responsive images in ProcessWire
 menu_title: "Case study: Responsive image component"
-description: Learn how to create a reusable responsive image component using the ProcessWire API.
+description: Learn how to use responsive images in ProcessWire and create a reusable responsive image component.
 ---
 
 # Component case study: Generating responsive images with ProcessWire and Twig
@@ -14,7 +14,7 @@ This tutorial is a case study that demonstrates how to build a flexible, develop
 
 ## Introduction to responsive images and requirements
 
-If you want an in-depth explanation, there's a really good [article about responsive images on MDN](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images). The short version is that a responsive image tag is simply an `<img>`-tag that includes a couple of alternative image sources with different resolutions for the browser to choose from. This way, smaller screens can download the small image variant and save data, whereas high-resolution displays can download the extra-large variants for a crisp display experience. The standard defines two HTML attributes which inform the browser about the available image sizes and help them pick the one:
+If you want an in-depth explanation, there's an [excellent article about responsive images on MDN](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images). The short version is that a responsive image tag is simply an `<img>`-tag that includes a couple of alternative image sources with different resolutions for the browser to choose from. This way, smaller screens can download the small image variant and save data, whereas high-resolution displays can download the extra-large variants for a crisp display experience. The standard defines two HTML attributes which inform the browser about the available image sizes and help them pick the one:
 
 - `srcset` — This attribute contains a list of source URLs for the image. For each source, the width of the image in pixels is specified.
 - `sizes` — This attribute tells the browser how wide a space is available for the image, based on media queries (usually the width of the viewport).
@@ -128,7 +128,7 @@ Things to note:
 - The method avoids upscaling images by only creating a variant (and adding it to the `srcset`) if the target size is not larger than the original image. If the image in `$page->my_image_field` has a size of 300x300, only the 200x200 variant will be created.
 - ProcessWire will create any requested size if it's missing. This means that the first time the example code above is executed, the 200x200 and 800x800 variants will be generated, resulting in a longer page load. During subsequent runs, no new images need to be created, unless you change the base image, the target width or height or the variant factors.
 
-There's one problem remaining. Oftentimes your templates will need to support different aspect ratios of images, especially for CMS-driven content. For a normal multi-column layout, you will only know the width of the column the image will go into (which can of course vary between different sizes), but the height depends on the aspect ratio of the uploaded image. The problem is that if you only specifiy a width in the example above, the image will be cropped based on the intrinsic height of the image. This can be solved by adding two additional functions that take only a width *or* a height argument, respectively, and determine the other one based on the aspect ratio of the passed image (the example code shows only the width function, check below for a full code example).
+There's one problem remaining. Often times your templates will need to support different aspect ratios of images, especially for CMS-driven content. For a normal multi-column layout, you will only know the width of the column the image will go into (which can of course vary between different sizes), but the height depends on the aspect ratio of the uploaded image. The problem is that if you only specify a width in the example above, the image will be cropped based on the intrinsic height of the image. This can be solved by adding two additional functions that take only a width *or* a height argument, respectively, and determine the other one based on the aspect ratio of the passed image (the example code shows only the width function, check below for a full code example).
 
 ```php
 /**
@@ -181,7 +181,7 @@ $twigEnvironment->addFunction(
 
 While the functional core of the component is done in PHP, the template can be written in Twig. In addition to passing the required parameters to the PHP method, the Twig component will accept some additional optional parameters that make it as reusable as possible:
 
-- The `sizes` attribute that allows the browser to chose a size.
+- The `sizes` attribute that allows the browser to choose a size.
 - Additional HTML attributes like `title`, `alt`, `loading` and `class`.
 
 The component can look something like this:
@@ -243,7 +243,7 @@ Now that the component is finished, we can actually start to use it in our templ
 
 ## How to use the component and determine the sizes queries
 
-Twig templates can be included using the unsurprisingly named [include function](https://twig.symfony.com/doc/3.x/functions/include.html). It takes the name of the template to include, as well as any number of arguments to pass to the included template. Arguments are provided as associative arrays (see [Hash literals](https://twig.symfony.com/doc/3.x/templates.html#literals)), which is nice because it allows us to only specifiy the arguments we need. Here's a barebones call that only passes an image:
+Twig templates can be included using the unsurprisingly named [include function](https://twig.symfony.com/doc/3.x/functions/include.html). It takes the name of the template to include, as well as any number of arguments to pass to the included template. Arguments are provided as associative arrays (see [Hash literals](https://twig.symfony.com/doc/3.x/templates.html#literals)), which is nice because it allows us to only specify the arguments we need. Here's a barebones call that only passes an image:
 
 {% raw %}
 ```twig
@@ -282,12 +282,12 @@ If you instead have a fixed-width container with a predefined width per breakpoi
 
 ## Conclusion
 
-This finishes the case study on the responsive image. Now you might be thinking that all this was way to much work just for a simple responsive image component. But it's gonna be worth it once you start using responsive images *everywhere*. No more boilerplate code, difficult calculations of aspect ratios or repetitive loops. Just a single declarative `include` statement in your Twig template and you're done.
+This finishes the case study on the responsive image. Now you might be thinking that all this was way too much work just for a simple responsive image component. But it's going to be worth it once you start using responsive images *everywhere*. No more boilerplate code, difficult calculations of aspect ratios or repetitive loops. Just a single declarative `include` statement in your Twig template and you're done.
 
 The point is this: If you invest the time to build your components in the most generic way that's possible and practical for your use case, it will pay off once you utilize it a couple of times. The general consideration for those components should be:
 
 - What **parameters** does the component need to accept? The more generic the component, the more parameters it will require.
 - How many of those parameters are **required**? The fewer the better, because it reduces friction when using the component. The responsive image component has only one required parameter, which is the image itself.
-- What are sensible **defaults** for the optional parameters? A default may either be an empty value or the appropriate value for the most common use case. For example, in the responsive image component the argument corresponding to the `title` atttribute is empty by default. The default value for the `alt` attribute is the images `description`, which is automatically available on ProcessWire's image fields and is often used for `alt` texts.
+- What are sensible **defaults** for the optional parameters? A default may either be an empty value or the appropriate value for the most common use case. For example, in the responsive image component the argument corresponding to the `title` attribute is empty by default. The default value for the `alt` attribute is the images `description`, which is automatically available on ProcessWire's image fields and is often used for `alt` texts.
 
 Happy designing!

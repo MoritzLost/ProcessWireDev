@@ -1,16 +1,16 @@
 ---
 tags: post
 layout: post
-title: Extend Twig with custom functionality
+title: Extend Twig with custom functionality for ProcessWire
 menu_title: "Twig integration: Custom functionality"
-description: How to customize and extend Twig with custom functionality for ProcessWire.
+description: Learn how to customize and extend Twig with custom functionality for ProcessWire.
 ---
 
 # How to extend Twig with custom functionality and connect with the ProcessWire API
 
 {% alert 'warning' %}
 
-Sidenote: This tutorial builds on the basic Twig integration for ProcessWire [detailed in the previous post](/twig-processwire-setup).
+This tutorial builds on the basic Twig integration for ProcessWire [detailed in the previous article](/twig-processwire-setup).
 
 {% endalert %}
 
@@ -176,7 +176,7 @@ Note that you have to escape the backslashes in the fully qualified class name:
 
 ## Encapsulate custom functionality in a portable Twig extension
 
-The examples above are very general, so you'll want to have them available in every project you start. The logical next step is to put your utility function into a separate library that you can simply pull into your projects with git or Composer. It's really easy to wrap functions like those demonstrated above in a custom Twig extension. I like to group related functionality into wrapper classes with static public methods, because classes are easier to autoload than functions. For example, the string utility function above can be grouped in a `StringUtilities` class:
+The examples above are very general, so you'll want to have them available in every project you start. The logical next step is to put your utility functions into a separate library that you can simply pull into your projects with git or Composer. It's really easy to wrap functions like those demonstrated above in a custom Twig extension. I like to group related functionality into wrapper classes with static public methods, because classes are easier to autoload than functions. For example, the string utility functions above can be grouped in a `StringUtilities` class:
 
 ```php
 // src/php/StringUtilities.php
@@ -286,7 +286,7 @@ Now you can access the individual methods of `StringUtilities` through the globa
 
 ## Type casting for twig
 
-A super quick but useful example for a simple extension. This one adds filters to typecast variables to a different type.
+A super quick but useful example for a simple extension. This one adds filters to cast variables to a specific type.
 
 ```php
 // src/php/Twig/TypeCastingExtension.php
@@ -371,7 +371,7 @@ public static function translate(string $msgid, ?string $default = null): string
 
 This function checks if a translation with the passed `msgid` exists in the table and if so, returns the translation in the current language. If not, it automatically creates the corresponding row. This way, if you want to add a translatable phrase inside a template, you simply add the function call with a new `msgid`, reload the page once, and the new entry will be available in the backend. For this purpose, you can also add a second parameter, and the function will automatically set the translation in the default language to this text. Sweet.
 
-The `translate` function can be added to Twig as either as a function or a filter -- I prefer the latter. Since this will be used quite frequently, I prefer to name the filter something short, like `t`.
+The `translate` function can be added to Twig as either as a function or a filter — I prefer the latter. Since this will be used quite frequently, I prefer to name the filter something short, like `t`.
 
 ```php
 $twigEnvironment->addFunction(

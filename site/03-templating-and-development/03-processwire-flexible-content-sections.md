@@ -1,12 +1,12 @@
 ---
 tags: post
 layout: post
-title: Resubable content sections with Repeater Matrix
-menu_title: Content sections using Repeater Matrix
-description: How to create flexible content sections using the Repeater Matrix module for ProcessWire.
+title: Modular content sections for ProcessWire
+menu_title: Creating a modular content system
+description: How to create flexible content modules using Repeater Matrix fields for ProcessWire.
 ---
 
-# Create flexible content sections using Repeater Matrix fields and Twig
+# Create flexible content modules using Repeater Matrix fields
 
 Most modern sites don't have fixed layouts with fixed fields, but instead need to support modular content creation — multi-column layouts with text and images, accordions, image galleries, downloads, and more. To do this with ProcessWire we need a field structure for repeatable sets of fields and a solid template structure in Twig that makes it easy to add new sections. For the field setup, the commercial [Repeater Matrix](https://processwire.com/store/pro-fields/repeater-matrix/) module is the go-to approach to create dynamic content sections. For the output, this guide will demonstrate a scalable Twig template structure that will work as a baseline to add your own custom sections to.
 
@@ -55,7 +55,7 @@ Here's an example of a section base template with those requirements:
 ```
 {% endraw %}
 
-As you can see, the base template defines multiple blocks (some of them empty by default!) that can be overriden in extending templates. Note that the background field is just rendered as a class based on the selected value. The actual styling can be done in CSS.
+As you can see, the base template defines multiple blocks (some of them empty by default!) that can be overridden in extending templates. Note that the background field is just rendered as a class based on the selected value. The actual styling can be done in CSS.
 
 ## Individual section templates
 
@@ -129,7 +129,7 @@ Now we have simple, readable templates for each section type. But in order to us
 ```
 {% endraw %}
 
-This approach requires that your section templates use a predictable naming scheme based on the type. In this case, the `downloads` section type corresponds to the template name `section--downloads.twig`. Note that the array syntax in the include function tells Twig to render the first template that exists. So if a specific template for a section type does not exists, it will fallback to the generic `sections/section.twig`. This way, when you add a new section type, you will not get a fatal error because of a missing template. Instead, the new section type will just render with the base section template, which displays the section type inside the `section_content` block.
+This approach requires that your section templates use a predictable naming scheme based on the type. In this case, the `downloads` section type corresponds to the template name `section--downloads.twig`. Note that the array syntax in the include function tells Twig to render the first template that exists. So if a specific template for a section type does not exist, it will fall back to the generic `sections/section.twig`. This way, when you add a new section type, you will not get a fatal error because of a missing template. Instead, the new section type will just render with the base section template, which displays the section type inside the `section_content` block.
 
 ## Rendering sections in a page context
 

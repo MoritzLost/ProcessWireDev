@@ -1,7 +1,7 @@
 ---
 tags: post
 layout: post
-title: Performance optimizations for ProcessWire sites
+title: Performance optimizations for ProcessWire
 menu_title: Performance optimization
 description: Learn how to optimize the performance of your ProcessWire site using these simple techniques!
 ---
@@ -32,8 +32,8 @@ Another technique that will become more important in the future is to supplement
 
 One factor for loading times is the amount of time it takes ProcessWire to parse the request, render the appropriate template and send the result back to the browser. The server response time can be improved by using a server-side caching mechanism. This way, the server can send a cached response after the first request to a particular page, so all subsequent requests for that page will be faster. You can achieve this using the following methods:
 
-- **The template cache.** This functionality is included in ProcessWire and can be enabled on a per template basis. Using the template cache, ProcessWire will cache the HTML output of individual pages and return them for subsequent requests. This way, serving cached responses will still include the overhead of starting up ProcessWire and parsing the request, but will *not* include any API access or processing done in your template files.
-- **The commercial ProCache module.** The [ProCache](https://processwire.com/store/pro-cache/) module will generate static HTML files for cacheable responses and serve those if available. This is done using some clever `RewriteRule` directives to ProcessWire's `.htaccess` file that instruct Apache to serve the cached static HTML files instead of routing requests to ProcessWire. This way, serving a cached responses has practically no overhead and can be as fast as a static site.
+- **The template cache.** This functionality is included in ProcessWire and can be enabled on a per-template basis. Using the template cache, ProcessWire will cache the HTML output of individual pages and return them for subsequent requests. This way, serving cached responses will still include the overhead of starting up ProcessWire and parsing the request, but will *not* include any API access or processing done in your template files.
+- **The commercial ProCache module.** The [ProCache](https://processwire.com/store/pro-cache/) module will generate static HTML files for cacheable responses and serve those, if available. This is done using some clever `RewriteRule` directives to ProcessWire's `.htaccess` file that instruct Apache to serve the cached static HTML files instead of routing requests to ProcessWire. This way, serving a cached response has practically no overhead and can be as fast as a static site.
 
 The downside of both approaches is that you can't use it for pages that include some kind of dynamic content which needs to change in between requests. For example, if you want to display some information that is stored in a session or some content that depends on the current time, caching those responses would mean that some users will get the wrong result.
 
@@ -187,6 +187,6 @@ Both options require some additional Apache configuration which can be done in t
 
 ## Conclusion
 
-Website optimization has many different facets, most of which are more or less important depending on what type of project you're working on. Those techniques are merely a baseline that will provide a solid performance boost to most ProcessWire sites.
+Website optimization has many facets, most of which are more or less important depending on what type of project you're working on. Those techniques are merely a baseline that will provide a solid performance boost to most ProcessWire sites.
 
 With all those layers of caching, it can become cumbersome to roll out updates to your site's CSS or JavaScript. If you forget to clear even one of the caching layers, visitors might not see the updates for some time, or even see broken pages if, for example, their browser loads new HTML content but still uses an older stylesheet from the cache. To solve this problem I created the free [ProcessWire module *Cache Control*](https://modules.processwire.com/modules/process-cache-control/), which allows you to clear *all* caches with one click. This includes the template cache, the ProCache module, the `$cache` API and custom locations like the Twig template cache if you're using Twig. You can even use it to add version parameters to your assets and update the current version when you clear the cache, thereby forcing browsers to download updated assets.
