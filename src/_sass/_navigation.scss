@@ -43,11 +43,14 @@
         padding-left: 0;
         @include stack(.75rem);
     }
+    &__item {
+        padding-left: 1rem;
+    }
     &__link {
         @include font-size($font-size-sm);
-        &::before {
-            content: "—" " ";
-        }
+        // &::before {
+        //     content: "—" " ";
+        // }
         display: block;
         font-weight: $font-weight-medium;
         line-height: $line-height-sm;
@@ -60,14 +63,15 @@
             color: inherit;
             text-decoration: underline;
         }
-        &[aria-current] {
-            &::before {
-                content: "→"" ";
-            }
-        }
+        // &[aria-current] {
+        //     &::before {
+        //         content: "→"" ";
+        //     }
+        // }
     }
     &__subnav {
-        background: $gray-700;
+        // background: $gray-700;
+        border-left: 2px solid rgba($white, .75);
         padding-left: 0;
         margin-top: .5rem;
         list-style: none;
