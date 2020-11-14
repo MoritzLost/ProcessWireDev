@@ -65,7 +65,7 @@ I also created and maintain the following ProcessWire modules:
 
 If you find an error, have a suggestion for improvements or any other comment, you can let me know through the following channels. Don't be hesitant to message me because of a spelling mistake — I despise those as well ;-)
 
-- Discussion thread in the ProcessWire forums (TBA).
+- The [official discussion thread in the ProcessWire forums](https://processwire.com/talk/topic/24641-processwiredev-%E2%80%94-tutorials-for-web-development-with-processwire/).
 - Email me at [info@processwire.dev](mailto:info@processwire.dev)
 - The source code for this site is in a [public Github repository](https://github.com/MoritzLost/ProcessWireDev), so you can [open an issue](https://github.com/MoritzLost/ProcessWireDev/issues) or a [pull request](https://github.com/MoritzLost/ProcessWireDev/pulls).
 
