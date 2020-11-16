@@ -45,7 +45,7 @@ code, pre, kbd, samp {
 // inline code (code blocks will be wrapped in pre tags)
 :not(pre) > code {
     color: $code-color;
-    background-color: rgba($code-color, .15);
+    background-color: rgba($code-color, .1);
     padding: .15rem .25rem;
     border-radius: .25rem;
 }
