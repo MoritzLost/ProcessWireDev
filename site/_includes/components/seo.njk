@@ -6,9 +6,12 @@
 <meta property="og:locale" content="{{ site.lang }}">
 <meta property="og:site_name" content="{{ site.name }}">
 
-<meta property="og:image" content="{{ site.url }}/preview-images/{{ page.fileSlug | stripVersionPrefix }}.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:alt" content="{{ title }} | {{ description }}">
+
+{% if tags and ('post' in tags) %}
+    <meta property="og:image" content="{{ site.url }}/preview-images/{{ page.fileSlug | stripVersionPrefix }}.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="{{ title }} | {{ description }}">
+{% endif %}
 
 {% if description %}
     <meta name="description" content="{{ description }}">
