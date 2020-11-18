@@ -2,6 +2,8 @@
 layout: html
 title: Legal Notice
 permalink: legal/index.html
+priority: .1
+changefreq: yearly
 ---
 
 # Site notice

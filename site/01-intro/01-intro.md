@@ -4,6 +4,8 @@ layout: homepage
 title: ProcessWire web development tutorials — processwire.dev
 menu_title: Introduction
 description: ProcessWire development made easy with free tutorials for web developers.
+changefreq: weekly
+priority: 1
 ---
 
 # Tutorials for adept web development with ProcessWire

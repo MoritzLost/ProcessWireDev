@@ -1,0 +1,22 @@
+---
+eleventyExcludeFromCollections: true
+permalink: /sitemap.xml
+---
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {%- for item in collections.all -%}
+        {%- if item.url -%}
+            <url>
+                <loc>{{ site.url }}{{ item.url }}</loc>
+                {#- @TODO add modified timestamps and format them -#}
+                {#- {% if item.data.modified %} -#}
+                    {# <lastmod>2020-01-01</lastmod> -#}
+                {#- {% endif %} -#}
+                <changefreq>{{ item.data.changefreq | default('monthly', true) }}</changefreq>
+                <priority>{{ item.data.priority | default(0.8, true )}}</priority>
+            </url>
+        {%- endif -%}
+    {%- endfor -%}
+</urlset>
+
