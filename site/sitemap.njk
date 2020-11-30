@@ -14,6 +14,12 @@ permalink: /sitemap.xml
                 {#- {% endif %} -#}
                 <changefreq>{{ item.data.changefreq | default('monthly', true) }}</changefreq>
                 <priority>{{ item.data.priority | default(0.8, true )}}</priority>
+                {% if item.data.tags and ('post' in item.data.tags) %}
+                    <image:image>
+                        <image:loc>{{ site.url }}/preview-images/{{ item.fileSlug | stripVersionPrefix }}.png</image:loc>
+                        <image:title>{{ item.data.title }} | {{ item.data.description }}</image:title>
+                    </image:image>
+                {% endif %}
             </url>
         {%- endif -%}
     {%- endfor -%}
