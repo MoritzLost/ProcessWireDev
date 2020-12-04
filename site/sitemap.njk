@@ -3,7 +3,7 @@ eleventyExcludeFromCollections: true
 permalink: /sitemap.xml
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     {%- for item in collections.all -%}
         {%- if item.url -%}
             <url>
@@ -17,7 +17,12 @@ permalink: /sitemap.xml
                 {% if item.data.tags and ('post' in item.data.tags) %}
                     <image:image>
                         <image:loc>{{ site.url }}/preview-images/{{ item.fileSlug | stripVersionPrefix }}.png</image:loc>
-                        <image:title>{{ item.data.title }} | {{ item.data.description }}</image:title>
+                        {% if item.data.title %}
+                            <image:title>{{ item.data.title }}</image:title>
+                        {% endif %}
+                        {% if item.data.description %}
+                            <image:caption>{{ item.data.description }}</image:caption>
+                        {% endif %}
                     </image:image>
                 {% endif %}
             </url>
