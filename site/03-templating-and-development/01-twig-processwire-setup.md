@@ -146,7 +146,7 @@ $templateFile = 'pages/page--' . $page->template->name . '.twig';
 $twigTemplate = file_exists($config->twigDirectory . '/' . $templateFile)
     ? $templateFile
     : 'pages/page.twig';
-echo $config->twigEnvironment->render($twigTemplate, $variables);
+echo $twigEnvironment->render($twigTemplate, $variables);
 ```
 
 This function checks if a specific template for the current content type exists (e.g. `pages/page--projects-index.twig`) and falls back to the default page template if it doesn't (e.g. `pages/page.twig`). This way, each content type on your site can have its own entry point (the Twig template) where you have total freedom over how to structure your markup.
