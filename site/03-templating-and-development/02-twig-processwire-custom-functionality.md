@@ -280,7 +280,7 @@ Now you can access the individual methods of `StringUtilities` through the globa
 
 {% raw %}
 ```twig
-{% set description = StringUtilities.newslinesToSpace(page.body) %}
+{% set description = StringUtilities.newlinesToSpace(page.body) %}
 ```
 {% endraw %}
 
