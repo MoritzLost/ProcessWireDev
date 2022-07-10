@@ -1,5 +1,6 @@
 const markdownIt = require('markdown-it');
 const utils = require('./src/utils');
+const anchor = require('markdown-it-anchor');
 
 const extractVersionPrefix = slug => {
     const prefixMatch = slug.match(new RegExp(/^\d{1,3}(?=-)/));
@@ -13,14 +14,14 @@ module.exports = eleventyConfig => {
     const markdownLib = markdownIt({
         html: true,
         typographer: true,
-    }).use(require('markdown-it-anchor'), {
+    }).use(anchor, {
         level: [2],
         slugify: utils.readableSlug,
-        permalink: true,
-        permalinkClass: 'section-anchor',
-        // permalinkSymbol: '→',
-        // permalinkSymbol: '👈',
-        permalinkSymbol: '#',
+        permalink: anchor.permalink.linkInsideHeader({
+            ariaHidden: true,
+            class: 'section-anchor',
+            symbol: '#',
+        }),
     });
     eleventyConfig.setLibrary('md', markdownLib);
 
