@@ -14,6 +14,13 @@ This tutorial will show you how to create your own flexible, extendable template
 
 However, I will not include a general introduction to the Twig language. If you are unfamiliar with Twig, read the [Twig guide for Template Designers](https://twig.symfony.com/doc/2.x/templates.html) and [Twig for Developers](https://twig.symfony.com/doc/2.x/api.html) and then come back to this tutorial.
 
+{% alert 'success' %}
+
+**Not sure if you want to use Twig?**  
+I have written a dedicated explanation why I prefer Twig to PHP. [Check it out here.](https://processwire.com/talk/topic/27382-how-twig-can-improve-your-template-structure/)
+
+{% endalert %}
+
 ## Installation, file and request structure
 
 First, install Twig with Composer (see [How to set up and integrate Composer with ProcessWire](/integrate-composer-with-processwire)):
