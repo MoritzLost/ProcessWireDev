@@ -75,6 +75,5 @@ If you find an error, have a suggestion for improvements or any other comment, y
 
 You can support this site in the following ways:
 
-- The site is set up to receive micropayments through [Coil](https://coil.com).
 - If you're using the Brave browser, you can [tip me some BAT](https://creators.brave.com/).
 - You can also support me directly: [paypal.me/MoritzLost](https://paypal.me/MoritzLost)
