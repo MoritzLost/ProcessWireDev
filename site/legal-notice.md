@@ -101,7 +101,7 @@ Our host will only process your data to the extent necessary to fulfil its perfo
 
 We are using the following host:
 
-Netlify
+Cloudflare Pages (Cloudflare, Inc.)
 
 ### 4. General information and mandatory information
 
@@ -266,7 +266,7 @@ Unser Hoster wird Ihre Daten nur insoweit verarbeiten, wie dies zur Erfüllung s
 
 Wir setzen folgenden Hoster ein:
 
-Netlify
+Cloudflare Pages (Cloudflare, Inc.)
 
 ### 3. Allgemeine Hinweise und Pflicht­informationen
 
