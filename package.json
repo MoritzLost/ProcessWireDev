@@ -15,19 +15,17 @@
     "license": "UNLICENSED",
     "author": "MoritzLost <m@moritzlost.de>",
     "scripts": {
-        "build": "npm run build:eleventy && npm run generate-preview-images && npm run build:sass",
+        "build": "npm run build:eleventy && npm run build:sass",
         "build:eleventy": "eleventy",
         "build:sass": "sass --style compressed --no-source-map src/_sass/main.scss dist/css/main.css",
         "start": "npm-run-all build:sass -p watch:*",
         "watch:eleventy": "eleventy --serve",
-        "watch:sass": "sass --watch --style expanded --embed-source-map src/_sass/main.scss dist/css/main.css",
-        "generate-preview-images": "node ./src/generate-preview-images.js"
+        "watch:sass": "sass --watch --style expanded --embed-source-map src/_sass/main.scss dist/css/main.css"
     },
     "dependencies": {
         "@11ty/eleventy": "^1.0.1",
         "@11ty/eleventy-plugin-syntaxhighlight": "^4.1.0",
         "@fortawesome/fontawesome-free": "^6.1.1",
-        "generate-preview-images": "^0.3.0",
         "hamburgers": "^1.2.1",
         "jsdom": "^20.0.0",
         "markdown-it": "^13.0.1",
@@ -40,7 +38,7 @@
         "npm-run-all": "^4.1.5"
     },
     "engines": {
-        "node": "^16.16.0",
-        "npm": "^8.13.2"
+        "node": "^24.0.0",
+        "npm": "^11.0.0"
     }
 }
