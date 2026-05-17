@@ -71,9 +71,6 @@ If you find an error, have a suggestion for improvements or any other comment, y
 - Email me at [info@processwire.dev](mailto:info@processwire.dev)
 - The source code for this site is in a [public Github repository](https://github.com/MoritzLost/ProcessWireDev), so you can [open an issue](https://github.com/MoritzLost/ProcessWireDev/issues) or a [pull request](https://github.com/MoritzLost/ProcessWireDev/pulls).
 
-## Support options
+## Support this site
 
-You can support this site in the following ways:
-
-- If you're using the Brave browser, you can [tip me some BAT](https://creators.brave.com/).
-- You can also support me directly: [paypal.me/MoritzLost](https://paypal.me/MoritzLost)
+If you want to support me, you can do so via [paypal.me/MoritzLost](https://paypal.me/MoritzLost).
