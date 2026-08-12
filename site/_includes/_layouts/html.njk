@@ -12,8 +12,11 @@
 </head>
 <body>
     <main class="main">
-        <aside class="main__nav">
+        <header class="main__nav">
             {% include "components/navigation.njk" %}
+        </header>
+        <aside class="main__disclaimer">
+            <p>This site is no longer actively maintained. Contents may be out of date.</p>
         </aside>
         <article class="main__article content" id="content">
             {{ content | safe }}

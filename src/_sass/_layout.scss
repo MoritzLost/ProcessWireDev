@@ -11,6 +11,15 @@
         margin: 0;
         padding: 1rem;
     }
+    &__disclaimer {
+        grid-area: disclaimer;
+        font-weight: $font-weight-medium;
+        text-align: center;
+        padding: .5rem 1rem;
+        background: #FFD966;
+        border-bottom: 2px solid $navigation-bg;
+        font-size: $font-size-sm;
+    }
     &__nav {
         background: $navigation-bg;
         color: $navigation-color;
@@ -37,7 +46,8 @@
         display: grid;
         grid-template-columns: 20rem 1fr 40rem 1fr;
         grid-template-rows: 1fr;
-        grid-template-areas:    "navigation space-left main space-right"
+        grid-template-areas:    "navigation disclaimer disclaimer disclaimer"
+                                "navigation space-left main space-right"
                                 "navigation footer footer footer";
         justify-content: space-between;
         align-content: stretch;
@@ -45,6 +55,9 @@
             grid-area: main;
             margin-top: 3rem;
             margin-bottom: 3rem;
+        }
+        &__disclaimer {
+            font-size: $font-size-base;
         }
         &__nav {
             grid-area: navigation;
