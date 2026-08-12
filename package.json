@@ -1,6 +1,6 @@
 {
     "name": "processwire-dev",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Source code for processwire.dev, a comprehensive guide to proficient ProcessWire development.",
     "keywords": [
         "eleventy",
